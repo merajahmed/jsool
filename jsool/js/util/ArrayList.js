@@ -5,7 +5,7 @@ js.util.ArrayList = Extends(js.util.List,{
 		this.data = new Array();
 		
 		if(arg != null){
-			if(js.core.Util.isArray(arg)){
+			if(Array.isArray(arg)){
 				this.addAll(arg);
 			}else if(typeof arg == 'object' && arg.instanceOf(js.util.Collection)){
 				this.addAll(arg);
@@ -108,7 +108,7 @@ js.util.ArrayList = Extends(js.util.List,{
 		this._size = 0;
 	},
 	addAll: function(collection){
-		if(js.core.Util.isArray(collection)){
+		if(Array.isArray(collection)){
 			var length = collection.length;
 			for(var i = 0; i < length; i++){
 				this.data.push(collection[i]);

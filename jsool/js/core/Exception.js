@@ -35,9 +35,9 @@ Exception.prototype.prepareMessage = function(){
 };
 
 Exception.prototype.toString = function(){
-	var message;
+	var message;	
 	
-	if(this.cause != null && this.cause.instanceOf(js.core.Exception)){
+	if(this.cause != null && this.cause.cls == js.core.Exception){
 		message = [this.prepareMessage(),this.cause.toString()].join("\n");
 	}else{
 		message = this.prepareMessage();

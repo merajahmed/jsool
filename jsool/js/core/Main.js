@@ -4,6 +4,9 @@ var js = {
 	html:{},
 	net: {}
 };
+
+function emptyFn(){return null;}
+
 js.core.Main = {
 	systemOperations: new Array(),
 	onReadyActions: new Array(),
@@ -15,7 +18,11 @@ js.core.Main = {
 	},
 	doReady: function(){
 		for(var i = 0; i< this.onReadyActions.length; i++){
-			this.onReadyActions[i]();
+			try{
+				this.onReadyActions[i]();
+			}catch(e){
+				alert(e);
+			}
 		}
 	},
 	prepareSystem: function(){
@@ -38,7 +45,7 @@ js.core.Main.extend = function(superclass, prototype, type){
 		cls.prototype[sp] = superclass.prototype[sp];
 	}
 	
-	if(js.core.Util.isIE())
+	if(js.core.Browser.isIE())
 		cls.prototype['toString'] = superclass.prototype['toString'];
 	
 	for(var p in prototype){

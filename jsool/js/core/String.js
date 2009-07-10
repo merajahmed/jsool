@@ -41,6 +41,6 @@ String.prototype.hashCode = function(){
 	return h;
 };
 
-String.prototype.instanceOf = function(clazz){
-	return clazz == js.core.Object || clazz == String;
+String.isString = function(obj){
+	return typeof obj == 'string';
 };
