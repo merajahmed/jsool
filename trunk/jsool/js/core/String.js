@@ -40,6 +40,14 @@ String.prototype.hashCode = function(){
 	
 	return h;
 };
+/*
+String.prototype.cls = String;
+String.prototype.type = 'String';
+String.prototype.supercls = Object;
+*/
+String.prototype.instanceOf = function(clazz){
+	return clazz == String || clazz == js.core.Object;
+};
 
 String.isString = function(obj){
 	return typeof obj == 'string';

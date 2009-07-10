@@ -20,8 +20,13 @@ js.core.Main = {
 		for(var i = 0; i< this.onReadyActions.length; i++){
 			try{
 				this.onReadyActions[i]();
-			}catch(e){
-				alert(e);
+			}catch(e){				
+				if(console){
+					console.info(e.toString());
+					console.error(e.toString());
+				}else{
+					alert(e.toString());
+				}
 			}
 		}
 	},
