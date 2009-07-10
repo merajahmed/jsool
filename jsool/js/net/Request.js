@@ -6,9 +6,9 @@ js.net.Request = Extends(js.util.Observable, {
 			throw new js.core.Exception('The constructor argument must not be null', this);
 		
 		if(typeof options == 'string')
-			url = options;
+			this.url = options;
 		else if(typeof options == 'object'){
-			if(options.async) this.async = options.async;
+			if(options.async != null) this.async = options.async;
 			
 			if(options.responseType){
 				if(options.responseType.toUpperCase() == 'TEXT')
@@ -34,10 +34,11 @@ js.net.Request = Extends(js.util.Observable, {
 	async: true,
 	responseType: 'Text',
 	failure: null,
-	params: null,
+	params: '',
 	paramsLength: 0,
 	method: 'GET',
 	url: null,
+	noCache: false,
 	setParams: function(params){
 		if(typeof params == 'string' && params.length() > 0){
 			var len = 1;
@@ -60,6 +61,18 @@ js.net.Request = Extends(js.util.Observable, {
 			
 			this.params = out.toString();			
 			this.paramsLength = len;
+		}
+	},
+	getParams: function(){
+		if(this.noCache){
+			if(this.paramsLength > 0){
+				//add timestamp
+				return this.params + '&_ts=' + (new Date()).getTime();
+			}else{
+				return '_ts=' + (new Date()).getTime();
+			}
+		}else{
+			return this.params;
 		}
 	}
 },'js.net.Request');

@@ -45,11 +45,20 @@ js.core.Main.onReady(function(){
 	document.getElementsByTagName('body')[0].appendChild(el2.dom);
 
 	var req = new js.net.RequestDispatcher();
-	try{
-	req.dispatch(new js.net.Request('teste'));
-	}catch(e){
-		throw new js.core.Exception('deu erro',e);
-	}
+	
+	
+		req.dispatch(new js.net.Request({
+			url:'core.js',
+			success:function(response){
+				
+				el.setText(response);
+
+				throw new js.core.Exception('Ocorreu um erro ao executar callback',null, null,null);
+			},
+			async: false
+		}));
+
+		console.info('mandou');
 });
 </script>
 

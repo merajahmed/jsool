@@ -1,47 +1,41 @@
-function Exception(msg, reason, method){
-    if(msg == null)    	
-        throw new Error("An Exception must have a message");
-    this.message = msg;
-    
-    if(reason != null)
-        this.cause = reason;
-    
-    if(method != null || typeof method == 'function')
-    	this.method = method.callee;
-}
-Exception.prototype.cause = null;
-Exception.prototype.method = null;
-Exception.prototype.message = "";
-Exception.prototype.cls = Exception;
-Exception.prototype.supercls = js.core.Object;
-Exception.prototype.type = 'js.core.Exception';
-
-Exception.prototype.prepareMessage = function(){
-	var message;
-	var root = this.cause.type;
-	var mtd = "";
-	
-	if(this.method != null){
-		for(var p in this.cause.cls.prototype){
-			if(this.cause.cls.prototype[p] == this.method){
-				mtd = "." + p + "()";
+js.core.Exception = Extends(js.core.Object,{
+	constructor: function(message, sourceObject, sourceMethodArguments, sourceException){
+		if(message == null)
+			throw new Error('The Exception message must not be null');
+		
+		this.message = message;
+		this.source = sourceObject;
+		this.method = (sourceMethodArguments ? sourceMethodArguments.callee : null);
+		this.cause = sourceException;
+	},
+	message: null,
+	source: null,
+	method: null,
+	cause: null,
+	toString: function(){
+		var out;
+		
+		if(this.source){
+			out = this.source.type;
+			
+			if(this.method){
+				var ptt = this.source.cls.prototype;
+				for(var p in ptt){
+					if(ptt[p] == this.method){
+						out = out + "." + p + '()';
+					}
+				}
 			}
+		}else{
+			out = this.type;
 		}
+		
+		out = out + ': ' + this.message;
+		
+		if(this.cause){
+			out = out + '\n' + this.cause.toString();
+		}
+		
+		return out;
 	}
-	
-	message = [root, mtd,": ", this.message].join("");
-	
-    return message;
-};
-
-Exception.prototype.toString = function(){
-	var message;	
-	
-	if(this.cause != null && this.cause.cls == js.core.Exception){
-		message = [this.prepareMessage(),this.cause.toString()].join("\n");
-	}else{
-		message = this.prepareMessage();
-	}
-    return message;
-};
-js.core.Exception = Exception;
+},'js.core.Exception');

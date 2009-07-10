@@ -113,6 +113,15 @@ js.core.Browser = {
 	],
 	isIE: function(){
 		return this.browser == "Explorer";
+	},
+	isFF: function(){
+		return this.browser == "Firefox";
+	},
+	isOpera: function(){
+		return this.browser == "Opera";
+	},
+	isChrome: function(){
+		return this.browser == "Chrome";
 	}
 };
 js.core.Browser.init();
