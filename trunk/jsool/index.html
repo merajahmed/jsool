@@ -2,8 +2,9 @@
 <head>
 <title>Tester</title>
 <script type="text/javascript" src="js/core/Main.js"></script>
-<script type="text/javascript" src="js/core/Util.js"></script>
+<script type="text/javascript" src="js/core/Browser.js"></script>
 <script type="text/javascript" src="js/core/Object.js"></script>
+<script type="text/javascript" src="js/core/Array.js"></script>
 <script type="text/javascript" src="js/core/String.js"></script>
 <script type="text/javascript" src="js/core/Exception.js"></script>
 
@@ -22,14 +23,13 @@
 
 <script type="text/javascript" src="js/html/Element.js"></script>
 
+<script type="text/javascript" src="js/net/Request.js"></script>
+<script type="text/javascript" src="js/net/RequestDispatcher.js"></script>
+
 <script type="text/javascript">
 var el;
 
 js.core.Main.onReady(function(){
-	alert(navigator.appCodeName);
-	alert(navigator.appName);
-	alert(navigator.appVersion);
-	alert(navigator.product);
 	var el1 = new js.html.Element('span');
 	var el2 = new js.html.Element('div');
 	el2.append(el1);
@@ -38,11 +38,18 @@ js.core.Main.onReady(function(){
 	el.addListener({
 		scope:el,
 		click:function(event){
-			this.setText(event.timeStamp.toString());
+			this.setText((new Date()).getTime().toString());
 		}
 	});
 
-	document.body.appendChild(el2._dom);
+	document.getElementsByTagName('body')[0].appendChild(el2.dom);
+
+	var req = new js.net.RequestDispatcher();
+	try{
+	req.dispatch(new js.net.Request('teste'));
+	}catch(e){
+		throw new js.core.Exception('deu erro',e);
+	}
 });
 </script>
 

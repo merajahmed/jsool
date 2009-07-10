@@ -3,10 +3,10 @@ js.util.Observable = Extends(js.core.Object, {
 	addEvent: function(ev){
 		if(!this.events)this.events = new js.util.HashMap();
 		
-		if(js.core.Util.isArray(ev)){
+		if(Array.isArray(ev)){
 			var l = ev.length;
 			for(var i = 0; i < l; i++)
-				this.events.put(ev.get(i), new js.util.ArrayList());
+				this.events.put(ev[i], new js.util.ArrayList());
 		}else
 			this.events.put(ev, new js.util.ArrayList());
 	},
