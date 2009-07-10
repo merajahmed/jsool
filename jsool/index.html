@@ -1,0 +1,55 @@
+<html>
+<head>
+<title>Tester</title>
+<script type="text/javascript" src="js/core/Main.js"></script>
+<script type="text/javascript" src="js/core/Util.js"></script>
+<script type="text/javascript" src="js/core/Object.js"></script>
+<script type="text/javascript" src="js/core/String.js"></script>
+<script type="text/javascript" src="js/core/Exception.js"></script>
+
+<script type="text/javascript" src="js/util/Collection.js"></script>
+<script type="text/javascript" src="js/util/List.js"></script>
+<script type="text/javascript" src="js/util/ArrayList.js"></script>
+<script type="text/javascript" src="js/util/LinkedList.js"></script>
+<script type="text/javascript" src="js/util/HashSet.js"></script>
+<script type="text/javascript" src="js/util/HashMap.js"></script>
+<script type="text/javascript" src="js/util/StringBuilder.js"></script>
+<script type="text/javascript" src="js/util/Locale.js"></script>
+<script type="text/javascript" src="js/util/Serializable.js"></script>
+<script type="text/javascript" src="js/util/Observable.js"></script>
+<script type="text/javascript" src="js/util/DateFormat.js"></script>
+<script type="text/javascript" src="js/util/DatePatterns.js"></script>
+
+<script type="text/javascript" src="js/html/Element.js"></script>
+
+<script type="text/javascript">
+var el;
+
+js.core.Main.onReady(function(){
+	alert(navigator.appCodeName);
+	alert(navigator.appName);
+	alert(navigator.appVersion);
+	alert(navigator.product);
+	var el1 = new js.html.Element('span');
+	var el2 = new js.html.Element('div');
+	el2.append(el1);
+	el1.setText('LOLOLOLOL');
+	el = el2;
+	el.addListener({
+		scope:el,
+		click:function(event){
+			this.setText(event.timeStamp.toString());
+		}
+	});
+
+	document.body.appendChild(el2._dom);
+});
+</script>
+
+</head>
+<body>
+	<a>LINK</a><br />
+	<span id = "LOL">SPAN</span><br />
+	<div>DIV</div>
+</body>
+</html>
