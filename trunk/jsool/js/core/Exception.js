@@ -5,13 +5,38 @@ js.core.Exception = Extends(js.core.Object,{
 		
 		this.message = message;
 		this.source = sourceObject;
-		this.method = (sourceMethodArguments ? sourceMethodArguments.callee : null);
+		this.method = sourceMethodArguments;
 		this.cause = sourceException;
 	},
 	message: null,
 	source: null,
 	method: null,
 	cause: null,
+	getMethod: function(){
+		if(!this.source) return '';
+		
+		var proto = this.source.cls.prototype;
+		var method = this.method.callee;
+		var methodName;
+		
+		for(var p in proto){
+			if(proto[p] == method){
+				methodName = '.' + p + '(';
+			}
+		}
+		
+		var args = new Array();
+		
+		for(var i = 0; i < this.method.length; i++){
+			if(typeof this.method[i] == 'object'){				
+				args.push(this.method[i].type || this.method[i]);
+			}else{
+				args.push(this.method[i]);
+			}
+		}
+		
+		return methodName + args.join(',') + ')';
+	},
 	toString: function(){
 		var out;
 		
@@ -19,12 +44,7 @@ js.core.Exception = Extends(js.core.Object,{
 			out = this.source.type;
 			
 			if(this.method){
-				var ptt = this.source.cls.prototype;
-				for(var p in ptt){
-					if(ptt[p] == this.method){
-						out = out + "." + p + '()';
-					}
-				}
+				out = out + this.getMethod();
 			}
 		}else{
 			out = this.type;
