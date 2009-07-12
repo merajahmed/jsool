@@ -92,13 +92,77 @@ js.net.RequestDispatcher = Extends(js.util.Observable,{
 			throw new js.core.Exception(e.toString(), this, arguments);
 		}
 	},
-	doSyncGet: function(request){console.info('sync');
+	doSyncGet: function(request){
 		var url = request.url + '?' + request.getParams();
 		
 		try{
 			this.fireEvent({type:'start', request: this.dispatcher});
 			this.dispatcher.open(request.method, url, false);
 			this.dispatcher.send(null);
+		}catch(e){
+			this.fireEvent({type:'error', request: this.dispatcher});
+			throw new js.core.Exception(e.toString(), this, arguments);
+		}
+		
+		try{
+			this.doCallback(request);
+		}catch(e){
+			this.fireEvent({type:'error', request: this.dispatcher});
+			throw new js.core.Exception('Error while executing callback', this, arguments, e);
+		}
+		this.fireEvent({type:'complete', request: this.dispatcher});
+	},
+	doAsyncPost: function(request){
+		var url = request.url;
+
+		try{
+			this.fireEvent({type:'start', request: this.dispatcher});
+			this.dispatcher.open(request.method, url, true);
+			
+			this.dispatcher.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            this.dispatcher.setRequestHeader("Content-length", request.length);
+            this.dispatcher.setRequestHeader("Connection", "close");
+
+			
+			var that = this;
+			this.dispatcher.onreadystatechange = function(){
+				var state = that.dispatcher.readyState;
+				/* * * * * * * * * * * * * * * * *
+				 * Ready states                  *
+				 * 0 = not initialized           *
+				 * 1 = setted up                 *
+				 * 2 = sent                      *
+				 * 3 = in process                *
+				 * 4 = complete                  *
+				 * * * * * * * * * * * * * * * * */
+				if(state == 4){
+					try{
+						that.doCallback(request);
+					}catch(e){
+						that.fireEvent({type:'error', request: that.dispatcher});
+						throw new js.core.Exception('Error while executing callback', that, null, e);
+					}
+					that.fireEvent({type:'complete', request: that.dispatcher});
+				}
+			};
+			this.dispatcher.send(request.getParams());
+		}catch(e){
+			this.fireEvent({type:'error', request: that.dispatcher});
+			throw new js.core.Exception(e.toString(), this, arguments);
+		}
+	},
+	doSyncPost: function(request){
+		var url = request.url + '?' + request.getParams();
+		
+		try{
+			this.fireEvent({type:'start', request: this.dispatcher});
+			this.dispatcher.open(request.method, url, false);
+			
+			this.dispatcher.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            this.dispatcher.setRequestHeader("Content-length", request.length);
+            this.dispatcher.setRequestHeader("Connection", "close");
+			
+			this.dispatcher.send(request.getParams());
 		}catch(e){
 			this.fireEvent({type:'error', request: this.dispatcher});
 			throw new js.core.Exception(e.toString(), this, arguments);

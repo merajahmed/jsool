@@ -21,7 +21,7 @@ js.net.Request = Extends(js.util.Observable, {
 			if(options.failure) this.failure = options.failure;
 			if(options.params) this.setParams(options.params);
 			if(options.method){
-				if(options.method.toUpperCase() != 'GET' || options.method.toUpperCase() != 'POST')
+				if(options.method.toUpperCase() != 'GET' && options.method.toUpperCase() != 'POST')
 					throw new js.core.Exception('Invalid request method: '+options.method, this);
 				else
 					this.method = options.method.toUpperCase();

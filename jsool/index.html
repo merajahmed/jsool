@@ -32,8 +32,10 @@ var el;
 js.core.Main.onReady(function(){
 	var el1 = new js.html.Element('span');
 	var el2 = new js.html.Element('div');
+	
 	el2.append(el1);
 	el1.setText('LOLOLOLOL');
+	
 	el = el2;
 	el.addListener({
 		scope:el,
@@ -46,19 +48,18 @@ js.core.Main.onReady(function(){
 
 	var req = new js.net.RequestDispatcher();
 	
-	
-		req.dispatch(new js.net.Request({
-			url:'core.js',
-			success:function(response){
-				
-				el.setText(response);
-
-				throw new js.core.Exception('Ocorreu um erro ao executar callback',null, null,null);
-			},
-			async: false
-		}));
-
-		console.info('mandou');
+	req.dispatch(new js.net.Request({
+		url:'core.js',
+		method: 'post',
+		success:function(response){
+			
+			el.setText(response);
+		},
+		async: true,
+		params: {
+			master: 'mikhas'
+		}
+	}));
 });
 </script>
 
