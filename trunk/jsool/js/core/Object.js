@@ -1,5 +1,8 @@
+var global_objects_count = 0;
+
 js.core.Object = function(){
-	this.hash = (Math.round((Math.random()*1000)) + (new Date()).getTime()).toString(16).toUpperCase();
+	this.hash = (Math.round((Math.random()*1000)) + (new Date()).getTime());
+	global_objects_count++;
 };
 
 js.core.Object.prototype = {

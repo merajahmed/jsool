@@ -10,9 +10,9 @@ js.util.HashSet = Extends(js.util.Collection,{
 		
 		var hash;
 		
-		if((type == 'object' && obj.hashCode) || type == 'string'){
+		if((type == 'object' && obj.hashCode)){
 			hash = obj.hashCode();
-		}else if(type == 'number'){
+		}else if(type == 'number' || type == 'string'){
 			hash = obj.toString();
 		}else{
 			throw new Exception("Invalid argument type: "+obj.toString(), this, arguments);
@@ -24,7 +24,7 @@ js.util.HashSet = Extends(js.util.Collection,{
 		this.set[hash] = obj;
 	},
 	mapCode: function(obj){
-		if(obj.hashCode)
+		if(typeof obj == 'object' && obj.hashCode)
 			return obj.hashCode();
 		else
 			return obj.toString();

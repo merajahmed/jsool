@@ -17,7 +17,14 @@ js.html.Element = Extends(js.util.Observable,{
 		                                        'error', 'focus', 'keydown', 'keypress', 'keyup',
 		                                        'load', 'mousedown', 'mousemove', 'mouseout', 'mouseover',
 		                                        'mouseup', 'reset', 'resize', 'select', 'submit', 'unload']);
+		
+		this.jsoolId = document.createAttribute("jsool-id");
+		this.jsoolId.nodeValue = this.hashCode().toString();
+		this.dom.setAttributeNode(this.jsoolId);
+		
+		js.html.Element.cache(this);
 	},
+	jsoolId: null,
 	children: null,
 	dom: null,
 	classes: null,
@@ -111,5 +118,51 @@ js.html.Element = Extends(js.util.Observable,{
 			for(var prop in arg1)
 				style[prop] = arg1[prop];
 		}
+	},
+	getChildren: function(dom){
+		var toDom = (dom == null ? false : el);
+		
+		if(toDom){
+			return this.dom.childNodes;
+		}else{
+			return this.children;
+		}
 	}
 },'js.html.Element');
+
+
+//Elements Cache
+
+js.core.Main.onSystemReady(function(){
+	js.html.Element.CACHE = new js.util.HashMap();
+	
+	js.html.Element.BODY = new js.html.Element(document.getElementsByTagName('body')[0]);
+});
+
+js.html.Element.get = function(dom){
+	if(typeof dom == 'string'){
+		var el = document.getElementById(dom);
+		
+		var cached = js.html.Element.get(el);
+		
+		if(cached == null){
+			return new js.html.Element(el);
+		}else{
+			return cached;
+		}
+		
+	}else if(typeof dom == 'object'){
+		if(!dom.hasAttribute('jsool')){
+			return new js.html.Element(dom);
+		}else{
+			return js.html.Element.CACHE.get(dom.getAttribute('jsool'));
+		}
+	}
+};
+
+js.html.Element.cache = function(element){
+	if(typeof element != 'object' || !element.instanceOf(js.html.Element))
+		throw new js.core.Exception("Invalid argument: "+element);
+	
+	js.html.Element.CACHE.put(element.hashCode(), element);
+};

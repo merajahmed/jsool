@@ -1,4 +1,4 @@
-js.util.HashMap = Extends(js.util.Collection,{
+js.util.HashMap = Extends(js.util.Map,{
 	constructor: function(){
 		js.core.Object.apply(this, arguments);
 		this.keys = new js.util.HashSet();
@@ -12,13 +12,15 @@ js.util.HashMap = Extends(js.util.Collection,{
 	put: function(key, value){
 		var type = typeof key;
 		
-		if(type != 'number' && type != 'string'){
-			if(type != 'object' && !key.hash){
-				throw new Exception("Invalid key element: "+key.toString(), this, arguments);
-			}
-		}
+		var hash;
 		
-		var hash = this.mapCode(key);
+		if((type == 'object' && key.hashCode)){
+			hash = key.hashCode();
+		}else if(type == 'number' || type == 'string'){
+			hash = key.toString();
+		}else{
+			throw new Exception("Invalid argument type: "+key.toString(), this, arguments);
+		}
 		
 		if(this.keys.contains(key)){
 			this.remove(key);
@@ -58,22 +60,19 @@ js.util.HashMap = Extends(js.util.Collection,{
 		
 		return true;
 	},
-	mapCode: function(key){
-		if(key.propertyIsEnumerable('hash'))
-			return key.hash;
+	mapCode: function(obj){
+		if(typeof obj == 'object' && obj.hashCode)
+			return obj.hashCode();
 		else
-			return key.toString();
+			return obj.toString();
 	},
 	contains: function(object){
 		return this.containsValue(object);
 	},
-	toArray: function(){
-		var out = new Array();
-		
-		for(var key in this.map){
-			out.push({key:key,value:this.map[key]});
-		}
-		
-		return out;
+	clear: function(){
+		this.keys.clear();
+		this.values.clear();
+		this._size = 0;
+		this.map = {};
 	}
 },'js.util.HashMap');

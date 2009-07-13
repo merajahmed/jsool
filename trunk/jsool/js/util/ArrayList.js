@@ -80,9 +80,18 @@ js.util.ArrayList = Extends(js.util.List,{
 		
 		return this.data[index];
 	},
-	add: function(object){
-		this.data.push(object);
-		this._size++;
+	add: function(object, index){
+		if(index == null){
+			this.data.push(object);
+			this._size++;
+		}else{
+			if(typeof index != 'number')
+				throw new js.core.Exception("Invalid argument type: "+ typeof number, this, arguments);
+			if(index >= this._size)
+				throw new js.core.Exception("Array index out of bounds: "+ number, this, arguments);
+			
+			this.data[index];
+		}
 	},
 	remove: function(object){
 		if(typeof item != 'number')
