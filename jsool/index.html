@@ -13,7 +13,9 @@
 <script type="text/javascript" src="js/util/ArrayList.js"></script>
 <script type="text/javascript" src="js/util/LinkedList.js"></script>
 <script type="text/javascript" src="js/util/HashSet.js"></script>
+<script type="text/javascript" src="js/util/Map.js"></script>
 <script type="text/javascript" src="js/util/HashMap.js"></script>
+<script type="text/javascript" src="js/util/ReferenceMap.js"></script>
 <script type="text/javascript" src="js/util/StringBuilder.js"></script>
 <script type="text/javascript" src="js/util/Locale.js"></script>
 <script type="text/javascript" src="js/util/Serializable.js"></script>
@@ -34,9 +36,10 @@ js.core.Main.onReady(function(){
 	var el2 = new js.html.Element('div');
 	
 	el2.append(el1);
+	el2.setAttribute('id','lol');
 	el1.setText('LOLOLOLOL');
 	
-	el = el2;
+	el = el1;
 	el.addListener({
 		scope:el,
 		click:function(event){
@@ -44,22 +47,7 @@ js.core.Main.onReady(function(){
 		}
 	});
 
-	document.getElementsByTagName('body')[0].appendChild(el2.dom);
-
-	var req = new js.net.RequestDispatcher();
-	
-	req.dispatch(new js.net.Request({
-		url:'core.js',
-		method: 'post',
-		success:function(response){
-			
-			el.setText(response);
-		},
-		async: true,
-		params: {
-			master: 'mikhas'
-		}
-	}));
+	js.html.Element.BODY.append(el2);
 });
 </script>
 

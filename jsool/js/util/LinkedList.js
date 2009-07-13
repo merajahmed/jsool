@@ -41,8 +41,17 @@ js.util.LinkedList = Extends(js.util.List, {
         entry.element = null;
         this._size--;
 	},
-	add: function(object){
-		this._addBefore(object, this.header);
+	add: function(object, index){
+		if(index == null){
+			this._addBefore(object, this.header);
+		}else{
+			if(typeof index != 'number')
+				throw new js.core.Exception("Invalid argument type: "+ typeof number, this, arguments);
+			if(index >= this._size)
+				throw new js.core.Exception("Array index out of bounds: "+ number, this, arguments);
+			
+			this._addBefore(object, index == this._size ? this.header : this._entry(index));
+		}
 	},
 	get: function(index){
 		return this._entry(index).element;

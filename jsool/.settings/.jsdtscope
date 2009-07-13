@@ -3,4 +3,5 @@
 	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="/lib"/>
 	<classpathentry kind="con" path="org.eclipse.wst.jsdt.USER_LIBRARY/js-lib"/>
+	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.baseBrowserLibrary"/>
 </classpath>
