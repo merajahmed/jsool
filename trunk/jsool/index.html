@@ -2,6 +2,7 @@
 <head>
 <title>Tester</title>
 <script type="text/javascript" src="js/core/Main.js"></script>
+<script type="text/javascript" src="js/core/Util.js"></script>
 <script type="text/javascript" src="js/core/Browser.js"></script>
 <script type="text/javascript" src="js/core/Object.js"></script>
 <script type="text/javascript" src="js/core/Array.js"></script>
@@ -24,18 +25,17 @@
 <script type="text/javascript" src="js/util/DatePatterns.js"></script>
 
 <script type="text/javascript" src="js/html/Element.js"></script>
+<script type="text/javascript" src="js/html/Canvas.js"></script>
+<script type="text/javascript" src="js/html/SVGImage.js"></script>
 
-<script type="text/javascript" src="js/graphics/Graphics.js"></script>
-<script type="text/javascript" src="js/graphics/SVGGraphics.js"></script>
-<script type="text/javascript" src="js/graphics/CanvasGraphics.js"></script>
-<script type="text/javascript" src="js/graphics/GraphicalContext.js"></script>
-<script type="text/javascript" src="js/graphics/CanvasContext.js"></script>
+<script type="text/javascript" src="js/canvas/Canvas.js"></script>
+<script type="text/javascript" src="js/canvas/CanvasRenderingContext.js"></script>
 
 <script type="text/javascript" src="js/net/Request.js"></script>
 <script type="text/javascript" src="js/net/RequestDispatcher.js"></script>
 
 <script type="text/javascript">
-var el, image, ctx, pol;
+var el, ctx;
 
 js.core.Main.onReady(function(){
 	var el1 = new js.html.Element('span');
@@ -54,29 +54,6 @@ js.core.Main.onReady(function(){
 	});
 
 	js.html.Element.BODY.append(el2);
-
-	if(!js.core.Browser.isIE()){
-		image = new js.graphics.CanvasGraphics();
-		image.setAttribute({
-			width: 600,
-			height: 500
-		});
-		js.html.Element.BODY.append(image);
-		
-		ctx = image.getContext();		
-
-		pol = [{x:1,y:1},
-		   		{x:10,y:20},
-		   		{x:15,y:35},
-		   		{x:10,y:40}];
-
-		ctx.drawString('cool', 20,20);
-   		ctx.fillPolygon(pol);
-
-   		ctx.drawString('cool', 20,40);
-
-   		ctx.fillRect(50, 20, 100, 70);
-	}
 });
 </script>
 

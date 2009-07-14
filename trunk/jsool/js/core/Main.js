@@ -1,10 +1,4 @@
-var js = {
-	core:{},
-	util:{},
-	html:{},
-	net: {},
-	graphics: {}
-};
+var js = {core:{},util:{},html:{},net: {},graphics: {},canvas: {}};
 
 function emptyFn(){return null;}
 
@@ -26,7 +20,7 @@ js.core.Main = {
 					console.info(e.toString());
 					console.error(e.toString());
 				}else{
-					alert(e.description);
+					alert(e.toString());
 				}
 			}
 		}
