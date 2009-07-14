@@ -3,14 +3,14 @@ js.html.Element = Extends(js.util.Observable,{
 		js.util.Observable.apply(this, arguments);
 		
 		var type = typeof obj;
-		var tags = /\b(a|button|div|object|label|option|p|script|select|span|td|tr|th|tbody|thead|tfoot)\b/;
+		var tags = /\b(a|button|div|object|label|option|p|script|select|span|td|tr|th|tbody|thead|tfoot|svg|iframe|canvas)\b/;
 		
 		if(type == 'string' && tags.exec(obj.toLowerCase()) !== null){
 			this.dom = document.createElement(obj);
 		}else if(type == 'object' && obj.tagName){
 			this.dom = obj;
 		}else{
-			throw new js.core.Exception('Invalid arguments type: ' + obj, this, arguments);
+			throw new js.core.Exception('Invalid tag: ' + obj, this);
 		}
 		
 		this.DOMEvents = new js.util.ArrayList(['abort', 'blur', 'change', 'click', 'dblclick',
@@ -29,6 +29,9 @@ js.html.Element = Extends(js.util.Observable,{
 	dom: null,
 	classes: null,
 	DOMEvents: null,
+	getDom: function(){
+		return this.dom;
+	},
 	setAttribute: function(){
 		if(arguments.length == 2 && typeof arguments[1] == 'string'){
 			var name = arguments[0];

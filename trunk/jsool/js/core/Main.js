@@ -2,7 +2,8 @@ var js = {
 	core:{},
 	util:{},
 	html:{},
-	net: {}
+	net: {},
+	graphics: {}
 };
 
 function emptyFn(){return null;}
@@ -20,12 +21,12 @@ js.core.Main = {
 		for(var i = 0; i< this.onReadyActions.length; i++){
 			try{
 				this.onReadyActions[i]();
-			}catch(e){				
-				if(console){
+			}catch(e){
+				if(typeof console != 'undefined'){
 					console.info(e.toString());
 					console.error(e.toString());
 				}else{
-					alert(e.toString());
+					alert(e.description);
 				}
 			}
 		}
