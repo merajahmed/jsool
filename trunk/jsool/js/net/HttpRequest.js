@@ -1,4 +1,4 @@
-js.net.Request = Extends(js.util.Observable, {
+js.net.HttpRequest = Extends(js.util.Observable, {
 	constructor: function(options){
 		js.util.Observable.apply(this, arguments);
 		
@@ -34,6 +34,7 @@ js.net.Request = Extends(js.util.Observable, {
 	async: true,
 	responseType: 'Text',
 	failure: null,
+	success: null,
 	params: '',
 	paramsLength: 0,
 	method: 'GET',
@@ -75,4 +76,4 @@ js.net.Request = Extends(js.util.Observable, {
 			return this.params;
 		}
 	}
-},'js.net.Request');
+},'js.net.HttpRequest');
