@@ -5,10 +5,13 @@ js.util.Observable = Extends(js.core.Object, {
 		
 		if(Array.isArray(ev)){
 			var l = ev.length;
-			for(var i = 0; i < l; i++)
-				this.events.put(ev[i], new js.util.ArrayList());
-		}else
+			for(var i = 0; i < l; i++){
+				//this.events.put(ev[i], new js.util.ArrayList());
+				this.addEvent(ev[i]);
+			}
+		}else if(!this.events.containsKey(ev)){
 			this.events.put(ev, new js.util.ArrayList());
+		}
 	},
 	addListener: function(listener){
 		var listeners;

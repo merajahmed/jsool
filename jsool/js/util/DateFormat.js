@@ -37,6 +37,25 @@ js.util.DateFormat = Extends(js.core.Object,{
 		this.compiled = compiled;
 	},
 	parse: function(string){
+		if(!String.isString(string)){
+			throw new js.core.Exception('invalid argument type: '+ typeof string, this, arguments);
+		}
+		
+		if(!this.compiled) this.compile();
+		
+		var re = /[{][a-zA-Z]+[}]/g;
+		var usedPatterns = this.compiled.match(re);
+		
+		if(usedPatterns == null){
+			throw new js.core.Exception('invalid conversion pattern: '+ this.pattern, this, arguments);
+		}
+		
+		var datePatterns = this.locale.datePatterns;
+		var currentPattern = null;
+		
+		for(var i = 0; i < usedPatterns.length; i++){			
+			currentPattern = datePatterns.getPatternByKey(usedPatterns[i]);
+		}
 		
 	}
 },'js.util.DateFormat');

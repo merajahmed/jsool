@@ -1,5 +1,5 @@
 //REFERENCE http://code.google.com/p/mikhas/source/browse/trunk/mikhas/mikhas-script/net/Request.js?r=133
-js.net.RequestDispatcher = Extends(js.util.Observable,{
+js.net.HttpRequestDispatcher = Extends(js.util.Observable,{
 	constructor: function(){
 		js.util.Observable.apply(this, arguments);
 		this.addEvent(['success','failure','start','complete','error']);
@@ -10,7 +10,7 @@ js.net.RequestDispatcher = Extends(js.util.Observable,{
 			throw new js.core.Exception('Null request', this, arguments);
 		}
 		
-		if(!request.instanceOf(js.net.Request)){
+		if(!request.instanceOf(js.net.HttpRequest)){
 			throw new js.core.Exception('Invalid argument type: '+ request.type, this, arguments);
 		}
 		
@@ -189,4 +189,4 @@ js.net.RequestDispatcher = Extends(js.util.Observable,{
 			}
 		}
 	}
-},'js.net.RequestDispatcher');
+},'js.net.HttpRequestDispatcher');

@@ -15,7 +15,7 @@ js.util.Locale = Extends(js.core.Object,{
 	},
 	cache: [],
 	language: null,
-	datePattners: null
+	datePatterns: null
 },'js.util.Locale');
 
 js.util.Locale.DEFAULT = null;
@@ -33,8 +33,8 @@ js.core.Main.onSystemReady(function(){
 	
 	var brazil = new js.util.Locale('pt-BR');
 	brazil.datePatterns = new js.util.DatePatterns();
-	brazil.datePatterns.weekdays = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sabado'];
-	brazil.datePatterns.months = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+	brazil.datePatterns.weekdays = ['Domingo','Segunda-feira','Terca-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sabado'];
+	brazil.datePatterns.months = ['Janeiro','Fevereiro','Marco','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 	
 	loc.BRAZIL = brazil;
 	
