@@ -1,4 +1,4 @@
-js.util.Map = Extends(js.core.Object,{
+js.util.Map = $extends(js.core.Object,{
 	containsKey: emptyFn,
 	containsValue: emptyFn,
 	size: emptyFn,

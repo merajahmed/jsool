@@ -1,4 +1,4 @@
-js.canvas.Canvas = Extends(js.html.Element,{
+js.canvas.Canvas = $extends(js.html.Element,{
 	constructor: function(){
 		js.html.Element.apply(this,['canvas']);
 	},

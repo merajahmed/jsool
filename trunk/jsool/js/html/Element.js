@@ -1,4 +1,4 @@
-js.html.Element = Extends(js.util.Observable,{
+js.html.Element = $extends(js.util.Observable,{
 	constructor: function(obj){
 		js.util.Observable.apply(this, arguments);
 		
@@ -130,6 +130,16 @@ js.html.Element = Extends(js.util.Observable,{
 		}else{
 			return this.children;
 		}
+	},
+	getPosition: function(){
+		var element = this.dom;
+		var y = 0, x = 0;
+		while(element != null){
+			y += element.offsetTop;
+			x += element.offsetLeft;
+			element = element.offsetParent;
+		}
+		return {y:y,x:x};
 	}
 },'js.html.Element');
 

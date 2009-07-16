@@ -1,4 +1,4 @@
-js.util.Observable = Extends(js.core.Object, {
+js.util.Observable = $extends(js.core.Object, {
 	events: null,
 	addEvent: function(ev){
 		if(!this.events)this.events = new js.util.HashMap();

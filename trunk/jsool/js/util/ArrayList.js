@@ -1,4 +1,4 @@
-js.util.ArrayList = Extends(js.util.List,{
+js.util.ArrayList = $extends(js.util.List,{
 	constructor: function(arg){
 		js.core.Object.apply(this, arguments);
 		
@@ -143,7 +143,7 @@ js.util.ArrayList = Extends(js.util.List,{
 	}
 },'js.util.ArrayList');
 
-js.util.ArrayList.Iterator = Extends(js.core.Object,{
+js.util.ArrayList.Iterator = $extends(js.core.Object,{
 	constructor: function(list){
 		js.core.Object.apply(this,arguments);
 		this.size = list.length;

@@ -1,4 +1,4 @@
-js.util.Locale = Extends(js.core.Object,{
+js.util.Locale = $extends(js.core.Object,{
 	constructor: function(language){
 		var length = this.cache.length;
 		

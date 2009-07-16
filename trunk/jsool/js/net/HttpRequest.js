@@ -1,4 +1,4 @@
-js.net.HttpRequest = Extends(js.util.Observable, {
+js.net.HttpRequest = $extends(js.util.Observable, {
 	constructor: function(options){
 		js.util.Observable.apply(this, arguments);
 		

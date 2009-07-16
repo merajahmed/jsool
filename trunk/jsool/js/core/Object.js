@@ -14,7 +14,14 @@ js.core.Object.prototype = {
 		return this.hash;
 	},
 	equals: function(object){
-		return object == this;
+		if(object == null) return false;
+		if(typeof object != 'object') return false;		
+		for(var property in this){
+			if(this[property] != objecy[property]){
+				return false;
+			}
+		}
+		return true;
 	},
 	toString: function(){
 		return this.type + "@" + this.hash;
@@ -26,12 +33,11 @@ js.core.Object.prototype = {
 			return true;
 		}else{
 			var cls = this.cls.prototype.supercls; 
-			
+
 			do{
 				if(cls == clazz){
 					return true;
 				}
-				
 				cls = cls.prototype.supercls;
 			}while(cls != js.core.Object);
 			

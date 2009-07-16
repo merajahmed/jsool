@@ -1,4 +1,4 @@
-js.util.Serializable = Extends(js.core.Object,{
+js.util.Serializable = $extends(js.core.Object,{
 	serialize: function(){
 		var proto = this.cls.prototype;
 		var builder = new js.util.StringBuilder();
