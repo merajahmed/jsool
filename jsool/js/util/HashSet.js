@@ -15,7 +15,7 @@ js.util.HashSet = Extends(js.util.Collection,{
 		}else if(type == 'number' || type == 'string'){
 			hash = obj.toString();
 		}else{
-			throw new Exception("Invalid argument type: "+obj.toString(), this, arguments);
+			throw new js.core.Exception("Invalid argument type: "+obj.toString(), this, arguments);
 		}
 		
 		if(!this.set[hash])

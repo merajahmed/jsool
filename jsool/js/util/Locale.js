@@ -15,7 +15,8 @@ js.util.Locale = Extends(js.core.Object,{
 	},
 	cache: [],
 	language: null,
-	datePatterns: null
+	weekdays: null,
+	months: null
 },'js.util.Locale');
 
 js.util.Locale.DEFAULT = null;
@@ -25,18 +26,16 @@ js.core.Main.onSystemReady(function(){
 	var loc = js.util.Locale;
 	
 	var usa = new js.util.Locale('en-US');
-	usa.datePatterns = new js.util.DatePatterns();
-	usa.datePatterns.weekdays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-	usa.datePatterns.months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+	usa.weekdays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+	usa.months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 	
 	loc.USA = usa;
 	
 	var brazil = new js.util.Locale('pt-BR');
-	brazil.datePatterns = new js.util.DatePatterns();
-	brazil.datePatterns.weekdays = ['Domingo','Segunda-feira','Terca-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sabado'];
-	brazil.datePatterns.months = ['Janeiro','Fevereiro','Marco','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+	brazil.weekdays = ['Domingo','Segunda-feira','Terca-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sabado'];
+	brazil.months = ['Janeiro','Fevereiro','Marco','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 	
 	loc.BRAZIL = brazil;
 	
-	js.util.Locale.DEFAULT = new js.util.Locale(window.navigator.language);
+	js.util.Locale.DEFAULT = loc.BRAZIL;
 });

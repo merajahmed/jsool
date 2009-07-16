@@ -22,7 +22,6 @@
 <script type="text/javascript" src="js/util/Serializable.js"></script>
 <script type="text/javascript" src="js/util/Observable.js"></script>
 <script type="text/javascript" src="js/util/DateFormat.js"></script>
-<script type="text/javascript" src="js/util/DatePatterns.js"></script>
 
 <script type="text/javascript" src="js/html/Element.js"></script>
 
@@ -30,28 +29,36 @@
 <script type="text/javascript" src="js/canvas/CanvasRenderingContext.js"></script>
 
 <script type="text/javascript" src="js/net/HttpRequest.js"></script>
-<script type="text/javascript" src="js/net/HttpRequestDispatcher.js"></script> 
+<script type="text/javascript" src="js/net/HttpRequestDispatcher.js"></script>
+<script type="text/javascript" src="js/net/Proxy.js"></script>
 
 <script type="text/javascript">
 var el;
 
 js.core.Main.onReady(function(){	
-	var el1 = new js.html.Element('span');
+	var el1 = new js.html.Element('div');
 	var el2 = new js.html.Element('div');
-	
-	el2.append(el1);
-	el2.setAttribute('id','lol');
-	el1.setText('LOLOLOLOL');
-	
-	el = el1;
-	el.addListener({
-		scope:el,
-		click:function(event){
-			this.setText((new Date()).getTime().toString());
+
+	js.html.Element.BODY.append(el2);
+	js.html.Element.BODY.append(el1);
+
+	var date = new Date();
+
+	var dateFormat = new js.util.DateFormat();
+
+	el1.setText('Go on');
+	el1.addListener({
+		scope:el1,
+		click: function(event){
+			this.setText(dateFormat.format(date));
 		}
 	});
 
-	js.html.Element.BODY.append(el2);
+	for(var p in window.navigator){
+		var el = new js.html.Element('div');
+		el.setText(p.toString());
+		js.html.Element.BODY.append(el);
+	}
 });
 </script>
 
