@@ -1,4 +1,4 @@
-var js = {core:{},util:{},html:{},net: {},graphics: {},canvas: {}};
+var js = {core:{},util:{},html:{},net: {},canvas: {}};
 
 function emptyFn(){return null;}
 
