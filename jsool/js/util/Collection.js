@@ -1,4 +1,4 @@
-js.util.Collection = Extends(js.core.Object,{
+js.util.Collection = $extends(js.core.Object,{
 	add: emptyFn,
 	addAll: function(collection){
 		var iterator = collection.iterator();

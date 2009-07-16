@@ -1,4 +1,4 @@
-js.util.HashSet = Extends(js.util.Collection,{
+js.util.HashSet = $extends(js.util.Collection,{
 	constructor: function(){
 		js.core.Object.apply(this, arguments);
 		this.set = {};
@@ -66,7 +66,7 @@ js.util.HashSet = Extends(js.util.Collection,{
 	}
 },'js.util.HashSet');
 
-js.util.HashSet.Iterator = Extends(js.core.Object,{
+js.util.HashSet.Iterator = $extends(js.core.Object,{
 	constructor: function(set){
 		js.core.Object.apply(this,arguments);
 		this.data = new Array();

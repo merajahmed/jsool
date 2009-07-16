@@ -1,16 +1,10 @@
 var js = {core:{},util:{},html:{},net: {},canvas: {}};
-
 function emptyFn(){return null;}
-
 js.core.Main = {
 	systemOperations: new Array(),
 	onReadyActions: new Array(),
-	onReady: function(fn){
-		this.onReadyActions.push(fn);
-	},
-	onSystemReady: function(fn){
-		this.systemOperations.push(fn);
-	},
+	onReady: function(fn){this.onReadyActions.push(fn);},
+	onSystemReady: function(fn){this.systemOperations.push(fn);},
 	doReady: function(){
 		for(var i = 0; i< this.onReadyActions.length; i++){
 			try{
@@ -32,7 +26,7 @@ js.core.Main = {
 	}
 };
 
-js.core.Main.extend = function(superclass, prototype, type){
+var $extends = function(superclass, prototype, type){
 	var cls;
 	
 	if(prototype['constructor'] && prototype.constructor.toString().indexOf("Object") > 9 || prototype.constructor.toString().indexOf("Object") < 0){
@@ -59,11 +53,8 @@ js.core.Main.extend = function(superclass, prototype, type){
 	return cls;
 };
 
-var Extends = js.core.Main.extend;
-
 window.onload = function(){
 	js.core.Main.prepareSystem();
 	js.core.Main.doReady();
-	
 	delete js.core.Main;
 };

@@ -1,4 +1,4 @@
-js.util.ReferenceMap = Extends(js.util.Map,{
+js.util.ReferenceMap = $extends(js.util.Map,{
 	constructor: function(){
 		js.util.Map.apply(this,arguments);
 		

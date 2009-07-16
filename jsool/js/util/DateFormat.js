@@ -1,4 +1,4 @@
-js.util.DateFormat = Extends(js.core.Object,{
+js.util.DateFormat = $extends(js.core.Object,{
 	constructor: function(pattern,locale){
 		js.core.Object.apply(this, arguments);
 		this.setLocale(locale ? locale : js.util.Locale.DEFAULT);
@@ -23,7 +23,9 @@ js.util.DateFormat = Extends(js.core.Object,{
 		
 		for(var i = 0; i < length; i++){
 			pattern = this.patterns[i];
-			formated = formated.replace(pattern.pattern, this['get'+pattern.name](date));
+			if(formated.search(pattern.pattern) >= 0){
+				formated = formated.replace(pattern.pattern, this['get'+pattern.name](date));
+			}
 		}
 		return formated;
 	},

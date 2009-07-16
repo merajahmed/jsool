@@ -1,4 +1,4 @@
-js.core.Exception = Extends(js.core.Object,{
+js.core.Exception = $extends(js.core.Object,{
 	constructor: function(message, sourceObject, sourceMethodArguments, sourceException){
 		if(message == null)
 			throw new Error('The Exception message must not be null');
