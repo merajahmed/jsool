@@ -1,4 +1,21 @@
+/**
+ * @class js.html.Element
+ * @extends js.util.Observable
+ * 
+ * Base class for any html element
+ */
 js.html.Element = $extends(js.util.Observable,{
+	/**
+	 * @constructor
+	 * Creates a new html element.
+	 * 
+	 * @param {HTMLElement} element
+	 * creates an element based on a existing HTMLElement
+	 * @param {string} tag
+	 * creates a new element and its dom with a valid html tag
+	 * 
+	 * @throws {js.core.Exception} if the html tag is invalid or the providen objec is not a valid dom
+	 */
 	constructor: function(obj){
 		js.util.Observable.apply(this, arguments);
 		
@@ -25,14 +42,43 @@ js.html.Element = $extends(js.util.Observable,{
 		
 		js.html.Element.cache(this);
 	},
+	/**
+	 * @property {string} commom id used to cache the element on global elements cache
+	 */
 	jsoolId: null,
+	/**
+	 * @property {js.util.List} the children elements of this Element
+	 */
 	children: null,
+	/**
+	 * @property {HTMLElement} the dom of the Element
+	 */
 	dom: null,
+	/**
+	 * @property {js.util.Collection} the names of the css classes for this Element
+	 */
 	classes: null,
+	/**
+	 * @property {js.util.Collection} the names of the valid dom events for an Element
+	 */
 	DOMEvents: null,
+	/**
+	 * @function Returns the dom of the Element
+	 * @return {HTMLElement} Element's dom
+	 */
 	getDom: function(){
 		return this.dom;
 	},
+	/**
+	 * @function Set the attributes to the dom element
+	 * 
+	 * @param {string} name
+	 * the name of the attribute
+	 * @param {string} value
+	 * the value of the attribute
+	 * @param {object} attributes
+	 * a map of attributes
+	 */
 	setAttribute: function(){
 		if(arguments.length == 2 && typeof arguments[1] == 'string'){
 			var name = arguments[0];
@@ -46,12 +92,33 @@ js.html.Element = $extends(js.util.Observable,{
 			}
 		}
 	},
+	/**
+	 * @function
+	 * 
+	 * @param {string} name
+	 * the name of the attribute
+	 * 
+	 * @return {string} value of the attribute
+	 */
 	getAttribute: function(name){
 		return this.dom.getAttribute(name);
 	},
+	/**
+	 * @function
+	 * 
+	 * @return {string} the id of the dom element
+	 */
 	id: function(){
 		return this.dom.id;
 	},
+	/**
+	 * @function
+	 * adds a new child into the elements dom and the children collection
+	 * 
+	 * @param {js.html.Element} child 
+	 * 
+	 * @throws {js.core.Exception} if the object is not an instance of js.html.Element
+	 */
 	append: function(child){
 		if(!child.instanceOf(js.html.Element))
 			throw new js.core.Exception('Invalid argument type',this, arguments);
@@ -63,42 +130,118 @@ js.html.Element = $extends(js.util.Observable,{
 		
 		this.dom.appendChild(child.dom);
 	},
+	/**
+	 * @function
+	 * Set the elements inner text.
+	 * 
+	 * @param {string} string
+	 * 
+	 * @throws {js.core.Exception} i the argument is not a string
+	 */
 	setText: function(string){
 		if(typeof string != 'string')
 			throw new js.core.Exception('Invalid argument type',this,arguments);
 		this.dom.innerHTML = string;
 	},
+	/**
+	 * @function
+	 * 
+	 * @return {string} the elements tag name
+	 */
 	tag: function(){
 		return this.dom.tagName;
 	},
+	/**
+	 * @function
+	 * Removes a child node from the Element
+	 * 
+	 * @param {js.html.Element} element
+	 * The element to be removed
+	 */
 	remove: function(element){
 		this.children.remove(element);
 		this.dom.removeChild(element.dom);
 	},
-	addListener: function(listeners){
-		var addDomListener;
-		var that = this;
-		
-		if(js.core.Browser.isIE()){
-			addDomListener = function(event){
-				that.dom.attachEvent('on'+event,function(ev){that.fireEvent(ev);});
+	/**
+	 * @function
+	 * Adds a new event listener to the element
+	 * 
+	 * @param {string} name
+	 * the name of the event
+	 * @param {Function} handler
+	 * the function that will hands this event
+	 * @param {boolean} overide
+	 * overides the current event handler
+	 * 
+	 * On using <code>addListener(name, handler)</code> syntax,
+	 * the function will set the function direct to the onevent attribute of the DOM.
+	 * 
+	 * This operation is much faster than events binding,
+	 * but you may set only one event handler by event with this operation.
+	 * 
+	 * @param {object} collection
+	 * A collection of events handlers
+	 * 
+	 * @return {boolean} if and handler has been overiden
+	 */
+	addListener: function(){
+		if(arguments.length == 1){
+			var listeners = arguments[0];
+			var addDomListener;
+			var that = this;
+			
+			/*if(js.core.Browser.isIE()){
+				addDomListener = function(event){
+					that.dom.attachEvent('on'+event,function(ev){that.fireEvent(ev);});
+				};
+			}else{
+				addDomListener = function(event){
+					that.dom.addEventListener(event, function(ev){that.fireEvent(ev);}, false);
+				};
+			}*/
+			
+			var addListener = function(ev){
+				that.dom['on'+ev] = function(event){that.fireEvent(event);};
 			};
+			
+			for(var l in listeners){
+				if(this.DOMEvents.contains(l)){
+					this.DOMEvents.remove(l);
+					this.addEvent(l);
+					//addDomListener(l);
+					addListener(l);
+				}
+			}
+			//Call parent method
+			js.util.Observable.prototype.addListener.apply(this, arguments);
+			return false;
 		}else{
-			addDomListener = function(event){
-				that.dom.addEventListener(event, function(ev){that.fireEvent(ev);}, false);
-			};
-		}
-		
-		for(var l in listeners){
-			if(this.DOMEvents.contains(l)){
-				this.DOMEvents.remove(l);
-				this.addEvent(l);
-				addDomListener(l);
+			var event = arguments[0];
+			var handler = arguments[1];
+			var overide = arguments[2] ? arguments[2] : false;  
+			if(!String.isString(event)){
+				throw new js.core.Exception('Invalid argument: '+event, this, arguments);
+			}
+			var oldlistener = this.dom['on'+event];
+			if(oldlistener == null){
+				this.dom['on'+event] = handler;
+				return false;
+			}else{
+				if(overide){
+					this.dom['on'+event] = handler;
+					return true;
+				}else{
+					return false;
+				}
 			}
 		}
-		//Call parent method
-		js.util.Observable.prototype.addListener.apply(this, arguments);
 	},
+	/**
+	 * @function
+	 * Adds a new CSS class to the element
+	 * 
+	 * @param {string} name The name of the CSS class
+	 */
 	addClass: function(name){
 		if(!this.classes)
 			this.classes = new js.util.HashSet();
@@ -107,6 +250,12 @@ js.html.Element = $extends(js.util.Observable,{
 		
 		this.dom.className = this.classes.toArray().join(" ");
 	},
+	/**
+	 * @function
+	 * Removes a CSS class from the element
+	 * 
+	 * @param {string} name The name of the CSS class
+	 */
 	removeClass: function(name){
 		if(this.classes){
 			this.classes.remove(name.trim());
@@ -114,6 +263,15 @@ js.html.Element = $extends(js.util.Observable,{
 			this.dom.className = this.classes.toArray().join(" ");
 		}
 	},
+	/**
+	 * @function
+	 * Sets an attribute of the style of the element
+	 * 
+	 * @param {string} name The name style attribute
+	 * @param {string} value the value of the style attribute
+	 * 
+	 * @param {object} collection of attributes and its values
+	 */
 	applyStyle: function(arg1, arg2){
 		var style = this.dom.style;
 		if(typeof arg1 == 'string' && typeof arg2 == 'string' ){
@@ -123,6 +281,18 @@ js.html.Element = $extends(js.util.Observable,{
 				style[prop] = arg1[prop];
 		}
 	},
+	/**
+	 * @function
+	 * Returns the child elements
+	 * 
+	 * @param {boolean} dom
+	 * if <code>true</code> to the returned values be the dom elements
+	 * or <code>false|null</code> to returns a <code>js.util.List</code> of Elements 
+	 * 
+	 * @param {object} collection of attributes and its values
+	 * 
+	 * @return {collection} the element's children
+	 */
 	getChildren: function(dom){
 		var toDom = (dom == null ? false : el);
 		
@@ -132,6 +302,12 @@ js.html.Element = $extends(js.util.Observable,{
 			return this.children;
 		}
 	},
+	/**
+	 * @function
+	 * Gets the absolute position of the element on the page
+	 * 
+	 * @return {object} the element position like {x,y}
+	 */
 	getPosition: function(){
 		var element = this.dom;
 		var y = 0, x = 0;
@@ -153,6 +329,15 @@ js.core.Main.onSystemReady(function(){
 	js.html.Element.BODY = new js.html.Element(document.getElementsByTagName('body')[0]);
 });
 
+/**
+ * @function
+ * Gets an element from cache or force creation
+ * 
+ * @param {string} dom the id of the dom elements
+ * @param {HTMLElement} dom the existing dom of the element
+ * 
+ * @return {js.html.Element} an element
+ */
 js.html.Element.get = function(dom){
 	if(typeof dom == 'string'){
 		var el = document.getElementById(dom);
@@ -174,6 +359,15 @@ js.html.Element.get = function(dom){
 	}
 };
 
+/**
+ * @function
+ * Caches an element into the global elements cache.
+ * this function is called automatcally by the elements constructor
+ * 
+ * @param {js.html.Element} element A valid element
+ * 
+ * @throws {js.core.Exception} if the argument is not an instance of <code>js.html.Element</code>
+ */
 js.html.Element.cache = function(element){
 	if(typeof element != 'object' || !element.instanceOf(js.html.Element))
 		throw new js.core.Exception("Invalid argument: "+element);

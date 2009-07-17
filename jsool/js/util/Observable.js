@@ -34,15 +34,17 @@ js.util.Observable = $extends(js.core.Object, {
 	},
 	fireEvent: function(event){
 		var type = event.type;
-		if(!this.events)
-			return;
+		if(!this.events) return;
 		
 		var listeners = this.events.get(type);
 		var listener;
 		if(listeners){
 			for(var i = 0; i < listeners.size(); i++){
 				listener = listeners.get(i);
-				listener.func.apply(listener.scope, [event]);
+				//Using timeout, so the handlers may be execute simultaneously
+				window.setTimeout(function(){
+					listener.func.apply(listener.scope, [event]);
+				},0);
 			}
 		}
 	},
