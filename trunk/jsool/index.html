@@ -35,30 +35,24 @@
 <script type="text/javascript">
 var el;
 
-js.core.Main.onReady(function(){	
+js.core.Main.onReady(function(){console.profile();
 	var el1 = new js.html.Element('div');
-	var el2 = new js.html.Element('div');
-
-	js.html.Element.BODY.append(el2);
+	
 	js.html.Element.BODY.append(el1);
 
 	var date = new Date();
 
-	var dateFormat = new js.util.DateFormat();
+	var dateFormat;
 
 	el1.setText('Go on');
 	el1.addListener({
 		scope:el1,
 		click: function(event){
+			dateFormat = new js.util.DateFormat();
 			this.setText(dateFormat.format(date));
 		}
 	});
-
-	for(var p in window.navigator){
-		var el = new js.html.Element('div');
-		el.setText(p.toString());
-		js.html.Element.BODY.append(el);
-	}
+	console.profileEnd();
 });
 </script>
 

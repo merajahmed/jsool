@@ -35,7 +35,7 @@ js.util.HashSet = $extends(js.util.Collection,{
 			while(i.hasNext()){
 				this.add(i.next());
 			}
-		}else{
+		}else if(Array.isArray(collection)){
 			for(var j = 0; j < collection.length; j++)
 				this.add(collection[j]);
 		}

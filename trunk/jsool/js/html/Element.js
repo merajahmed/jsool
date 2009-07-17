@@ -13,10 +13,11 @@ js.html.Element = $extends(js.util.Observable,{
 			throw new js.core.Exception('Invalid tag: ' + obj, this);
 		}
 		
-		this.DOMEvents = new js.util.ArrayList(['abort', 'blur', 'change', 'click', 'dblclick',
-		                                        'error', 'focus', 'keydown', 'keypress', 'keyup',
-		                                        'load', 'mousedown', 'mousemove', 'mouseout', 'mouseover',
-		                                        'mouseup', 'reset', 'resize', 'select', 'submit', 'unload']);
+		this.DOMEvents = new js.util.HashSet();
+		this.DOMEvents.addAll(['abort', 'blur', 'change', 'click', 'dblclick',
+                               'error', 'focus', 'keydown', 'keypress', 'keyup',
+                               'load', 'mousedown', 'mousemove', 'mouseout', 'mouseover',
+                               'mouseup', 'reset', 'resize', 'select', 'submit', 'unload']);
 		
 		this.jsoolId = document.createAttribute("jsool-id");
 		this.jsoolId.nodeValue = this.hashCode().toString();
