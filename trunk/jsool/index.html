@@ -35,7 +35,7 @@
 <script type="text/javascript">
 var el;
 
-js.core.Main.onReady(function(){console.profile();
+js.core.Main.onReady(function(){
 	var el1 = new js.html.Element('div');
 	
 	js.html.Element.BODY.append(el1);
@@ -44,15 +44,14 @@ js.core.Main.onReady(function(){console.profile();
 
 	var dateFormat;
 
-	el1.setText('Go on');
+	el1.setText('Hold on');
 	el1.addListener({
 		scope:el1,
-		click: function(event){
+		mouseup: function(event){
 			dateFormat = new js.util.DateFormat();
 			this.setText(dateFormat.format(date));
 		}
 	});
-	console.profileEnd();
 });
 </script>
 
