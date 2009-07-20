@@ -14,7 +14,7 @@ js.html.Element = $extends(js.util.Observable,{
 	 * @param {string} tag
 	 * creates a new element and its dom with a valid html tag
 	 * 
-	 * @throws {js.core.Exception} if the html tag is invalid or the providen objec is not a valid dom
+	 * @throws {js.core.Exception} if the html tag is invalid or the providen object is not a valid dom
 	 */
 	constructor: function(obj){
 		js.util.Observable.apply(this, arguments);
@@ -62,6 +62,10 @@ js.html.Element = $extends(js.util.Observable,{
 	 * @property {js.util.Collection} the names of the valid dom events for an Element
 	 */
 	DOMEvents: null,
+	/**
+	 * @property {js.html.Element} parent element
+	 */
+	parent: null,
 	/**
 	 * @function Returns the dom of the Element
 	 * @return {HTMLElement} Element's dom
@@ -126,9 +130,14 @@ js.html.Element = $extends(js.util.Observable,{
 		if(this.children === null)
 			this.children = new js.util.ArrayList();
 		
+		if(child.parent != null){
+			child.parent.remove(child);
+		}
+		
 		this.children.add(child);
 		
 		this.dom.appendChild(child.dom);
+		child.parent = this;
 	},
 	/**
 	 * @function
@@ -138,10 +147,8 @@ js.html.Element = $extends(js.util.Observable,{
 	 * 
 	 * @throws {js.core.Exception} i the argument is not a string
 	 */
-	setText: function(string){
-		if(typeof string != 'string')
-			throw new js.core.Exception('Invalid argument type',this,arguments);
-		this.dom.innerHTML = string;
+	setText: function(value){
+		this.dom.innerHTML = value.toString();
 	},
 	/**
 	 * @function
@@ -201,7 +208,7 @@ js.html.Element = $extends(js.util.Observable,{
 			}*/
 			
 			var addListener = function(ev){
-				that.dom['on'+ev] = function(event){that.fireEvent(event);};
+				that.dom['on'+ev] = function(event){that.fireEvent(event || window.event);};
 			};
 			
 			for(var l in listeners){
@@ -213,7 +220,7 @@ js.html.Element = $extends(js.util.Observable,{
 				}
 			}
 			//Call parent method
-			js.util.Observable.prototype.addListener.apply(this, arguments);
+			js.util.Observable.prototype.addListener.apply(this, [listeners]);
 			return false;
 		}else{
 			var event = arguments[0];
@@ -259,7 +266,6 @@ js.html.Element = $extends(js.util.Observable,{
 	removeClass: function(name){
 		if(this.classes){
 			this.classes.remove(name.trim());
-			
 			this.dom.className = this.classes.toArray().join(" ");
 		}
 	},
@@ -274,7 +280,7 @@ js.html.Element = $extends(js.util.Observable,{
 	 */
 	applyStyle: function(arg1, arg2){
 		var style = this.dom.style;
-		if(typeof arg1 == 'string' && typeof arg2 == 'string' ){
+		if(typeof arg1 == 'string'){
 			style[arg1] = arg2;
 		}else if(typeof arg1 == 'object'){
 			for(var prop in arg1)
@@ -317,16 +323,80 @@ js.html.Element = $extends(js.util.Observable,{
 			element = element.offsetParent;
 		}
 		return {y:y,x:x};
+	},
+	/**
+	 * @function
+	 * Return parent Element
+	 * 
+	 * @return {js.html.Element} The parent Element
+	 */
+	getParent: function(){
+		return this.parent; 
+	},
+	/**
+	 * @function
+	 * Replaces a child Element by other
+	 * 
+	 * @param {js.html.Element} newElement The element to be inserted
+	 * @param {js.html.Element} oldElement The element that will be replaced
+	 */
+	replace: function(newElement, oldElement){
+		if(oldElement.instanceOf(js.core.Element) && newElement.instanceOf(js.core.Element)){
+			 var index = this.children.indexOf(oldElement);
+			 this.children.add(newElement, index);
+			 
+			 this.dom.replaceChild(newElement.dom, oldElement.dom);
+		}else{
+			throw new js.core.Exception('Invalid argument: '+element, this, arguments);
+		}
+	},
+	/**
+	 * @function
+	 * Destroys this element
+	 */
+	destroy: function(){
+		//Destroy children
+		var it = this.children.iterator();
+		while(it.hasNext()){
+			it.netx().destroy();
+		}
+		delete this.children;
+		//Remove from global element cache
+		js.html.Element.CACHE.remove(this.jsoolId);
+		
+		//Remove from dom
+		if(this.getParent() != null){
+			this.getParent().remove(this);
+		}
+		if(this.dom.parentNode){
+			var parent = this.dom.parentNode;
+			parent.removeChild(this.dom);
+		}
+		
+		//Destroy listeners
+		this.destroyListeners();
+		
+		//Delete DOM
+		delete this.dom;
 	}
 },'js.html.Element');
 
 
 //Elements Cache
 
-js.core.Main.onSystemReady(function(){
+js.core.onSystemReady(function(){
 	js.html.Element.CACHE = new js.util.HashMap();
-	
 	js.html.Element.BODY = new js.html.Element(document.getElementsByTagName('body')[0]);
+	
+	var brw = js.core.Browser;
+	
+	if(brw.isIE()){
+		js.html.Element.BODY.addClass('ie');
+	}else if(brw.isFF()){
+		js.html.Element.BODY.addClass('ff');
+	}else if(brw.isOpera()){
+		js.html.Element.BODY.addClass('opera');
+	}
 });
 
 /**
@@ -374,3 +444,5 @@ js.html.Element.cache = function(element){
 	
 	js.html.Element.CACHE.put(element.hashCode(), element);
 };
+
+//TODO for Dom query implementation getElementsByClassName

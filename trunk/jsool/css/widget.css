@@ -1,0 +1,33 @@
+/*
+* UNDO HTML DEFAULT STYLES
+*/
+*, a, a:link, a:visited, a:hover, a:active, button {
+	font: normal normal normal 12px Verdana;
+	background: transparent;
+	border: 0;
+	color: #000000;
+	margin: 0;
+	list-style: none;
+	padding: 0;
+	text-decoration: none;
+	line-height: 12px;
+	min-width: 0px;
+	min-height: 0px;
+}
+.wgt-button{
+	background-color: #99CCFF;
+	border: solid 1px #77AADD;
+	padding: 0px 6px 1px 6px;
+}
+.ie .wgt-button{
+	padding: 0px;
+}
+.opera .wgt-button{
+	padding: 1px 10px 4px 9px;
+}
+.ff .wgt-button{
+	-moz-border-radius: 4px;
+}
+.wk .wgt-button{
+	-webkit-border-radius: 4px;
+}

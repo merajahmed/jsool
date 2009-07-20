@@ -30,7 +30,7 @@ js.util.HashSet = $extends(js.util.Collection,{
 			return obj.toString();
 	},
 	addAll: function(collection){
-		if(collection.iterator){
+		if(collection.iterator != undefined){
 			var i = collection.iterator();
 			while(i.hasNext()){
 				this.add(i.next());

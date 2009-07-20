@@ -22,7 +22,7 @@ js.util.Locale = $extends(js.core.Object,{
 js.util.Locale.DEFAULT = null;
 
 //Creates some default location
-js.core.Main.onSystemReady(function(){
+js.core.onSystemReady(function(){
 	var loc = js.util.Locale;
 	
 	var usa = new js.util.Locale('en-US');

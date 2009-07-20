@@ -122,6 +122,12 @@ js.core.Browser = {
 	},
 	isChrome: function(){
 		return this.browser == "Chrome";
+	},
+	isSafari: function(){
+		return this.browser == "Safari";
+	},
+	isWebKit: function(){
+		return this.isChrome() || this.isSafari();
 	}
 };
 js.core.Browser.init();

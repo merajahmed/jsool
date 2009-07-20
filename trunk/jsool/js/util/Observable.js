@@ -10,7 +10,7 @@ js.util.Observable = $extends(js.core.Object, {
 				this.addEvent(ev[i]);
 			}
 		}else if(!this.events.containsKey(ev)){
-			this.events.put(ev, new js.util.ArrayList());
+			this.events.put(ev, null);
 		}
 	},
 	addListener: function(listener){
@@ -25,6 +25,12 @@ js.util.Observable = $extends(js.core.Object, {
 		for(var i in listener){
 			if(this.events.containsKey(i)){
 				listeners = this.events.get(i);
+				
+				if(listeners == null){
+					listeners = new js.util.ArrayList();
+					this.events.put(i,listeners);
+				}
+				
 				listeners.add({
 					scope:scope,
 					func:listener[i]

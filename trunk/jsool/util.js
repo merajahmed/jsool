@@ -1,4 +1,3 @@
-js.util = {};
 //LINKEDLIST=========================================================
 js.util.LinkedList = js.Extends(Object, {
 	constructor: function(){
