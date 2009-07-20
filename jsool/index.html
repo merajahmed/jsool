@@ -1,10 +1,13 @@
 <html>
 <head>
 <title>Tester</title>
+
+<link rel="stylesheet" type="text/css" href="css/widget.css"></link>
+
 <script type="text/javascript" src="js/core/Main.js"></script>
-<script type="text/javascript" src="js/core/Util.js"></script>
 <script type="text/javascript" src="js/core/Browser.js"></script>
 <script type="text/javascript" src="js/core/Object.js"></script>
+<script type="text/javascript" src="js/core/Number.js"></script>
 <script type="text/javascript" src="js/core/Array.js"></script>
 <script type="text/javascript" src="js/core/String.js"></script>
 <script type="text/javascript" src="js/core/Exception.js"></script>
@@ -32,24 +35,20 @@
 <script type="text/javascript" src="js/net/HttpRequestDispatcher.js"></script>
 <script type="text/javascript" src="js/net/Proxy.js"></script>
 
+<script type="text/javascript" src="js/widget/Component.js"></script>
+<script type="text/javascript" src="js/widget/Button.js"></script>
+
 <script type="text/javascript">
-var el;
+var bt;
 
-js.core.Main.onReady(function(){
-	var el1 = new js.html.Element('div');
-	
-	js.html.Element.BODY.append(el1);
+js.core.onReady(function(){
+	bt = new js.widget.Button('dasasd');
 
-	var date = new Date();
+	bt.renderOn(js.html.Element.BODY);
 
-	var dateFormat;
-
-	el1.setText('Hold on');
-	el1.addListener({
-		scope:el1,
-		mouseup: function(event){
-			dateFormat = new js.util.DateFormat();
-			this.setText(dateFormat.format(date));
+	bt.addListener({
+		mouseup: function(){
+			alert(this);
 		}
 	});
 });

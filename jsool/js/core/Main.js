@@ -1,35 +1,38 @@
-var js = {core:{},util:{},html:{},net: {},canvas: {}};
-function emptyFn(){return null;}
-js.core.Main = {
-	systemOperations: new Array(),
-	onReadyActions: new Array(),
-	onReady: function(fn){this.onReadyActions.push(fn);},
-	onSystemReady: function(fn){this.systemOperations.push(fn);},
-	doReady: function(){
-		for(var i = 0; i< this.onReadyActions.length; i++){
-			try{
-				this.onReadyActions[i]();
-			}catch(e){
-				if(typeof console != 'undefined'){
-					console.info(e.toString());
-					console.error(e.toString());
-				}else{
-					alert(e.toString());
+var js = {core:{},util:{},html:{},net:{},canvas:{},widget:{}};
+var emptyFn = undefined;
+js.core = (function(){
+	var systemOperations = new Array();
+	var onReadyActions = new Array();
+	return {
+		onReady: function(fn){onReadyActions.push(fn);},
+		onSystemReady: function(fn){systemOperations.push(fn);},
+		doReady: function(){
+			for(var i = 0; i< onReadyActions.length; i++){
+				try{
+					onReadyActions[i]();
+				}catch(e){
+					if(typeof console != 'undefined'){
+						console.info(e.toString());
+						console.error(e.toString());
+					}else{
+						alert(e.description || e.toString());
+						throw e;
+					}
 				}
 			}
+		},
+		prepareSystem: function(){
+			for(var i = 0; i< systemOperations.length; i++){
+				systemOperations[i]();
+			}
 		}
-	},
-	prepareSystem: function(){
-		for(var i = 0; i< this.systemOperations.length; i++){
-			this.systemOperations[i]();
-		}
-	}
-};
+	};
+})();
 
 var $extends = function(superclass, prototype, type){
 	var cls;
 	
-	if(prototype['constructor'] && prototype.constructor.toString().indexOf("Object") > 9 || prototype.constructor.toString().indexOf("Object") < 0){
+	if(prototype['constructor'] && prototype.constructor.toString().indexOf("Object") > 10 || prototype.constructor.toString().indexOf("Object") < 0){
 		cls = prototype.constructor;
 	}else{
 		cls = function(){superclass.apply(this,arguments);};
@@ -54,7 +57,6 @@ var $extends = function(superclass, prototype, type){
 };
 
 window.onload = function(){
-	js.core.Main.prepareSystem();
-	js.core.Main.doReady();
-	delete js.core.Main;
+	js.core.prepareSystem();
+	js.core.doReady();
 };

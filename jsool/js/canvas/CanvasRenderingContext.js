@@ -78,7 +78,7 @@ js.canvas.CanvasRenderingContext = $extends(js.core.Object,{
 		this.context.fillStyle = style;
 	},
 	setLineWidth : function(width) {
-		if(!js.core.Util.isNumber(width))
+		if(!Number.isNumber(width))
 			throw new js.core.Exception('Invalid argument type: '+ typeof width, this, arguments);
 		
 		this.context.lineWidth = width;
