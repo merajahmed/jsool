@@ -37,20 +37,28 @@
 
 <script type="text/javascript" src="js/widget/Component.js"></script>
 <script type="text/javascript" src="js/widget/Button.js"></script>
-
 <script type="text/javascript">
 var bt;
 
 js.core.onReady(function(){
+	var container = new js.html.Element('div');
+
 	bt = new js.widget.Button('dasasd');
 
-	bt.renderOn(js.html.Element.BODY);
-
+	js.html.Element.BODY.append(container);
+	
+	bt.renderOn(container);
+	
 	bt.addListener({
 		mouseup: function(){
 			alert(this);
 		}
 	});
+	
+	for(var a = 0; a < 20; a++){
+		bt = new js.widget.Button('botao numero '+ a);		
+		bt.renderOn(container);
+	}
 });
 </script>
 

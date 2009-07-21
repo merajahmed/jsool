@@ -8,7 +8,7 @@ Array.prototype.shuffle = function(){
 	});
 };
 
-Array.prototype.prototypeOf = function(clazz){
+Array.prototype.instanceOf = function(clazz){
 	return clazz == Array;
 };
 
@@ -64,16 +64,21 @@ if(!Array.prototype.map){
 	};
 }
 
-if(!Array.prototype.indexOf){
-	Array.prototype.indexOf = function(obj){
-		var length = this.length;		
+if (!Array.prototype.indexOf)
+{
+	Array.prototype.indexOf = function(elt /*, from*/)
+	{
+		var len = this.length >>> 0;
+		var from = Number(arguments[1]) || 0;
 		
-		for(var i = 0; i < length; i++){			
-			if(obj == this[i]){
-				return i;
-			}
+		from = (from < 0) ? Math.ceil(from) : Math.floor(from);
+		
+		if (from < 0) from += len;
+		
+		for (; from < len; from++)
+		{
+			if (from in this && this[from] === elt) return from;
 		}
-		
 		return -1;
 	};
 }

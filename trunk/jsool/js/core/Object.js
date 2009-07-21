@@ -17,7 +17,7 @@ js.core.Object.prototype = {
 		if(object == null) return false;
 		if(typeof object != 'object') return false;		
 		for(var property in this){
-			if(this[property] != objecy[property]){
+			if(this[property] != object[property]){
 				return false;
 			}
 		}

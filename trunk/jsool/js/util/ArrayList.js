@@ -15,26 +15,15 @@ js.util.ArrayList = $extends(js.util.List,{
 	data: null,
 	_size: 0,
 	indexOf: function(object){
-		if(object == null){
-			for(var i = 0; i < this._size; i++){
-				if(this.data[i] == null){
-					return i;
-				}
-			}
-		}else if(typeof object == 'object'){
+		if(typeof object == 'object'){
 			for(var i = 0; i < this._size; i++){
 				if(object.equals(this.data[i])){
 					return i;
 				}
 			}
 		}else{
-			for(var i = 0; i < this._size; i++){
-				if(object == this.data[i]){
-					return i;
-				}
-			}
+			return this.data.indexOf(object);
 		}
-		
 		return -1;
 	},
 	lastIndexOf: function(object){
@@ -93,16 +82,13 @@ js.util.ArrayList = $extends(js.util.List,{
 			this.data[index];
 		}
 	},
-	remove: function(object){
-		if(typeof item != 'number')
-			index = this.indexOf(object);
-		else
-			index = object;
-		
+	remove: function(index){
 		if(index >= this.length || index < 0){
 			throw new js.core.Exception("Array index out of bounds: "+index, this, arguments);
-		}	
-		delete this.data[index];	
+		}
+		
+		delete this.data[index];
+		
 		var length = this._size - 1;
 		for(var i = index ; i < length; i++){		
 			this.data[i] = this.data[i+1];
