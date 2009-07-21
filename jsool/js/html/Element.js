@@ -17,12 +17,13 @@ js.html.Element = $extends(js.util.Observable,{
 	 * @throws {js.core.Exception} if the html tag is invalid or the providen object is not a valid dom
 	 */
 	constructor: function(obj){
-		js.util.Observable.apply(this, arguments);
+		//Observable constructor is empty, so I call objects constructor
+		js.core.Object.apply(this, arguments);
 		
 		var type = typeof obj;
 		var tags = /\b(a|button|div|object|label|option|p|script|select|span|td|tr|th|tbody|thead|tfoot|svg|iframe|canvas)\b/;
 		
-		if(type == 'string' && tags.exec(obj.toLowerCase()) !== null){
+		if(type == 'string' && tags.test(obj.toLowerCase())){
 			this.dom = document.createElement(obj);
 		}else if(type == 'object' && obj.tagName){
 			this.dom = obj;
@@ -30,17 +31,13 @@ js.html.Element = $extends(js.util.Observable,{
 			throw new js.core.Exception('Invalid tag: ' + obj, this);
 		}
 		
-		this.DOMEvents = new js.util.HashSet();
-		this.DOMEvents.addAll(['abort', 'blur', 'change', 'click', 'dblclick',
-                               'error', 'focus', 'keydown', 'keypress', 'keyup',
-                               'load', 'mousedown', 'mousemove', 'mouseout', 'mouseover',
-                               'mouseup', 'reset', 'resize', 'select', 'submit', 'unload']);
-		
-		this.jsoolId = document.createAttribute("jsool-id");
-		this.jsoolId.nodeValue = this.hashCode().toString();
-		this.dom.setAttributeNode(this.jsoolId);
+		this.setAttribute('id','jsool-'+this.global.count);
+		this.global.count++;
 		
 		js.html.Element.cache(this);
+	},
+	global: {
+		count:0
 	},
 	/**
 	 * @property {string} commom id used to cache the element on global elements cache
@@ -54,10 +51,6 @@ js.html.Element = $extends(js.util.Observable,{
 	 * @property {HTMLElement} the dom of the Element
 	 */
 	dom: null,
-	/**
-	 * @property {js.util.Collection} the names of the css classes for this Element
-	 */
-	classes: null,
 	/**
 	 * @property {js.util.Collection} the names of the valid dom events for an Element
 	 */
@@ -90,7 +83,6 @@ js.html.Element = $extends(js.util.Observable,{
 			this.dom.setAttribute(name, value);
 		}else if(arguments.length == 1 && typeof arguments[0] == 'object'){
 			var options = arguments[0];
-			
 			for(var p in options){
 				this.dom.setAttribute(p, options[p]);
 			}
@@ -127,14 +119,9 @@ js.html.Element = $extends(js.util.Observable,{
 		if(!child.instanceOf(js.html.Element))
 			throw new js.core.Exception('Invalid argument type',this, arguments);
 		
-		if(this.children === null)
-			this.children = new js.util.ArrayList();
-		
 		if(child.parent != null){
 			child.parent.remove(child);
 		}
-		
-		this.children.add(child);
 		
 		this.dom.appendChild(child.dom);
 		child.parent = this;
@@ -166,7 +153,6 @@ js.html.Element = $extends(js.util.Observable,{
 	 * The element to be removed
 	 */
 	remove: function(element){
-		this.children.remove(element);
 		this.dom.removeChild(element.dom);
 	},
 	/**
@@ -191,58 +177,7 @@ js.html.Element = $extends(js.util.Observable,{
 	 * 
 	 * @return {boolean} if and handler has been overiden
 	 */
-	addListener: function(){
-		if(arguments.length == 1){
-			var listeners = arguments[0];
-			var addDomListener;
-			var that = this;
-			
-			/*if(js.core.Browser.isIE()){
-				addDomListener = function(event){
-					that.dom.attachEvent('on'+event,function(ev){that.fireEvent(ev);});
-				};
-			}else{
-				addDomListener = function(event){
-					that.dom.addEventListener(event, function(ev){that.fireEvent(ev);}, false);
-				};
-			}*/
-			
-			var addListener = function(ev){
-				that.dom['on'+ev] = function(event){that.fireEvent(event || window.event);};
-			};
-			
-			for(var l in listeners){
-				if(this.DOMEvents.contains(l)){
-					this.DOMEvents.remove(l);
-					this.addEvent(l);
-					//addDomListener(l);
-					addListener(l);
-				}
-			}
-			//Call parent method
-			js.util.Observable.prototype.addListener.apply(this, [listeners]);
-			return false;
-		}else{
-			var event = arguments[0];
-			var handler = arguments[1];
-			var overide = arguments[2] ? arguments[2] : false;  
-			if(!String.isString(event)){
-				throw new js.core.Exception('Invalid argument: '+event, this, arguments);
-			}
-			var oldlistener = this.dom['on'+event];
-			if(oldlistener == null){
-				this.dom['on'+event] = handler;
-				return false;
-			}else{
-				if(overide){
-					this.dom['on'+event] = handler;
-					return true;
-				}else{
-					return false;
-				}
-			}
-		}
-	},
+	addListener: function(){},
 	/**
 	 * @function
 	 * Adds a new CSS class to the element
@@ -250,12 +185,9 @@ js.html.Element = $extends(js.util.Observable,{
 	 * @param {string} name The name of the CSS class
 	 */
 	addClass: function(name){
-		if(!this.classes)
-			this.classes = new js.util.HashSet();
-		
-		this.classes.add(name.trim());
-		
-		this.dom.className = this.classes.toArray().join(" ");
+		var current = this.dom.className;
+		name = name.trim();
+		this.dom.className = (current.replace(name,'')+' '+name).trim();
 	},
 	/**
 	 * @function
@@ -264,10 +196,7 @@ js.html.Element = $extends(js.util.Observable,{
 	 * @param {string} name The name of the CSS class
 	 */
 	removeClass: function(name){
-		if(this.classes){
-			this.classes.remove(name.trim());
-			this.dom.className = this.classes.toArray().join(" ");
-		}
+		this.dom.className = this.dom.className.replace(name.trim(),'');
 	},
 	/**
 	 * @function
@@ -301,11 +230,17 @@ js.html.Element = $extends(js.util.Observable,{
 	 */
 	getChildren: function(dom){
 		var toDom = (dom == null ? false : el);
-		
 		if(toDom){
 			return this.dom.childNodes;
 		}else{
-			return this.children;
+			var children = this.dom.childNodes;
+			var result = [];
+			for(var i = 0; i < children.length; i++){
+				if(children[i].nodeType != 3){
+					result.push(js.html.Element.get(children[i]));
+				}
+			}
+			return result;
 		}
 	},
 	/**
@@ -355,12 +290,6 @@ js.html.Element = $extends(js.util.Observable,{
 	 * Destroys this element
 	 */
 	destroy: function(){
-		//Destroy children
-		var it = this.children.iterator();
-		while(it.hasNext()){
-			it.netx().destroy();
-		}
-		delete this.children;
 		//Remove from global element cache
 		js.html.Element.CACHE.remove(this.jsoolId);
 		
@@ -409,10 +338,16 @@ js.core.onSystemReady(function(){
  * @return {js.html.Element} an element
  */
 js.html.Element.get = function(dom){
+	var cache = js.html.Element.CACHE;
 	if(typeof dom == 'string'){
-		var el = document.getElementById(dom);
+		var el = cache.get(dom);
 		
-		var cached = js.html.Element.get(el);
+		if(el == null){
+			el = document.getElementById(dom);
+			return el == null ? null : new js.html.Element(el); 
+		}
+		
+		return el;
 		
 		if(cached == null){
 			return new js.html.Element(el);
@@ -421,10 +356,12 @@ js.html.Element.get = function(dom){
 		}
 		
 	}else if(typeof dom == 'object'){
-		if(!dom.hasAttribute('jsool')){
+		var el = cache.get(dom.getAttribute('id'));
+		
+		if(el == null){
 			return new js.html.Element(dom);
 		}else{
-			return js.html.Element.CACHE.get(dom.getAttribute('jsool'));
+			return el;
 		}
 	}
 };
@@ -441,8 +378,7 @@ js.html.Element.get = function(dom){
 js.html.Element.cache = function(element){
 	if(typeof element != 'object' || !element.instanceOf(js.html.Element))
 		throw new js.core.Exception("Invalid argument: "+element);
-	
-	js.html.Element.CACHE.put(element.hashCode(), element);
+	js.html.Element.CACHE.put(element.id(), element);
 };
 
 //TODO for Dom query implementation getElementsByClassName

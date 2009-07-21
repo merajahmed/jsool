@@ -3,6 +3,8 @@ var emptyFn = undefined;
 js.core = (function(){
 	var systemOperations = new Array();
 	var onReadyActions = new Array();
+	var documentReady = false;
+	var systemReady = false;
 	return {
 		onReady: function(fn){onReadyActions.push(fn);},
 		onSystemReady: function(fn){systemOperations.push(fn);},
@@ -25,11 +27,24 @@ js.core = (function(){
 			for(var i = 0; i< systemOperations.length; i++){
 				systemOperations[i]();
 			}
+		},
+		time: function(){return (new Date()).getTime();},
+		start: function(){
+			documentReady = true;
+			this.prepareSystem();
+			systemReady = true;
+			this.doReady();
+		},
+		isReady: function(){
+			return systemReady && documentReady;
 		}
 	};
 })();
 
+var global_compiling_time = 0;
+
 var $extends = function(superclass, prototype, type){
+	var start = js.core.time();
 	var cls;
 	
 	if(prototype['constructor'] && prototype.constructor.toString().indexOf("Object") > 10 || prototype.constructor.toString().indexOf("Object") < 0){
@@ -53,10 +68,11 @@ var $extends = function(superclass, prototype, type){
 	cls.prototype.type = type;
 	cls.prototype.cls = cls;
 	
+	global_compiling_time = global_compiling_time + js.core.time() - start;
 	return cls;
 };
 
 window.onload = function(){
-	js.core.prepareSystem();
-	js.core.doReady();
+	js.core.start();
+	delete js.core.start;
 };

@@ -6,8 +6,7 @@ js.util.Observable = $extends(js.core.Object, {
 		if(Array.isArray(ev)){
 			var l = ev.length;
 			for(var i = 0; i < l; i++){
-				//this.events.put(ev[i], new js.util.ArrayList());
-				this.addEvent(ev[i]);
+				this.events.put(ev[i], null);
 			}
 		}else if(!this.events.containsKey(ev)){
 			this.events.put(ev, null);
@@ -25,13 +24,11 @@ js.util.Observable = $extends(js.core.Object, {
 		for(var i in listener){
 			if(this.events.containsKey(i)){
 				listeners = this.events.get(i);
-				
 				if(listeners == null){
-					listeners = new js.util.ArrayList();
+					listeners = new Array();
 					this.events.put(i,listeners);
 				}
-				
-				listeners.add({
+				listeners.push({
 					scope:scope,
 					func:listener[i]
 				});
@@ -45,8 +42,9 @@ js.util.Observable = $extends(js.core.Object, {
 		var listeners = this.events.get(type);
 		var listener;
 		if(listeners){
-			for(var i = 0; i < listeners.size(); i++){
-				listener = listeners.get(i);
+			var len = listeners.length;
+			for(var i = 0; i < len; i++){
+				listener = listeners[i];
 				//Using timeout, so the handlers may be execute simultaneously
 				window.setTimeout(function(){
 					listener.func.apply(listener.scope, [event]);
