@@ -42,24 +42,16 @@
 var bt;
 
 js.core.onReady(function(){
-	var container = new js.html.Element('div');
+	var start = js.core.time();
+	var runs = 0;
 
-	bt = new js.widget.Button('dasasd');
-
-	js.html.Element.BODY.append(container);
+	var list = new js.util.ArrayList();
 	
-	bt.renderOn(container);
-	
-	bt.addListener({
-		mouseup: function(){
-			alert(this);
-		}
-	});
-	
-	for(var a = 0; a < 20; a++){
-		bt = new js.widget.Button('botao numero '+ a);		
-		bt.renderOn(container);
+	while((js.core.time() - start) < 1000){
+		list.add(runs);
+		runs++;
 	}
+	alert(runs)
 });
 </script>
 

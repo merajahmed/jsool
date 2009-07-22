@@ -1,10 +1,8 @@
 js.util.HashMap = $extends(js.util.Map,{
 	constructor: function(){
 		js.core.Object.apply(this, arguments);
-		this.keys = new js.util.HashSet();
 		this.map = {};
 	},
-	keys: null,
 	values: null,
 	map: null,
 	_size: 0,
@@ -21,20 +19,15 @@ js.util.HashMap = $extends(js.util.Map,{
 			throw new js.core.Exception("Invalid argument type: "+key.toString(), this, arguments);
 		}
 		
-		if(this.keys.contains(key)){
-			this.remove(key);
+		if(this.map[hash] == undefined){
 			this._size--;
 		}
-		
-		this.keys.add(key);
 		this._size++;
-		
 		this.map[hash] = value;
-		
 		return true;
 	},
 	containsKey: function(key){
-		return this.keys.contains(key);
+		return this.map[this.mapCode(key)] != undefined;
 	},
 	containsValue: function(value){
 		for(var p in this.map){
@@ -54,8 +47,6 @@ js.util.HashMap = $extends(js.util.Map,{
 		var el = this.get(key);
 		if(el == null) return false;
 		
-		this.keys.remove(key);
-		
 		delete this.map[this.mapCode(key)];
 		
 		this._size--;
@@ -72,7 +63,6 @@ js.util.HashMap = $extends(js.util.Map,{
 		return this.containsValue(object);
 	},
 	clear: function(){
-		this.keys.clear();
 		this._size = 0;
 		this.map = {};
 	}
