@@ -82,3 +82,16 @@ if (!Array.prototype.indexOf)
 		return -1;
 	};
 }
+
+Array.prototype.concat = function(){
+	var result = [];
+	var length = arguments.length;
+	
+	for(var a = 0; a < length; a ++){
+		var arr = arguments[a];
+		var len = arr.length;		
+		for(var b = 0; b < len; b++){
+			result.push(arr[b]);
+		}
+	}
+};

@@ -36,6 +36,9 @@ js.html.Element = $extends(js.util.Observable,{
 		
 		js.html.Element.cache(this);
 	},
+	/**
+	 * @property {Object} commom variables for all elements 
+	 */
 	global: {
 		count:0
 	},
@@ -156,26 +159,7 @@ js.html.Element = $extends(js.util.Observable,{
 		this.dom.removeChild(element.dom);
 	},
 	/**
-	 * @function
-	 * Adds a new event listener to the element
 	 * 
-	 * @param {string} name
-	 * the name of the event
-	 * @param {Function} handler
-	 * the function that will hands this event
-	 * @param {boolean} overide
-	 * overides the current event handler
-	 * 
-	 * On using <code>addListener(name, handler)</code> syntax,
-	 * the function will set the function direct to the onevent attribute of the DOM.
-	 * 
-	 * This operation is much faster than events binding,
-	 * but you may set only one event handler by event with this operation.
-	 * 
-	 * @param {object} collection
-	 * A collection of events handlers
-	 * 
-	 * @return {boolean} if and handler has been overiden
 	 */
 	addListener: function(){},
 	/**
@@ -228,9 +212,9 @@ js.html.Element = $extends(js.util.Observable,{
 	 * 
 	 * @return {collection} the element's children
 	 */
-	getChildren: function(dom){
-		var toDom = (dom == null ? false : el);
-		if(toDom){
+	getChildren: function(el){
+		var toEl = (el == null ? false : el);
+		if(!toEl){
 			return this.dom.childNodes;
 		}else{
 			var children = this.dom.childNodes;
