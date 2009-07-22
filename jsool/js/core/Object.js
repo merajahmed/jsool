@@ -1,7 +1,6 @@
 var global_objects_count = 0;
 
 js.core.Object = function(){
-	this.hash = (Math.round((Math.random()*1000)) + (new Date()).getTime());
 	global_objects_count++;
 };
 
@@ -11,6 +10,9 @@ js.core.Object.prototype = {
 	cls: js.core.Object,
 	supercls: js.core.Object,
 	hashCode: function(){
+		if(this.hash == 0){
+			this.hash = (Math.round((Math.random()*1000)) + (new Date()).getTime());
+		}
 		return this.hash;
 	},
 	equals: function(object){
@@ -24,7 +26,7 @@ js.core.Object.prototype = {
 		return true;
 	},
 	toString: function(){
-		return this.type + "@" + this.hash;
+		return this.type + "@" + this.hashCode();
 	},
 	instanceOf: function(clazz){
 		if(clazz == js.core.Object){

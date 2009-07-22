@@ -1,13 +1,4 @@
 js.widget.Component = $extends(js.util.Observable,{
-	constructor: function(){
-		js.util.Observable.apply(this, arguments);
-		this.addEvent(['click','mousedown','mouseup','mousein','mouseout','keypress','keyup','keudown','focus','blur','render']);
-		this.addListener({
-			render:function(event){
-				this.prepareEvents();
-			}
-		});
-	},
 	visible: false,
 	x: 0,
 	y: 0,
@@ -79,6 +70,7 @@ js.widget.Component = $extends(js.util.Observable,{
 		this.setVisible(false);
 	},
 	renderOn: function(toRender){
+		var element;
 		if(typeof toRender == 'string'){
 			element = js.html.Element.get(toRender);
 		}else if(typeof toRender == 'object' && toRender.instanceOf(js.html.Element)){
@@ -87,19 +79,5 @@ js.widget.Component = $extends(js.util.Observable,{
 			throw new js.core.Exception('Invalid argument: '+ toRender, this);
 		}
 		element.append(this.element);
-	},
-	prepareEvents: function(){
-		var that = this;
-		var fireMyEvent = function(event){that.fireEvent(event);};
-				
-		this.element.addListener('click',fireMyEvent);
-		this.element.addListener('mousedown',fireMyEvent);
-		this.element.addListener('mouseup',fireMyEvent);
-		this.element.addListener('mousein',fireMyEvent);
-		this.element.addListener('mousemout',fireMyEvent);
-		
-		this.element.addListener('keypress',fireMyEvent);
-		this.element.addListener('keyup',fireMyEvent);
-		this.element.addListener('keydown',fireMyEvent);
 	}
 },'js.widget.Component');

@@ -105,10 +105,8 @@ js.util.ArrayList = $extends(js.util.List,{
 	addAll: function(collection){
 		if(Array.isArray(collection)){
 			var length = collection.length;
-			for(var i = 0; i < length; i++){
-				this.data.push(collection[i]);
-				this._size++;
-			}
+			this.data = this.data.concat(collection);
+			this._size = this._size + length;
 		}else if(typeof collection == 'object' && collection.instanceOf(js.util.Collection)){
 			var iterator = collection.iterator();
 			
