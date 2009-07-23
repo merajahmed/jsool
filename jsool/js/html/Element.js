@@ -92,7 +92,7 @@ js.html.Element = $extends(js.core.Object,{
 			el.id = this.id;
 			
 			this.setAttribute(this.cachedAttributes);
-			delete this.cachedAttributes[at];
+			delete this.cachedAttributes;
 			
 			this.applyStyle(this.cachedCss);
 			delete this.cachedCss;
