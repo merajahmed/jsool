@@ -44,11 +44,9 @@ var bt;
 js.core.onReady(function(){
 	var start = js.core.time();
 	var runs = 0;
-
-	var list = new js.util.ArrayList();
-	
+	var lista = new js.util.ArrayList();
 	while((js.core.time() - start) < 1000){
-		list.add(runs);
+		lista.add(runs);
 		runs++;
 	}
 	alert(runs)
