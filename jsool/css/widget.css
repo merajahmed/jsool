@@ -20,16 +20,21 @@
 ** * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 .wgt-button{
-	background-color: #DFEAF8;
-	border: solid 1px #C5CDE2;
+	background-color: #F2F2ED;
+	border: solid 1px #000000;
 	padding: 0px 22px 1px 22px;
 	margin: 2px;
 }
 
 .wgt-button:active{
-	background-color: #A9C4E6;
-	border: solid 1px #4D77AB;
+	background-color: #E2E1D9 !important;
 }
+
+.wgt-button:hover{
+	/*border: solid 1px #F8B330;*/
+	background-color: #F7F7F5;
+}
+
 .ie .wgt-button{padding: 0px;}
 .opera .wgt-button{padding: 1px 25px 4px 25px;}
 .ff .wgt-button{-moz-border-radius: 4px;}

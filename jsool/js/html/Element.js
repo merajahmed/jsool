@@ -23,6 +23,9 @@ js.html.Element = $extends(js.core.Object,{
 		var type = typeof obj;
 		var tags = /\b(a|button|div|object|label|option|p|script|select|span|td|tr|th|tbody|thead|tfoot|svg|iframe|canvas)\b/;
 		
+		this.id = 'jsool-'+this.global.count;
+		this.global.count++;
+		
 		if(type == 'string' && tags.test(obj)){
 			this.tag = obj;
 			this.cachedAttributes = {};
@@ -33,12 +36,24 @@ js.html.Element = $extends(js.core.Object,{
 		}else if(type == 'object' && obj.tagName){
 			this.dom = obj;
 			this.tag = obj.tagName;
+			
+			if(this.dom.id){
+				this.id = this.dom.id;
+			}else{
+				this.dom.id = this.id;
+			}
+			
 		}else{
 			throw new js.core.Exception('Invalid tag: ' + obj, this);
 		}
 		
-		this.id = 'jsool-'+this.global.count;
-		this.global.count++;
+		this.events = {
+			focus:[],blur:[],
+			mousedown:[],mouseup:[],click:[],dblclick:[],
+			mousein:[],mouseout:[],mousemove:[],
+			keydown:[],keyup:[],keypress:[],
+			load:[],unload:[],abort:[],error:[],resize:[],scroll:[]
+		};
 		
 		js.html.Element.cache(this);
 	},
@@ -87,20 +102,27 @@ js.html.Element = $extends(js.core.Object,{
 	 */
 	getDom: function(){
 		if(!this.dom){
+			var temp;
+			
 			this.dom = document.createElement(this.tag);
 			var el = this.dom;
 			el.id = this.id;
 			
-			this.setAttribute(this.cachedAttributes);
+			temp = this.cachedAttributes;
 			delete this.cachedAttributes;
+			this.setAttribute(temp);
 			
-			this.applyStyle(this.cachedCss);
+			temp = this.cachedCss;
 			delete this.cachedCss;
+			this.applyStyle(temp);
 			
-			this.addClass(this.cachedClasses);
+			temp = this.cachedClasses;
+			delete this.cachedClasses;
+			this.addClass(temp);
 			
-			this.setText(this.cachedText);
+			temp = this.cachedText;
 			delete this.cachedText;
+			this.setText(temp);
 		}
 		return this.dom;
 	},
@@ -214,9 +236,44 @@ js.html.Element = $extends(js.core.Object,{
 		this.getDom().removeChild(element.getDom());
 	},
 	/**
+	 * Adds an event listener to element
+	 */
+	addListener: function(event, handler){
+		var dom = this.getDom();
+		if(!(this.events[event] == undefined)){
+			var that = this;
+			var handlerFunction = function(event){
+				event = event || window.event;
+				handler.apply(that, [event]);
+			};
+			this.events[event].push(handlerFunction);
+			
+			if(dom.addEventListener){
+				dom.addEventListener(event, handlerFunction, false);
+			}else{
+				dom.attachEvent('on'+event, handlerFunction);
+			}
+		}
+	},
+	/**
 	 * 
 	 */
-	addListener: function(){},
+	destroyListeners: function(){
+		if(!this.dom)return;
+		var w3c = this.dom.addEventListener != undefined;
+		var len;
+		
+		for(var ev in this.events){
+			len = this.events[ev].length;
+			for(var i = 0; i < len; i++){
+				if(w3c){
+					this.dom.removeEventListener(ev, this.events[ev][i], false);
+				}else{
+					this.dom.detachEvent('on'+ev, this.events[ev][i]);
+				}
+			}
+		}
+	},
 	/**
 	 * @function
 	 * Adds a new CSS class to the element
@@ -225,11 +282,11 @@ js.html.Element = $extends(js.core.Object,{
 	 */
 	addClass: function(name){
 		if(this.cachedClasses != undefined){
-			this.cachedClasses = this.cachedClasses + ' ' + name;
+			this.cachedClasses = this.cachedClasses + name + ' ';
 		}else{
 			var current = this.dom.className;
 			name = name.trim();
-			this.dom.className = (current+' '+name);
+			this.dom.className = (current+name+' ');
 		}
 	},
 	/**
@@ -330,7 +387,7 @@ js.html.Element = $extends(js.core.Object,{
 	 */
 	destroy: function(){
 		//Remove from global element cache
-		js.html.Element.CACHE.remove(this.jsoolId);
+		js.html.Element.CACHE.remove(this.id);
 		
 		//Remove from dom
 		if(this.getParent() != null){

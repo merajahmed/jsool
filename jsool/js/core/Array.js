@@ -15,7 +15,6 @@ Array.prototype.instanceOf = function(clazz){
 if(!Array.prototype.forEach){
 	Array.prototype.forEach = function(action){
 		var length = this.length;
-		
 		for(var i = 0; i < length; i++){
 			action(this[i]);
 		}
