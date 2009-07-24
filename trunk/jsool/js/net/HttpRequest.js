@@ -1,3 +1,14 @@
+/**
+ * Options:
+ * async: boolean
+ * reaponseType: string Text/Xml
+ * failure: function
+ * success: function
+ * params: string/object
+ * method: string GET/POST
+ * url: string (REQUIRED)
+ * noCache: boolean
+ */
 js.net.HttpRequest = $extends(js.util.Observable, {
 	constructor: function(options){
 		js.util.Observable.apply(this, arguments);

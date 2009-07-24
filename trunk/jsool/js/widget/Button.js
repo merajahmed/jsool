@@ -8,6 +8,7 @@ js.widget.Button = $extends(js.widget.Component,{
 		if(String.isString(text)){
 			this.text = text;
 		}
+		
 		this.element.setText(this.text);
 	},
 	text: 'button',
