@@ -1,5 +1,5 @@
 var js = {core:{},util:{},html:{},net:{},canvas:{},widget:{}};
-var emptyFn = undefined;
+var emptyFn = function(){return undefined;};
 js.core = (function(){
 	var systemOperations = new Array();
 	var onReadyActions = new Array();

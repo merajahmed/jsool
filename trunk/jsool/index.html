@@ -32,29 +32,30 @@
 	<script type="text/javascript" src="js/canvas/Canvas.js"></script>
 	<script type="text/javascript" src="js/canvas/CanvasRenderingContext.js"></script>
 	
+	<script type="text/javascript" src="js/net/Request.js"></script>
 	<script type="text/javascript" src="js/net/HttpRequest.js"></script>
 	<script type="text/javascript" src="js/net/HttpRequestDispatcher.js"></script>
 	<script type="text/javascript" src="js/net/Proxy.js"></script>
+	<script type="text/javascript" src="js/net/HttpProxy.js"></script>
+	<script type="text/javascript" src="js/net/ScriptTagProxy.js"></script>
 	
 	<script type="text/javascript" src="js/widget/Component.js"></script>
 	<script type="text/javascript" src="js/widget/Button.js"></script>
 	<script type="text/javascript">
 		var el;
 		js.core.onReady(function(){
-			el = new js.html.Element('div');
-			el.setText('Cool haum');
-			el.applyStyle({
-				backgroundColor:'#99FFAA',
-				border:'solid 1px #000000',
-				padding:'5px',
-				margin:'5px'
+			var proxy = new js.net.ScriptTagProxy();
+			var request = new js.net.Request();
+			request.url = "http://localhost:8080/echecklist/management/create.jsp";
+			proxy.addListener({
+				error: function(err){
+					console.info(err);
+				}
 			});
-		
-			el.addListener('mouseup',function(event){
-				alert(this.getDom().clientHeight);
-			});
-			
-			js.html.Element.BODY.append(el);
+			request.callback = function(response){console.info(response.length)
+				js.html.Element.BODY.innerHTML = response;
+			};
+			proxy.doRequest(request);
 		});
 	</script>
 

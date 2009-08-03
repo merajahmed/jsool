@@ -9,7 +9,7 @@
  * url: string (REQUIRED)
  * noCache: boolean
  */
-js.net.HttpRequest = $extends(js.util.Observable, {
+js.net.HttpRequest = $extends(js.net.Request, {
 	constructor: function(options){
 		js.util.Observable.apply(this, arguments);
 		
@@ -85,6 +85,13 @@ js.net.HttpRequest = $extends(js.util.Observable, {
 			}
 		}else{
 			return this.params;
+		}
+	},
+	callback: function(status, response){
+		if(status == 'success' && this.success){
+			this.success(response);
+		}else if(status == 'failure' && this.success){
+			this.failure(response);
 		}
 	}
 },'js.net.HttpRequest');

@@ -178,15 +178,11 @@ js.net.HttpRequestDispatcher = $extends(js.util.Observable,{
 	},
 	doCallback: function(request){
 		if(this.dispatcher.status < 400){
-			if(request.success){
-				this.fireEvent({type:'success', request: this.dispatcher});
-				request.success(this.dispatcher['response'+request.responseType]);
-			}
+			request.callback('success', this.dispatcher['response'+request.responseType]);			
+			this.fireEvent({type:'success', request: this.dispatcher});
 		}else{
-			if(request.failure){
-				this.fireEvent({type:'failure', request: this.dispatcher});
-				request.failure(this.dispatcher['response'+request.responseType]);
-			}
+			request.callback('failure', this.dispatcher['response'+request.responseType]);			
+			this.fireEvent({type:'failure', request: this.dispatcher});
 		}
 	}
 },'js.net.HttpRequestDispatcher');
