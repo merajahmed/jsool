@@ -256,20 +256,38 @@ js.html.Element = $extends(js.core.Object,{
 		}
 	},
 	/**
+	 * @function
+	 * Removes the events listeners from element
+	 * 
+	 * @param {null} remove all listeners
+	 * @param {string} removes the handlers from the named event
 	 * 
 	 */
 	destroyListeners: function(){
-		if(!this.dom)return;
+		if(!this.dom)return;		
 		var w3c = this.dom.addEventListener != undefined;
 		var len;
 		
-		for(var ev in this.events){
-			len = this.events[ev].length;
-			for(var i = 0; i < len; i++){
+		if(arguments.length == 0){
+			for(var ev in this.events){
+				len = this.events[ev].length;
+				for(var i = 0; i < len; i++){
+					if(w3c){
+						this.dom.removeEventListener(ev, this.events[ev][i], false);
+					}else{
+						this.dom.detachEvent('on'+ev, this.events[ev][i]);
+					}
+				}
+			}
+		}else if(arguments.length == 1){
+			var ev = arguments[0];
+			var l = this.events[ev];
+			len = l.length;
+			for( var j = 0; j < len; j++){
 				if(w3c){
-					this.dom.removeEventListener(ev, this.events[ev][i], false);
+					this.dom.removeEventListener(ev, l[j], false);
 				}else{
-					this.dom.detachEvent('on'+ev, this.events[ev][i]);
+					this.dom.detachEvent('on'+ev, l[j]);
 				}
 			}
 		}
