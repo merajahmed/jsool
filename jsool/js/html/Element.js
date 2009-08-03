@@ -215,6 +215,9 @@ js.html.Element = $extends(js.core.Object,{
 			this.dom.appendChild(document.createTextNode(new String(value)));
 		}
 	},
+	getText: function(){
+		return this.getDom().innerHTML;
+	},
 	/**
 	 * @function
 	 * 
@@ -390,6 +393,12 @@ js.html.Element = $extends(js.core.Object,{
 		}
 		return {y:y,x:x};
 	},
+	getBox: function(){
+		var pos = this.getPosition();
+		pos.w = this.getDom().clientWidth;
+		pos.h = this.getDom().clientHeight;
+		return pos;
+	},
 	/**
 	 * @function
 	 * Return parent Element
@@ -418,7 +427,6 @@ js.html.Element = $extends(js.core.Object,{
 		
 		//Destroy listeners
 		this.destroyListeners();
-		
 		//Delete DOM
 		delete this.dom;
 	}

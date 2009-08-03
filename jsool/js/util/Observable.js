@@ -24,8 +24,8 @@ js.util.Observable = $extends(js.core.Object, {
 		for(var i in listener){
 			if(this.events.containsKey(i)){
 				listeners = this.events.get(i);
-				if(listeners == null){
-					listeners = new Array();
+				if(!listeners){
+					listeners = [];
 					this.events.put(i,listeners);
 				}
 				listeners.push({
