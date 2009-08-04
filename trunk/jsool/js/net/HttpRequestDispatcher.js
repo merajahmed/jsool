@@ -1,7 +1,7 @@
 //REFERENCE http://code.google.com/p/mikhas/source/browse/trunk/mikhas/mikhas-script/net/Request.js?r=133
 js.net.HttpRequestDispatcher = $extends(js.util.Observable,{
 	constructor: function(){
-		js.util.Observable.apply(this, arguments);
+		//js.util.Observable.apply(this, arguments);
 		this.addEvent(['success','failure','start','complete','error']);
 	},
 	dispatcher: null,

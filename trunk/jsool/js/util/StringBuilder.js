@@ -1,6 +1,6 @@
 js.util.StringBuilder = $extends(js.core.Object, {
 	constructor: function(object){
-		js.core.Object.apply(this, arguments);
+		//js.core.Object.apply(this, arguments);
 		this.buffer = new Array();
 		if(object)this.append(object);
 	},

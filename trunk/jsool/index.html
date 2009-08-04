@@ -31,31 +31,20 @@
 	
 	<script type="text/javascript" src="js/canvas/Canvas.js"></script>
 	<script type="text/javascript" src="js/canvas/CanvasRenderingContext.js"></script>
-	
-	<script type="text/javascript" src="js/net/Request.js"></script>
+
 	<script type="text/javascript" src="js/net/HttpRequest.js"></script>
 	<script type="text/javascript" src="js/net/HttpRequestDispatcher.js"></script>
-	<script type="text/javascript" src="js/net/Proxy.js"></script>
-	<script type="text/javascript" src="js/net/HttpProxy.js"></script>
-	<script type="text/javascript" src="js/net/ScriptTagProxy.js"></script>
+	
+	<script type="text/javascript" src="js/data/Field.js"></script>
+	<script type="text/javascript" src="js/data/Record.js"></script>
+	<script type="text/javascript" src="js/data/Type.js"></script>
 	
 	<script type="text/javascript" src="js/widget/Component.js"></script>
 	<script type="text/javascript" src="js/widget/Button.js"></script>
+	
 	<script type="text/javascript">
 		var el;
-		js.core.onReady(function(){
-			var proxy = new js.net.ScriptTagProxy();
-			var request = new js.net.Request();
-			request.url = "http://localhost:8080/echecklist/management/create.jsp";
-			proxy.addListener({
-				error: function(err){
-					console.info(err);
-				}
-			});
-			request.callback = function(response){console.info(response.length)
-				js.html.Element.BODY.innerHTML = response;
-			};
-			proxy.doRequest(request);
+		jsool.onReady(function(){
 		});
 	</script>
 
