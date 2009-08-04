@@ -1,6 +1,6 @@
 js.util.DateFormat = $extends(js.core.Object,{
 	constructor: function(pattern,locale){
-		js.core.Object.apply(this, arguments);
+		//js.core.Object.apply(this, arguments);
 		this.setLocale(locale ? locale : js.util.Locale.DEFAULT);
 		this.pattern = pattern ? pattern : this.pattern;
 		
@@ -10,7 +10,7 @@ js.util.DateFormat = $extends(js.core.Object,{
 			this.patternKeyMap.put('{'+this.patterns[i].key+'}', this.patterns[i]);
 		}
 	},
-	pattern: 'EEEE, MMMM dd yyyy',
+	pattern: 'mm/dd/yyyy',
 	locale: null,
 	compiled: null,
 	weekdays: null,
@@ -36,6 +36,8 @@ js.util.DateFormat = $extends(js.core.Object,{
 		this.locale = locale;
 		this.months = locale.months;
 		this.weekdays = locale.weekdays;
+		this.pattern = locale.datePattern;
+		this.compiled = null; 
 	},
 	compile: function(){
 		var compiled = new String(this.pattern);

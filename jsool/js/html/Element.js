@@ -18,7 +18,7 @@ js.html.Element = $extends(js.core.Object,{
 	 */
 	constructor: function(obj){
 		//Observable constructor is empty, so I call objects constructor
-		js.core.Object.apply(this, arguments);
+		//js.core.Object.apply(this, arguments);
 		
 		var type = typeof obj;
 		var tags = /\b(a|button|div|object|label|option|p|script|select|span|td|tr|th|tbody|thead|tfoot|svg|iframe|canvas)\b/;
@@ -435,7 +435,7 @@ js.html.Element = $extends(js.core.Object,{
 
 //Elements Cache
 
-js.core.onSystemReady(function(){
+jsool.onSystemReady(function(){
 	js.html.Element.CACHE = new js.util.HashMap();
 	js.html.Element.BODY = new js.html.Element(document.getElementsByTagName('body')[0]);
 	

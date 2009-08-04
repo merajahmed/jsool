@@ -1,6 +1,6 @@
 js.util.LinkedList = $extends(js.util.List, {
 	constructor: function(){
-		js.core.Object.apply(this, arguments);
+		//js.core.Object.apply(this, arguments);
 		this.header = {element: null, next: null, previous: null};
 		this.header.next = this.header.previous = this.header;
 	},

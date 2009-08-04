@@ -1,6 +1,6 @@
 js.util.ArrayList = $extends(js.util.List,{
 	constructor: function(arg){
-		js.core.Object.apply(this, arguments);
+		//js.core.Object.apply(this, arguments);
 		
 		this.data = new Array();
 		

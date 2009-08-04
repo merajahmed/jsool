@@ -9,9 +9,9 @@
  * url: string (REQUIRED)
  * noCache: boolean
  */
-js.net.HttpRequest = $extends(js.net.Request, {
+js.net.HttpRequest = $extends(js.util.Observable, {
 	constructor: function(options){
-		js.util.Observable.apply(this, arguments);
+		//js.util.Observable.apply(this, arguments);
 		
 		if(options == null)
 			throw new js.core.Exception('The constructor argument must not be null', this);
@@ -40,7 +40,9 @@ js.net.HttpRequest = $extends(js.net.Request, {
 			
 			if(options.url) this.url = options.url;
 			else throw new js.core.Exception('The request url must not be null', this);
-		}	
+		}
+		
+		this.addEvent(['start','complete','success','failure','error']);
 	},
 	async: true,
 	responseType: 'Text',

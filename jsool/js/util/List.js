@@ -1,5 +1,5 @@
 js.util.List = $extends(js.util.Collection,{
-	get: emptyFn,
-	clear: emptyFn,
-	indexOf: emptyFn
+	get: jsool.emptyFn,
+	clear: jsool.emptyFn,
+	indexOf: jsool.emptyFn
 },'js.util.List');

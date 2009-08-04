@@ -1,6 +1,6 @@
 js.util.HashMap = $extends(js.util.Map,{
 	constructor: function(){
-		js.core.Object.apply(this, arguments);
+		//js.core.Object.apply(this, arguments);
 		this.map = {};
 		this.keys = {};
 	},
