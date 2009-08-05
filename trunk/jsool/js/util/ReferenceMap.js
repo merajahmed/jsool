@@ -1,7 +1,5 @@
 js.util.ReferenceMap = $extends(js.util.Map,{
-	constructor: function(){
-		//js.util.Map.apply(this,arguments);
-		
+	cons: function(){
 		this.keys = new js.util.LinkedList();
 		this.values = new js.util.LinkedList();
 	},

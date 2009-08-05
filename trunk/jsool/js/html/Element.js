@@ -16,10 +16,7 @@ js.html.Element = $extends(js.core.Object,{
 	 * 
 	 * @throws {js.core.Exception} if the html tag is invalid or the providen object is not a valid dom
 	 */
-	constructor: function(obj){
-		//Observable constructor is empty, so I call objects constructor
-		//js.core.Object.apply(this, arguments);
-		
+	cons: function(obj){
 		var type = typeof obj;
 		var tags = /\b(a|button|div|object|label|option|p|script|select|span|td|tr|th|tbody|thead|tfoot|svg|iframe|canvas)\b/;
 		

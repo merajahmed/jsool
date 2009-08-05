@@ -1,6 +1,7 @@
 js.canvas.Canvas = $extends(js.html.Element,{
-	constructor: function(){
-		js.html.Element.apply(this,['canvas']);
+	ccons: function(){
+		this.$super('canvas');
+		//js.html.Element.apply(this,['canvas']);
 	},
 	getContext: function(){
 		return new js.canvas.CanvasRenderingContext(this.dom.getContext('2d'));

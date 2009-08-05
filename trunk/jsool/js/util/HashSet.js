@@ -1,6 +1,5 @@
 js.util.HashSet = $extends(js.util.Collection,{
-	constructor: function(){
-		//js.core.Object.apply(this, arguments);
+	cons: function(){
 		this.set = {};
 	},
 	set: null,
