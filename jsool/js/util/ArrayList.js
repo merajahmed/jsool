@@ -1,7 +1,5 @@
 js.util.ArrayList = $extends(js.util.List,{
-	constructor: function(arg){
-		//js.core.Object.apply(this, arguments);
-		
+	cons: function(arg){
 		this.data = new Array();
 		
 		if(arg != null){

@@ -10,9 +10,7 @@
  * noCache: boolean
  */
 js.net.HttpRequest = $extends(js.util.Observable, {
-	constructor: function(options){
-		//js.util.Observable.apply(this, arguments);
-		
+	cons: function(options){
 		if(options == null)
 			throw new js.core.Exception('The constructor argument must not be null', this);
 		

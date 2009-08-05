@@ -87,15 +87,37 @@ var jsool = (function(){
  */
 jsool.$extends = function(superclass, prototype, type){
 	var cls;
+	if(typeof superclass != 'function'){
+		return null;
+	}
 	
-	if(prototype['constructor'] && prototype.constructor.toString().indexOf("Object") > 10 || prototype.constructor.toString().indexOf("Object") < 0){
-		//cls = prototype.constructor;
-		cls = function(){
-			superclass.apply(this,arguments);
-			prototype.constructor.apply(this, arguments);
-		};
+	if(prototype['cons'] && typeof prototype['cons'] == 'function'){
+		cls = (function(constructor, parent){
+			
+			var constructor = prototype['cons'];
+			var parent = superclass;
+			
+			return function ImplicitySuperConstructor(){
+				parent.apply(this, arguments);
+				constructor.apply(this, arguments);
+			};
+		})();
+		
+	}else if(prototype['ccons'] && typeof prototype['ccons'] == 'function'){
+		cls = (function(){
+			var constructor = prototype['ccons'];
+			
+			return function ClassConstructor(){
+				constructor.apply(this, arguments);
+			};
+		})();
 	}else{
-		cls = function(){superclass.apply(this,arguments);};
+		cls = (function(){
+			var constructor = superclass; 
+			return function SuperConstructor(){
+				constructor.apply(this, arguments);
+			};
+		})();
 	}
 	
 	for(var sp in superclass.prototype){
@@ -110,6 +132,12 @@ jsool.$extends = function(superclass, prototype, type){
 	}
 	
 	cls.prototype.supercls = superclass;
+	cls.prototype.$super = (function(){
+			var sup = superclass;
+			return function Super(){
+				sup.apply(this, arguments);
+			};
+		})();
 	cls.prototype.type = type;
 	cls.prototype.cls = cls;
 	return cls;

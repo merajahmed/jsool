@@ -1,6 +1,5 @@
 js.canvas.CanvasRenderingContext = $extends(js.core.Object,{
-	constructor: function(canvas2dContext){
-		js.core.Object.apply(this, arguments);
+	cons: function(canvas2dContext){
 		this.context = canvas2dContext;
 	},
 	context: null,

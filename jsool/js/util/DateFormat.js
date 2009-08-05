@@ -1,6 +1,5 @@
 js.util.DateFormat = $extends(js.core.Object,{
-	constructor: function(pattern,locale){
-		//js.core.Object.apply(this, arguments);
+	cons: function(pattern,locale){
 		this.setLocale(locale ? locale : js.util.Locale.DEFAULT);
 		this.pattern = pattern ? pattern : this.pattern;
 		
