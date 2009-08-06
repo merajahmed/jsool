@@ -48,3 +48,47 @@ String.prototype.instanceOf = function(clazz){
 String.isString = function(obj){
 	return typeof obj == 'string';
 };
+
+String.decodeHTML = function(string){
+	var code = new RegExp("&#[0-9]{1,3};",'g');
+	var matches = string.match(code);
+	
+	if(matches){
+		var getChar = function(code){
+			code = code.substring(2);
+			code = code.substring(0, code.length - 1);
+			var charNum = window.parseInt(code, 10);
+			return String.fromCharCode(charNum);
+		};
+		
+		for(var i = 0; i < matches.length; i++){
+			var newChar = getChar(matches[i]);
+			string = string.replace(matches[i],newChar);
+		}
+	}
+	
+	return string;
+};
+
+String.encodeHTML = function(string){
+	var charBuffer = [];
+	
+	for(var pos = 0; pos < string.length; pos++){
+		var chr = string.charAt(pos);
+		
+		if(chr >= 'a' && chr <= 'z' || chr >= 'A' && chr <= 'Z' || chr >= '0' && chr <= '9'){
+			charBuffer.push(chr);
+		}else{
+			charBuffer.push("&#"+string.charCodeAt(pos)+";");
+		}
+	}
+	return charBuffer.join('');
+};
+
+String.prototype.encodeHTML = function(){
+	return String.encodeHTML(this);
+};
+
+String.prototype.decodeHTML = function(){
+	return String.decodeHTML(this);
+};
