@@ -45,7 +45,17 @@
 	<script type="text/javascript">
 		var el;
 		jsool.onReady(function(){
-			
+			var request = new js.net.HttpRequest({
+				url:'index.html',
+				success: function(res){
+					var span = new js.html.Element('span');
+					js.html.Element.BODY.append(span);
+					span.getDom().innerHTML = res.encodeHTML();
+				}
+			});
+			var dis = new js.net.HttpRequestDispatcher();
+
+			dis.dispatch(request);
 		});
 	</script>
 
