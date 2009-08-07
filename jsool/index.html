@@ -50,7 +50,9 @@
 				success: function(res){
 					var span = new js.html.Element('span');
 					js.html.Element.BODY.append(span);
-					span.getDom().innerHTML = res.encodeHTML();
+					var start = jsool.time();
+					span.getDom().innerHTML = (res + res + res + res).encodeHTML();
+					console.info(jsool.time() - start);
 				}
 			});
 			var dis = new js.net.HttpRequestDispatcher();
