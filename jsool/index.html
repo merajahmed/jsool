@@ -44,15 +44,12 @@
 	
 	<script type="text/javascript">
 		var el;
+		var toBeEncoded;
 		jsool.onReady(function(){
 			var request = new js.net.HttpRequest({
 				url:'index.html',
 				success: function(res){
-					var span = new js.html.Element('span');
-					js.html.Element.BODY.append(span);
-					var start = jsool.time();
-					span.getDom().innerHTML = (res + res + res + res).encodeHTML();
-					console.info(jsool.time() - start);
+					toBeEncoded = res + res + res + res + res + res + res + res;
 				}
 			});
 			var dis = new js.net.HttpRequestDispatcher();

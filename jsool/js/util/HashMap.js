@@ -1,4 +1,11 @@
+/**
+ * Map that may store a key-value pair where the key is a number, string or a object that have the hashCode method
+ */
 js.util.HashMap = $extends(js.util.Map,{
+	/**
+	 * @constructor
+	 * Default contructor
+	 */
 	cons: function(){
 		this.map = {};
 		this.keys = {};
