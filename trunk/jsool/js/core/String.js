@@ -70,7 +70,7 @@ String.decodeHTML = function(string){
 	return string;
 };
 
-String.oldencodeHTML = function(string){
+String.encodeHTML = function(string){
 	var charBuffer = [];
 	
 	for(var pos = 0; pos < string.length; pos++){
@@ -81,28 +81,7 @@ String.oldencodeHTML = function(string){
 		}else{
 			charBuffer.push("&#"+string.charCodeAt(pos)+";");
 		}
-	}console.info(charBuffer.length);
-	return charBuffer.join('');
-};
-
-String.encodeHTML = function(string){
-	var charBuffer = [];
-	
-	var start = -1;
-	
-	for(var pos = 0; pos < string.length; pos++){
-		var chr = string.charAt(pos);
-		
-		if(chr >= 'a' && chr <= 'z' || chr >= 'A' && chr <= 'Z' || chr >= '0' && chr <= '9'){
-			start = start == -1 ? pos : start;
-		}else{
-			if(start >= 0){
-				charBuffer.push(string.substring(start, pos));
-				start = -1;
-			}
-			charBuffer.push("&#"+string.charCodeAt(pos)+";");
-		}
-	}console.info(charBuffer.length);
+	}
 	return charBuffer.join('');
 };
 

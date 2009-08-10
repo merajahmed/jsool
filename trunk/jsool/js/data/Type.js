@@ -41,6 +41,8 @@ jsool.onSystemReady(function(){
 				
 				if(type == 'number'){
 					return new Date(window.parseInt(object));
+				}else if(type == 'function'){
+					return null;
 				}else{
 					object = object.toString();
 					
@@ -71,6 +73,18 @@ jsool.onSystemReady(function(){
 				}else{
 					return true;
 				}
+			}
+		},
+		OBJECT: {
+			sort: function(a, b){
+				if(a.compareTo){
+					return a.compareTo(b);
+				}else{
+					return 0;
+				}
+			},
+			parse: function(object){
+				return object;
 			}
 		}
 	};

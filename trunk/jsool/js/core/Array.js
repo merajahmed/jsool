@@ -94,3 +94,5 @@ Array.prototype.concat = function(){
 		}
 	}
 };
+
+Array.MAX_LENGTH = 4294967295;//At least on firefox
