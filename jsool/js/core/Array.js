@@ -1,17 +1,34 @@
+/**
+ * Verify if an object is an Array
+ * @param obj is any object to be checked
+ * @return <code>true</code> if the object is an array;
+ */
 Array.isArray = function(obj){
 	return obj.constructor == Array;
 };
 
+/**
+ * Shuffles the current array
+ * @return a shuffled version of the array
+ */
 Array.prototype.shuffle = function(){
 	this.sort(function(a,b){
 		return (Math.random() > 0.5 ? 1 : -1);
 	});
 };
 
+/**
+ * Checks is this instance if of the providen type
+ * @param clazz if the type to be checked
+ * @return <code>true</code> if the object if of the providen type
+ */
 Array.prototype.instanceOf = function(clazz){
 	return clazz == Array;
 };
 
+/**
+ * Runs a function for every item on the array
+ */
 if(!Array.prototype.forEach){
 	Array.prototype.forEach = function(action){
 		var length = this.length;
@@ -21,20 +38,23 @@ if(!Array.prototype.forEach){
 	};
 }
 
+/**
+ * Returns true if the provided function returns true for every item on the array
+ */
 if(!Array.prototype.every){
 	Array.prototype.every = function(action){
 		var length = this.length;
-		
 		for(var i = 0; i < length; i++){
 			if(!action(this[i])){
 				return false;
 			}
 		}
-		
 		return true;
 	};
 }
-
+/**
+ * Returns an array only with the items that returns true for the provided function
+ */
 if(!Array.prototype.filter){
 	Array.prototype.filter = function(action){
 		var length = this.length;
@@ -53,12 +73,10 @@ if(!Array.prototype.filter){
 if(!Array.prototype.map){
 	Array.prototype.map = function(action){
 		var length = this.length;
-		var newArray = new Array();
-		
+		var newArray = new Array();		
 		for(var i = 0; i < length; i++){			
 			newArray.push(action(this[i]));
 		}
-		
 		return newArray;
 	};
 }
@@ -76,10 +94,13 @@ if (!Array.prototype.indexOf){
 	};
 }
 
+/**
+ * 
+ * @return
+ */
 Array.prototype.concat = function(){
 	var result = [];
 	var length = arguments.length;
-	
 	for(var a = 0; a < length; a ++){
 		var arr = arguments[a];
 		var len = arr.length;		
