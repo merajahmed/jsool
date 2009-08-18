@@ -77,14 +77,15 @@ js.util.ArrayList = $extends(js.util.List,{
 			if(index >= this._size)
 				throw new js.core.Exception("Array index out of bounds: "+ number, this, arguments);
 			
-			this.data[index];
+			//this.data[index];
+			this.data.splice(index, 0, object);
 		}
 	},
 	remove: function(index){
 		if(index >= this.length || index < 0){
 			throw new js.core.Exception("Array index out of bounds: "+index, this, arguments);
 		}
-		
+		/* Old implementation
 		delete this.data[index];
 		
 		var length = this._size - 1;
@@ -93,6 +94,8 @@ js.util.ArrayList = $extends(js.util.List,{
 		}
 		this._size--;
 		if(this.pop) this.pop();
+		*/
+		this.data.splice(index, 1);
 	},
 	clear: function(){
 		delete this.data;

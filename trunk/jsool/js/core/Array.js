@@ -63,19 +63,13 @@ if(!Array.prototype.map){
 	};
 }
 
-if (!Array.prototype.indexOf)
-{
-	Array.prototype.indexOf = function(elt /*, from*/)
-	{
+if (!Array.prototype.indexOf){
+	Array.prototype.indexOf = function(elt /*, from*/){
 		var len = this.length >>> 0;
 		var from = Number(arguments[1]) || 0;
-		
 		from = (from < 0) ? Math.ceil(from) : Math.floor(from);
-		
 		if (from < 0) from += len;
-		
-		for (; from < len; from++)
-		{
+		for (; from < len; from++){
 			if (from in this && this[from] === elt) return from;
 		}
 		return -1;
@@ -94,5 +88,26 @@ Array.prototype.concat = function(){
 		}
 	}
 };
+
+Array.prototype.sum = function() {
+	return (! this.length) ? 0 : this.slice(1).sum() +((typeof this[0] == 'number') ? this[0] : 0);
+};
+
+Array.prototype.remove = function(s){
+	for (i=0; i < this.length; i++){
+		if (s == this[i]) this.splice(i, 1);
+	}
+};
+Array.prototype.accumulate = function(fn){
+	if(typeof fn != 'function'){
+		throw new Error('Illegal Argument: '+fn);
+	}
+	var sum = 0;
+	this.forEach(function(value){
+		sum += fn(value);
+	});
+	return sum;
+};
+
 
 Array.MAX_LENGTH = 4294967295;//At least on firefox
