@@ -43,23 +43,114 @@
 	<script type="text/javascript" src="js/widget/Button.js"></script>
 	
 	<script type="text/javascript">
-		var el;
-		var toBeEncoded;
 		jsool.onReady(function(){
-			var request = new js.net.HttpRequest({
-				url:'index.html',
-				success: function(res){
-					toBeEncoded = res + res + res + res + res + res + res + res;
-				}
-			});
-			var dis = new js.net.HttpRequestDispatcher();
+			var start = jsool.time();
+			var hexaNumbers = [];
+			memory = {};
 
-			dis.dispatch(request);
+			for(var i = 0; i < 16;i++){
+				hexaNumbers.push(i.toString(16).toUpperCase());
+			}
+
+			var count = 0;
+			for(var a = 0; a < 16; a++)for(var b = 0; b < 16; b++)
+			for(var c = 0; c < 16; c++)for(var d = 0; d < 16; d++)
+				memory[hexaNumbers[a]+hexaNumbers[b]+hexaNumbers[c]+hexaNumbers[d]] = {
+					number: count++,
+					data: null,
+					program: null
+				};
+			
+			['AX','BX','DX','CX'].forEach(function(value){
+				memory[value] = null;
+			});
+			
+			console.info(jsool.time()-start);
 		});
+
+		function MOV_MEM_TO_MEM(to ,from){
+			memory[to].data = memory[from].data;
+		}
+		function MOV_REG_TO_MEM(to ,from){
+			memory[to].data = memory[from];
+		}
+		function MOV_VAL_TO_MEM(to ,from){
+			memory[to].data = from;
+		}
+		function MOV_MEM_TO_REG(to ,from){
+			memory[to] = memory[from].data;
+		}
+		function MOV_REG_TO_REG(to ,from){
+			memory[to] = memory[from];
+		}
+		function MOV_VAL_TO_REG(to ,from){
+			memory[to] = from;
+		}
+
+		function compile(code){
+			var lines = code.split('\n');
+		}
+
+		function isValue(expression){
+			return expression.length == 4 && expression.match(/^[0-9ABCEDF]{4}$/) != null;
+		}
+		function isMemory(expression){
+			return expression.length == 6 && expression.substring(0,1) == '[' && expression.substring(5,6) == ']';
+		}
+		function isRegister(expression){
+			return expression.length == 2 && (expression in ['AX','BX','DX','CX']);
+		}
+		
+		var compilers = {
+			MOV: function(expression){
+				expression = expression.split(' ');
+				if(isMemory(expression[1]){
+					if(isMemory(expression[2])){
+						return {
+							INSTRUCTION: MOV_MEM_TO_MEM,
+							ARGUMENT1: expression[1],
+							ARGUMENT2: expression[2] 
+						};
+					}else if(isValue(expression[2])){
+						return {
+							INSTRUCTION: MOV_VAL_TO_MEM,
+							ARGUMENT1: expression[1],
+							ARGUMENT2: expression[2] 
+						};
+					}else if(isRegister(expression[2])){
+						return {
+							INSTRUCTION: MOV_REG_TO_MEM,
+							ARGUMENT1: expression[1],
+							ARGUMENT2: expression[2] 
+						};
+					}
+				}else if(isRegister(expression[1])){
+					if(isMemory(expression[2])){
+						return {
+							INSTRUCTION: MOV_MEM_TO_REG,
+							ARGUMENT1: expression[1],
+							ARGUMENT2: expression[2] 
+						};
+					}else if(isValue(expression[2])){
+						return {
+							INSTRUCTION: MOV_VAL_TO_REG,
+							ARGUMENT1: expression[1],
+							ARGUMENT2: expression[2] 
+						};
+					}else if(isRegister(expression[2])){
+						return {
+							INSTRUCTION: MOV_REG_TO_REG,
+							ARGUMENT1: expression[1],
+							ARGUMENT2: expression[2] 
+						};
+					}
+				}
+			}
+		};
 	</script>
 
 </head>
 <body>
-	
+	<button id="das">COOL</button>
 </body>
 </html>
