@@ -44,6 +44,33 @@
 	
 	<script type="text/javascript">
 		jsool.onReady(function(){
+			var arr = 
+			[{x:1,y:5.9},
+			{x:2,y:8.8},
+			{x:4,y:12.0},
+			{x:7,y:19.8},
+			{x:9,y:21.5}];
+
+			var sumX = arr.sum(function(p){
+				return p.x;
+			});
+			var sumY = arr.sum(function(p){
+				return p.y;
+			});
+			var sumX2 = arr.sum(function(p){
+				return p.x * p.x;
+			});
+			var sumXY = arr.sum(function(p){
+				return p.x * p.y;
+			});
+
+			var El = js.html.Element;
+
+			El.get('sumx').setText(sumX);
+			El.get('sumy').setText(sumY);
+			El.get('sumx2').setText(sumX2);
+			El.get('sumxy').setText(sumXY);
+		});		
 			var start = jsool.time();
 			var hexaNumbers = [];
 			memory = {};
@@ -151,6 +178,23 @@
 
 </head>
 <body>
-	<button id="das">COOL</button>
+	<table>
+		<tr>
+			<td>Soma de X:</td>
+			<td id="sumx">&#160;</td>
+		</tr>
+		<tr>
+			<td>Soma de Y:</td>
+			<td id="sumy">&#160;</td>
+		</tr>
+		<tr>
+			<td>Soma de X2:</td>
+			<td id="sumx2">&#160;</td>
+		</tr>
+		<tr>
+			<td>Soma de XY:</td>
+			<td id="sumxy">&#160;</td>
+		</tr>
+	</table>
 </body>
 </html>
