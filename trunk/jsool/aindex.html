@@ -3,21 +3,63 @@
 	<title>Tester</title>	
 	<script type="text/javascript" src="assembly.js"></script>
 	<script type="text/javascript">
+		var getChar;
 		function run(){
+			//console.profile('Compile and Run');
+			var code = document.getElementById('code');
+			var console = document.getElementById('console');
+			var lastLen = 0;
+
+			function getLastConsoleChar(){
+				var cons = console.value
+
+				if(cons.length == 0){
+					return null;
+				}else{
+					if(cons.length == lastLen){
+						return null;
+					}else{
+						lastLen = cons.length;
+						return cons.charCodeAt(lastLen - 1); 
+					}
+				}
+			}
+
+			getChar = getLastConsoleChar;
+
+
 			assembly.reset();
-			assembly.load(document.getElementById('code').value);			
+			assembly.load(code.value);
+			console.focus();
+
+			assembly.finish = function(){
+				code.focus();
+			};
+			
 			assembly.run();
+
+			//console.profileEnd('Compile and Run');
 		};
 	</script>
+	<style type="text/css">
+		.console{
+			font-family: monospace;
+			font-weight: bolder;
+			color: #FFFFFF;
+			background-color: #000000;
+			text-transform:uppercase;
+		}
+	</style>
 </head>
 <body>
-	<textarea id="code" rows="40" cols="100">
-		MOV ax, 0001
-		mov [ffff],0002
-		mov [aaaa],0004
-		xchg [aaaa],[ffff]
-		xchg [ffff],ax
-		mov bx, [ffff]
+	<button onclick="run();">RUN</button><br />
+	<textarea id="code" rows="20" cols="60" class="console">MOV ax, 0101
+MOV BX, ax
+mov [00a0],bx
+mov [00a1],[00a0]
+mov cx,[00a1]
 	</textarea>
+	
+	<textarea id="console" rows="20" cols="60" class="console"></textarea>
 </body>
 </html>
