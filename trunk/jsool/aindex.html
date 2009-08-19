@@ -1,0 +1,23 @@
+<html>
+<head>
+	<title>Tester</title>	
+	<script type="text/javascript" src="assembly.js"></script>
+	<script type="text/javascript">
+		function run(){
+			assembly.reset();
+			assembly.load(document.getElementById('code').value);			
+			assembly.run();
+		};
+	</script>
+</head>
+<body>
+	<textarea id="code" rows="40" cols="100">
+		MOV ax, 0001
+		mov [ffff],0002
+		mov [aaaa],0004
+		xchg [aaaa],[ffff]
+		xchg [ffff],ax
+		mov bx, [ffff]
+	</textarea>
+</body>
+</html>
