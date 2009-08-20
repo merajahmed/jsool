@@ -1,44 +1,45 @@
 <html>
 <head>
 	<title>Tester</title>	
-	<script type="text/javascript" src="assembly.js"></script>
+	<script type="text/javascript" src="language.js"></script>
 	<script type="text/javascript">
 		var getChar;
 		function run(){
-			//console.profile('Compile and Run');
-			var code = document.getElementById('code');
-			var console = document.getElementById('console');
-			var lastLen = 0;
-
-			function getLastConsoleChar(){
-				var cons = console.value
-
-				if(cons.length == 0){
-					return null;
-				}else{
-					if(cons.length == lastLen){
-						return null;
-					}else{
-						lastLen = cons.length;
-						return cons.charCodeAt(lastLen - 1); 
-					}
-				}
-			}
-
-			getChar = getLastConsoleChar;
-
-
-			assembly.reset();
-			assembly.load(code.value);
-			console.focus();
-
-			assembly.finish = function(){
-				code.focus();
+			var reportfound = function(who){
+				return function(string){
+					console.info(who +' - '+string);
+				};
 			};
 			
-			assembly.run();
+			var expression = "protected class Mikhas{ }"
+			var identifierTolken = new Tolken();
+			identifierTolken.expression = /^[_$a-zA-Z][_$a-zA-Z0-9]*/;//valid java identifier
+			identifierTolken.found = reportfound('identifier');
 
-			//console.profileEnd('Compile and Run');
+			var classAccessModifierTolken = new Tolken();
+			classAccessModifierTolken.expression = /^(public|protected)*/;
+			classAccessModifierTolken.found = reportfound('access');
+
+			var classDefinitionTolken = new Tolken();
+			classDefinitionTolken.expression = /^class/;
+			classDefinitionTolken.found = reportfound('class');
+
+			var blockOpenTolken = new Tolken();
+			blockOpenTolken.expression = /^\{/;
+			blockOpenTolken.found = reportfound('block open');
+
+			var blockCloseTolken = new Tolken();
+			blockCloseTolken.expression = /^\}/;
+			blockCloseTolken.found = reportfound('block close');
+
+
+			var defaultClass = new SequentialTolken();
+			defaultClass.tolkens = [classAccessModifierTolken,classDefinitionTolken,identifierTolken,blockOpenTolken,blockCloseTolken];
+			defaultClass.found = reportfound('defult class');
+			
+			console.info(defaultClass.validate(expression));
+			var attribuitionTolken = new Tolken();
+			attribuitionTolken.expression = /^\s*=\s*/;
 		};
 	</script>
 	<style type="text/css">
@@ -53,13 +54,7 @@
 </head>
 <body>
 	<button onclick="run();">RUN</button><br />
-	<textarea id="code" rows="20" cols="60" class="console">MOV ax, 0101
-MOV BX, ax
-mov [00a0],bx
-mov [00a1],[00a0]
-mov cx,[00a1]
+	<textarea id="code" rows="20" cols="60" class="console">
 	</textarea>
-	
-	<textarea id="console" rows="20" cols="60" class="console"></textarea>
 </body>
 </html>
