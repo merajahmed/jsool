@@ -51,8 +51,6 @@ js.html.Element = $extends(js.core.Object,{
 			keydown:[],keyup:[],keypress:[],
 			load:[],unload:[],abort:[],error:[],resize:[],scroll:[]
 		};
-		
-		js.html.Element.cache(this);
 	},
 	tag: null,
 	/**
@@ -61,10 +59,6 @@ js.html.Element = $extends(js.core.Object,{
 	global: {
 		count:0
 	},
-	/**
-	 * @property {string} commom id used to cache the element on global elements cache
-	 */
-	jsoolId: null,
 	/**
 	 * @property {js.util.List} the children elements of this Element
 	 */
@@ -410,9 +404,6 @@ js.html.Element = $extends(js.core.Object,{
 	 * Destroys this element
 	 */
 	destroy: function(){
-		//Remove from global element cache
-		js.html.Element.CACHE.remove(this.id);
-		
 		//Remove from dom
 		if(this.getParent() != null){
 			this.getParent().remove(this);
@@ -430,10 +421,7 @@ js.html.Element = $extends(js.core.Object,{
 },'js.html.Element');
 
 
-//Elements Cache
-
 jsool.onSystemReady(function(){
-	js.html.Element.CACHE = new js.util.HashMap();
 	js.html.Element.BODY = new js.html.Element(document.getElementsByTagName('body')[0]);
 	
 	var brw = js.core.Browser;
@@ -446,54 +434,3 @@ jsool.onSystemReady(function(){
 		js.html.Element.BODY.addClass('opera');
 	}
 });
-
-/**
- * @function
- * Gets an element from cache or force creation
- * 
- * @param {string} dom the id of the dom elements
- * @param {HTMLElement} dom the existing dom of the element
- * 
- * @return {js.html.Element} an element
- */
-js.html.Element.get = function(dom){
-	var cache = js.html.Element.CACHE;
-	if(typeof dom == 'string'){
-		var el = cache.get(dom);
-		
-		if(el == null){
-			el = document.getElementById(dom);
-			return el == null ? null : new js.html.Element(el); 
-		}
-		
-		return el;
-		
-		if(cached == null){
-			return new js.html.Element(el);
-		}else{
-			return cached;
-		}
-		
-	}else if(typeof dom == 'object'){
-		var el = cache.get(dom.getAttribute('id'));
-		
-		if(el == null){
-			return new js.html.Element(dom);
-		}else{
-			return el;
-		}
-	}
-};
-
-/**
- * @function
- * Caches an element into the global elements cache.
- * this function is called automatcally by the elements constructor
- * 
- * @param {js.html.Element} element A valid element
- * 
- * @throws {js.core.Exception} if the argument is not an instance of <code>js.html.Element</code>
- */
-js.html.Element.cache = function(element){
-	js.html.Element.CACHE.put(element.getId(), element);
-};

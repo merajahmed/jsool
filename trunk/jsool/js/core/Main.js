@@ -54,7 +54,7 @@ var jsool = (function(){
 		/**
 		 * returns tha system time in milli-seconds
 		 */
-		time: function(){return (new Date()).getTime();},
+		time: function(){return+new Date;},
 		start: function(){
 			documentReady = true;
 			that.prepareSystem();
