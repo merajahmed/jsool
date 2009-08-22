@@ -1,0 +1,18 @@
+#summary Extended default JavaScript String object API
+#labels API
+
+=Class Array=
+*Package:*<br/>
+*File:* [http://code.google.com/p/jsool/source/browse/trunk/jsool/js/core/String.js String.js]<br/>
+*Extends:* Object<br/>
+----
+The String object is used to manipulate a stored piece of text.
+===Static Methods===
+|| *Name* || *Parameters* || * Description * ||
+||isString||Object object||Checks if _object_ is a String||
+
+===Public Methods===
+|| *Name* || *Parameters* || *Description* ||
+||replaceAll||String regexp||Replaces all ocurrences of _regexp_ on the String||
+||toCharArray||_void_||Returns an array with the chars on String||
+||trim||_void_||Removes white spaces on the begin and the end of the String||
