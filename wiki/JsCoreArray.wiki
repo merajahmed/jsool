@@ -1,0 +1,24 @@
+#summary Extended default JavaScript Array object API
+#labels API
+
+=Class Array=
+*Package:*
+*File:* [http://code.google.com/p/jsool/source/browse/trunk/jsool/js/core/Array.js Array.js]
+*Extends:* Object
+---
+The Array object is used to store multiple values in a single variable.
+===Static Methods===
+||*Name*||*Parameters*||*Description*||
+||isArray||Object:object||Checks if _object_ is an Array||
+
+===Public Methods===
+||*Name*||*Parameters*||*Description*||
+||shuffle||_void_||Shuffles the current array elements||
+||forEach||Function action||Runs _action_ for each element on the array||
+||every||Function action||Returns `true` if _action_ returns true for every element on array||
+||filter||Function action||Returns a new array with the elements that returns `true` for _action_||
+||map||Function action||Returns a new array with the result of _action_ for each element on the array||
+||indexOf||Object element||Retuns the index of the _element_ on the array||
+||concat||Array... arrays||Retuns the result of the concatenation of the arrays||
+||sum||_void_||Retuns the result of the sum of all elements on the arrays||
+||accumulates||Function action||Returns the sum of the results of _action_ for each element on the array||
