@@ -1,7 +1,7 @@
 #summary Global Browser object API
 #labels API
 
-=Class Array=
+=Class Browser=
 *Package:* js.core<br/>
 *File:* [http://code.google.com/p/jsool/source/browse/trunk/jsool/js/core/Browser.js Browser.js]<br/>
 *Extends:* Object<br/>
