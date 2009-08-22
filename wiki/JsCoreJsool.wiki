@@ -1,0 +1,16 @@
+#summary Defines the global library object
+#labels API
+
+=Object jsool=
+*Package:*<br/>
+*File:* [http://code.google.com/p/jsool/source/browse/trunk/jsool/js/core/Main.js Main.js]<br/>
+*Extends:* Object<br/>
+----
+`jsool` is an utilitary object that have some useful core methods and is the base of class iheritancement of the library.
+===Static Methods===
+|| *Name* || *Parameters* || * Description * ||
+||onReady||Function action||Adds _action_ to the list of functions that needs to run only after the page is ready||
+||onSystemReady||Function action||Adds _action_ to a list of functions that prepares the library to run. `onSystemReady` runs before `onReady`.||
+||time||_void_||Returns the current system time in milliseconds||
+||apply||Object object, Object source, Object default(Optional)||Copy all properties from _source_ to _object_||
+||$extends||Class parent, Object prototype, String className||Creates a new class extending _parrent_ and using _prototype_ attributes and methods||
