@@ -5,14 +5,14 @@
 *Package:*<br/>
 *File:* [http://code.google.com/p/jsool/source/browse/trunk/jsool/js/core/Array.js Array.js]<br/>
 *Extends:* Object<br/>
----
+----
 The Array object is used to store multiple values in a single variable.
 ===Static Methods===
-||= Name =|| *Parameters* || * Description * ||
+|| *Name* || *Parameters* || * Description * ||
 ||isArray||Object object||Checks if _object_ is an Array||
 
 ===Public Methods===
-||*Name*||*Parameters*||*Description*||
+|| *Name* || *Parameters* || *Description* ||
 ||shuffle||_void_||Shuffles the current array elements||
 ||forEach||Function action||Runs _action_ for each element on the array||
 ||every||Function action||Returns `true` if _action_ returns true for every element on array||
