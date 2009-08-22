@@ -1,0 +1,9 @@
+#summary Exception class API
+#labels API
+
+=Class Exception=
+*Package:* js.core<br/>
+*File:* [http://code.google.com/p/jsool/source/browse/trunk/jsool/js/core/Exception.js Exception.js]<br/>
+*Extends:* [JsCoreObject js.core.Object]<br/>
+----
+Helps getting information about errors that occuros on the running application
