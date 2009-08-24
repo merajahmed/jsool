@@ -70,6 +70,7 @@ if(!Array.prototype.filter){
 	};
 }
 
+
 if(!Array.prototype.map){
 	Array.prototype.map = function(action){
 		var length = this.length;
@@ -108,6 +109,7 @@ Array.prototype.concat = function(){
 			result.push(arr[b]);
 		}
 	}
+	return result;
 };
 
 Array.prototype.sum = function() {

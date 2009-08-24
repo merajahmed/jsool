@@ -1,7 +1,7 @@
 /*
 * UNDO HTML DEFAULT STYLES
 */
-*, a, a:link, a:visited, a:hover, a:active, button {
+*, a, a:link, a:visited, a:hover, a:active {
 	font: normal normal normal 12px Verdana;
 	background: transparent;
 	border: 0;
@@ -18,19 +18,3 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 * The button style must be set as the IE explorer shows. *
 ** * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-.wgt-button{
-	background-color: #DFEAF8;
-	border: solid 1px #C5CDE2;
-	padding: 0px 22px 1px 22px;
-	margin: 2px;
-}
-
-.wgt-button:active{
-	background-color: #A9C4E6;
-	border: solid 1px #4D77AB;
-}
-.ie .wgt-button{padding: 0px;}
-.opera .wgt-button{padding: 1px 25px 4px 25px;}
-.ff .wgt-button{-moz-border-radius: 4px;}
-.wk .wgt-button{-webkit-border-radius: 4px;}
