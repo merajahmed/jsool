@@ -3,8 +3,9 @@
 
 = Performance Tips =
 
+  * [PerformanceTips#For_Loops For Loops]
+
 == For Loops ==
-" _Wich is the fastest way to implements a for loop?_ "
 
 *Case 1:* Simple index loop;
 {{{
