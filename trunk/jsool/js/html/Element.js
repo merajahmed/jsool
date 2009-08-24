@@ -24,12 +24,7 @@ js.html.Element = $extends(js.core.Object,{
 		this.global.count++;
 		
 		if(type == 'string' && tags.test(obj)){
-			this.tag = obj;
-			this.cachedAttributes = {};
-			this.cachedCss = {};
-			this.cachedClasses = '';
-			this.cachedText = '';
-			//this.dom = document.createElement(obj);
+			this.dom = document.createElement(obj);
 		}else if(type == 'object' && obj.tagName){
 			this.dom = obj;
 			this.tag = obj.tagName;
@@ -39,7 +34,6 @@ js.html.Element = $extends(js.core.Object,{
 			}else{
 				this.dom.id = this.id;
 			}
-			
 		}else{
 			throw new js.core.Exception('Invalid tag: ' + obj, this);
 		}
@@ -70,51 +64,12 @@ js.html.Element = $extends(js.core.Object,{
 	/**
 	 * @property {js.html.Element} parent element
 	 */
-	parent: null,
-	/**
-	 * @property {object} stores the element attributes until the dom be created 
-	 */
-	cachedAttributes: null,
-	/**
-	 * @property {object} stores the element css styles until the dom be created 
-	 */
-	cachedCss: null,
-	/**
-	 * @property {object} stores the element css classes until the dom be created 
-	 */
-	cachedClasses: null,
-	/**
-	 * @property {string} stores the element inner text until the dom be created
-	 */
-	cachedText: null,
+	parent: null,	
 	/**
 	 * @function Returns the dom of the Element
 	 * @return {HTMLElement} Element's dom
 	 */
 	getDom: function(){
-		if(!this.dom){
-			var temp;
-			
-			this.dom = document.createElement(this.tag);
-			var el = this.dom;
-			el.id = this.id;
-			
-			temp = this.cachedAttributes;
-			delete this.cachedAttributes;
-			this.setAttribute(temp);
-			
-			temp = this.cachedCss;
-			delete this.cachedCss;
-			this.applyStyle(temp);
-			
-			temp = this.cachedClasses;
-			delete this.cachedClasses;
-			this.addClass(temp);
-			
-			temp = this.cachedText;
-			delete this.cachedText;
-			this.setText(temp);
-		}
 		return this.dom;
 	},
 	/**
@@ -131,21 +86,11 @@ js.html.Element = $extends(js.core.Object,{
 		if(arguments.length == 2 && typeof arguments[0] == 'string'){
 			var name = arguments[0];
 			var value = arguments[1];
-			if(this.cachedAttributes){
-				this.cachedAttributes[name] = value;
-			}else{
-				this.dom.setAttribute(name, value);
-			}
+			this.dom.setAttribute(name, value);
 		}else if(arguments.length == 1 && typeof arguments[0] == 'object'){
 			var options = arguments[0];
-			if(this.cachedAttributes){
-				for(var p in options){
-					this.cachedAttributes[p] = options[p];
-				}
-			}else{
-				for(var p in options){
-					this.dom.setAttribute(p, options[p]);
-				}
+			for(var p in options){
+				this.dom.setAttribute(p, options[p]);
 			}
 		}
 	},
@@ -158,11 +103,7 @@ js.html.Element = $extends(js.core.Object,{
 	 * @return {string} value of the attribute
 	 */
 	getAttribute: function(name){
-		if(this.cachedAttributes){
-			return this.cachedAttributes[name];
-		}else{
-			return this.dom.getAttribute(name);
-		}
+		return this.dom.getAttribute(name);
 	},
 	/**
 	 * @function
@@ -181,15 +122,18 @@ js.html.Element = $extends(js.core.Object,{
 	 * @throws {js.core.Exception} if the object is not an instance of js.html.Element
 	 */
 	append: function(child){
-		if(!child.instanceOf(js.html.Element))
-			throw new js.core.Exception('Invalid argument type',this, arguments);
-		
-		if(child.parent != null){
-			child.parent.remove(child);
+		var type = typeof child;
+		if(type == 'string'){
+			this.dom.innerHTML = this.dom.innerHTML + child;
+		}else if(type == 'object'){
+			if(child.nodeType){
+				this.dom.appendChild(child.getDom());
+			}else if(child.instanceOf(js.html.Element)){
+				this.dom.appendChild(child.getDom());
+				if(child.parent)child.parent.remove(child);
+				child.parent = this;
+			}
 		}
-		
-		this.getDom().appendChild(child.getDom());
-		child.parent = this;
 	},
 	/**
 	 * @function
@@ -215,8 +159,6 @@ js.html.Element = $extends(js.core.Object,{
 	 * @return {string} the elements tag name
 	 */
 	tag: function(){
-		if(this.cachedAttributes)
-			return this.tag;
 		return this.dom.tagName;
 	},
 	/**
@@ -258,7 +200,7 @@ js.html.Element = $extends(js.core.Object,{
 	 * 
 	 */
 	destroyListeners: function(){
-		if(!this.dom)return;		
+		if(!this.dom)return;
 		var w3c = this.dom.addEventListener != undefined;
 		var len;
 		
@@ -293,13 +235,9 @@ js.html.Element = $extends(js.core.Object,{
 	 * @param {string} name The name of the CSS class
 	 */
 	addClass: function(name){
-		if(this.cachedClasses != undefined){
-			this.cachedClasses = this.cachedClasses + name + ' ';
-		}else{
-			var current = this.dom.className;
-			name = name.trim();
-			this.dom.className = (current+name+' ');
-		}
+		var current = this.dom.className.split(' ');
+		current.push(name.trim());
+		this.dom.className = current.join(' ');
 	},
 	/**
 	 * @function
@@ -308,11 +246,7 @@ js.html.Element = $extends(js.core.Object,{
 	 * @param {string} name The name of the CSS class
 	 */
 	removeClass: function(name){
-		if(this.cachedClasses != undefined){
-			this.cachedClasses = this.cachedClasses.replace(name.trim(), '');
-		}else{
-			this.dom.className = this.dom.className.replace(name.trim(),'');
-		}
+		this.dom.className = this.dom.className.replace(name.trim(),'');
 	},
 	/**
 	 * @function
@@ -323,22 +257,13 @@ js.html.Element = $extends(js.core.Object,{
 	 * 
 	 * @param {object} collection of attributes and its values
 	 */
-	applyStyle: function(arg1, arg2){
-		if(this.cachedCss){
-			if(typeof arg1 == 'string'){
-				this.cachedCss[arg1] = arg2;
-			}else if(typeof arg1 == 'object'){
-				for(var prop in arg1)
-					this.cachedCss[prop] = arg1[prop];
-			}
-		}else{
-			var style = this.dom.style;
-			if(typeof arg1 == 'string'){
-				style[arg1] = arg2;
-			}else if(typeof arg1 == 'object'){
-				for(var prop in arg1)
-					style[prop] = arg1[prop];
-			}
+	applyStyle: function(arg1, arg2){		
+		var style = this.dom.style;
+		if(typeof arg1 == 'string'){
+			style[arg1] = arg2;
+		}else if(typeof arg1 == 'object'){
+			for(var prop in arg1)
+				style[prop] = arg1[prop];
 		}
 	},
 	/**

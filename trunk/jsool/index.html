@@ -44,7 +44,10 @@
 	
 	<script type="text/javascript">
 		jsool.onReady(function(){
-			
+			var el = new js.html.Element('button');
+			el.setText('Botaum');
+			js.html.Element.BODY.append(el);
+			el.append("<p>mas que legal heim</p>");
 		});
 	</script>
 
@@ -57,14 +60,14 @@
 		</tr>
 		<tr>
 			<td>Soma de Y:</td>
-			<td id="sumy">&#160;</td>
+			<td id="sumy" class="a">&#160;</td>
 		</tr>
-		<tr>
+		<tr class="a">
 			<td>Soma de X2:</td>
 			<td id="sumx2">&#160;</td>
 		</tr>
 		<tr class="a">
-			<td>Soma de XY:</td>
+			<td class="a">Soma de XY:</td>
 			<td id="sumxy">&#160;</td>
 		</tr>
 	</table>
