@@ -16,9 +16,11 @@ String.prototype.toCharArray = function(){
 	}
 	return chars;
 };
-String.prototype.trim = function(){
-	return this.replace(/^\s*([\S\s]*?)\s*$/, '$1');
-};
+if(!String.prototype.trim){
+	String.prototype.trim = function(){
+		return this.replace(/^\s*([\S\s]*?)\s*$/, '$1');
+	};
+}
 String.prototype.insert = function(key, value){
 	return this.replaceAll("[\\{]"+key+"[\\}]", value);
 };

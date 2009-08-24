@@ -34,6 +34,7 @@ js.html.Element = $extends(js.core.Object,{
 			}else{
 				this.dom.id = this.id;
 			}
+			
 		}else{
 			throw new js.core.Exception('Invalid tag: ' + obj, this);
 		}
@@ -182,6 +183,7 @@ js.html.Element = $extends(js.core.Object,{
 				event = event || window.event;
 				handler.apply(that, [event]);
 			};
+			//Stores for removal after destroy
 			this.events[event].push(handlerFunction);
 			
 			if(dom.addEventListener){
@@ -246,7 +248,11 @@ js.html.Element = $extends(js.core.Object,{
 	 * @param {string} name The name of the CSS class
 	 */
 	removeClass: function(name){
-		this.dom.className = this.dom.className.replace(name.trim(),'');
+		if(this.cachedClasses != undefined){
+			this.cachedClasses = this.cachedClasses.replace(name.trim(), '');
+		}else{
+			this.dom.className = this.dom.className.replace(name.trim(),'');
+		}
 	},
 	/**
 	 * @function
@@ -340,6 +346,12 @@ js.html.Element = $extends(js.core.Object,{
 		
 		//Destroy listeners
 		this.destroyListeners();
+		
+		//kill dom attributes
+		for(var a in this.dom){
+			this.dom[a] = null;
+		}
+		
 		//Delete DOM
 		delete this.dom;
 	}

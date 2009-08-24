@@ -42,14 +42,10 @@
 	<script type="text/javascript" src="js/widget/Component.js"></script>
 	<script type="text/javascript" src="js/widget/Button.js"></script>
 	
-	<script type="text/javascript">
-		jsool.onReady(function(){
-			var el = new js.html.Element('button');
-			el.setText('Botaum');
-			js.html.Element.BODY.append(el);
-			el.append("<p>mas que legal heim</p>");
-		});
-	</script>
+	
+	
+	<!-- <script type="text/javascript" src="http://extjs.com/deploy/dev/docs/resources/ext-base.js"></script>
+	<script type="text/javascript" src="http://extjs.com/deploy/dev/docs/resources/ext-all.js"></script> -->
 
 </head>
 <body>
@@ -59,10 +55,10 @@
 			<td id="sumx">&#160;</td>
 		</tr>
 		<tr>
-			<td>Soma de Y:</td>
-			<td id="sumy" class="a">&#160;</td>
+			<td class="a">Soma de Y:</td>
+			<td id="sumy">&#160;</td>
 		</tr>
-		<tr class="a">
+		<tr>
 			<td>Soma de X2:</td>
 			<td id="sumx2">&#160;</td>
 		</tr>
@@ -71,5 +67,6 @@
 			<td id="sumxy">&#160;</td>
 		</tr>
 	</table>
+	<textarea rows="20" cols="60" id="area"></textarea>
 </body>
 </html>
