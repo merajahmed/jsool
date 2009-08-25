@@ -19,7 +19,7 @@ Using a new variable to store the array length, makes no diference to performanc
 *Case 2:* Loop and reference current item into a variable:
 {{{
     var array = new Array(10000);
-    for( var i = 0, item; item = array[i]; i++){
+    for( var i = 0, item; item = array[i++];){
         //... do stuff with "item"
     }
 }}}
