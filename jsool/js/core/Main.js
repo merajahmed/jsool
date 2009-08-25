@@ -65,18 +65,28 @@ var jsool = (function(){
 			return systemReady && documentReady;
 		},
 		emptyFn: function(){return undefined;},
-		
 		apply: function(object, source, defaults){
 			if(defaults){
 				jsool.apply(object, defaults);
 			}
-			
 			if(object && source && typeof source == 'object'){
 				for(var p in source){
 					object[p] = source[p];
 				}
 			}
-			
+			return object;
+		},
+		isDefined: function(i){
+			return typeof i !== 'undefined';
+		},
+		applyIf: function(object, source){
+			if(object){
+				for(var p in source){
+					if(!jsool.isDefined(object[p])){
+						object[p] = source[p];
+					}
+				}
+			}
 			return object;
 		}
 	};
@@ -91,6 +101,7 @@ jsool.$extends = function(superclass, prototype, type){
 		return null;
 	}
 	
+	//ImplicitySuperConstructor
 	if(prototype['cons'] && typeof prototype['cons'] == 'function'){
 		cls = (function(constructor, parent){
 			
@@ -102,7 +113,7 @@ jsool.$extends = function(superclass, prototype, type){
 				constructor.apply(this, arguments);
 			};
 		})();
-		
+	//ClassConstructor	
 	}else if(prototype['ccons'] && typeof prototype['ccons'] == 'function'){
 		cls = (function(){
 			var constructor = prototype['ccons'];
