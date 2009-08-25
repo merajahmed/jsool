@@ -1,3 +1,5 @@
+//For performance testing
+// var res;var s = +new Date; var i=10000;while(--i)res = js.html.DomQuery.get("table tr .a");(+new Date) - s;
 js.html.DomQuery = (function(){
 	var selectorCache = {};
 	var qTIR= /^(#)?([\w-\*]+)/;//Query Type Identifier Regexp
@@ -19,9 +21,9 @@ js.html.DomQuery = (function(){
 			ctx = [ctx];
         }
 		tag = tag || "*";
-		for(var i = 0, node; node = ctx[i];i++){
+		for(var i = 0, node; node = ctx[i++];){
 			childs = node.getElementsByTagName(tag);
-			for(var j = 0, child; child = childs[j]; j++){
+			for(var j = 0, child; child = childs[j++];){
 				nodes.push(child);
 			}
 		}
@@ -37,7 +39,7 @@ js.html.DomQuery = (function(){
 			ctx = [ctx];
 		}
 		var nodes = [];
-		for(var i = 0, node; node = ctx[i];i++){
+		for(var i = 0, node; node = ctx[i++];){
 			if(node.nodeType == 1 && node.tagName == tag){
 				nodes.push(node);
 			}
@@ -49,7 +51,7 @@ js.html.DomQuery = (function(){
 		if(ctx.nodeType){
 			ctx = [ctx];
 		}
-		for(var i = 0, node; node = ctx[i];i++){
+		for(var i = 0, node; node = ctx[i++];){
 			if(node.id == id){
 				return [node];
 			}
@@ -59,7 +61,7 @@ js.html.DomQuery = (function(){
 	
 	function byClass(ctx, cls){
 		var nodes = [];
-		for(var i = 0, node; node = ctx[i]; i++){
+		for(var i = 0, node; node = ctx[i++];){
 			if(node.className == cls){
 				nodes.push(node);
 			}
@@ -108,6 +110,7 @@ js.html.DomQuery = (function(){
 			}
 		}
 		fn.push('return ctx;};');
+		var i = 10000;
 		eval(fn.join(''));
 		return query;
 	}
@@ -120,27 +123,31 @@ js.html.DomQuery = (function(){
 			selector = selector || document;//assure that theres a selector
 			context = context || document;//assure that thres a context
 			
-			if(typeof selector == "string" && typeof context == "object"){
+			if(typeof selector == "string"){
 				selector = selector.trim();
-				var batch;
-				if(!(batch = selectorCache[selector])){					
-					batch = compile(selector);
-					selectorCache[selector] = batch;
+				
+				var batch, result, results = [];
+				var parts = selector.split(',');
+				
+				for(var i = 0, part;part = parts[i++];){
+					part = part.trim();
+					if(!(batch = selectorCache[part])){
+						batch = compile(part);
+						selectorCache[part] = batch;
+					}
+					result = batch(context);
+					if(parts.length == 1){
+						return result;
+					}else{
+						results = results.concat(result);
+					}
 				}
-				return batch(context);
+				return results;
 			}else if(typeof selector == "object"){
 				if(selector.nodeType){ //if its a DOMElement, return it
 					return [selector];
 				}
 			}
-		},
-		/**
-		 * Returns true if the element match with the selector 
-		 */
-		match: function(element, selector){
-			
 		}
 	};
 })();
-
-jsool.get = js.html.DomQuery.get;
