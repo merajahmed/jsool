@@ -2,11 +2,19 @@ function emptyFn(){return undefined;}
 function LexicalElement(){}
 LexicalElement.prototype={found:emptyFn,validate:emptyFn,failure: emptyFn};
 
+/**
+ * ExpressionElement
+ * 
+ * Validates a string using a {@link RegExp}
+ */
 function ExpressionElement(regexp){
 	if(regexp)this.expression = regexp;
 }
 ExpressionElement.prototype = new LexicalElement();
 ExpressionElement.prototype.expression = /^.*/;
+ExpressionElement.prototype.clone = function(){
+	return new ExpressionElement(this.expression);
+};
 ExpressionElement.prototype.validate = function(expression, offset){
 	offset = offset || 0;
     while(expression.charAt(offset) == ' ') offset++;
@@ -20,6 +28,12 @@ ExpressionElement.prototype.validate = function(expression, offset){
     return offset + match[0].length;
 };
 
+
+/**
+ * ElementChain
+ * 
+ * Validates a string using a collection of {@link LexicalElement} disposed as a chain
+ */
 function ElementChain(els){
 	this.elements = [];
 	if(!els)els = arguments;
@@ -31,6 +45,12 @@ function ElementChain(els){
 }
 ElementChain.prototype = new LexicalElement();
 ElementChain.prototype.elements = [];
+ElementChain.prototype.clone = function(){
+	var els = [];
+	for(var i = 0,item;item = this.elements[i++];)
+		els.push(item);
+	return new ElementChain(els);
+};
 ElementChain.prototype.validate = function(expression, offset){
         offset = offset || 0;
         var currentOffset = offset;
@@ -47,6 +67,11 @@ ElementChain.prototype.validate = function(expression, offset){
         return currentOffset;
 };
 
+/**
+ * ElementStack
+ * 
+ * Validates a string using a collection of {@link LexicalElement} disposet as s stack
+ */
 function ElementStack(els){
 	this.elements = [];
 	if(!els)els = arguments;
@@ -58,6 +83,12 @@ function ElementStack(els){
 
 ElementStack.prototype = new LexicalElement();
 ElementStack.prototype.elements = [];
+ElementStack.prototype.clone = function(){
+	var els = [];
+	for(var i = 0,item;item = this.elements[i++];)
+		els.push(item);
+	return new ElementStack(els);
+};
 ElementStack.prototype.validate = function(expression, offset){
         offset = offset || 0;
         var valid;
@@ -72,11 +103,17 @@ ElementStack.prototype.validate = function(expression, offset){
         return -1;
 };
 
+/**
+ * short hand to create a {@link ExpressionElement}
+ */
 function expression(expr){
 	if(!expr) throw "Null expression";
 	var el = new ExpressionElement(expr);
 	return el;
 }
+/**
+ * short hand to create a {@link ElementChain}
+ */
 function chain(){
 	if(arguments.length <= 1) throw Error("Invalid number of elements");
 	var arr = [];
@@ -85,6 +122,9 @@ function chain(){
 	return el;
 }
 
+/**
+ * short hand to create a {@link ElementStack}
+ */
 function stack(){
 	if(arguments.length <= 1) throw Error("Invalid number of elements");
 	var arr = [];
@@ -92,6 +132,73 @@ function stack(){
 	var el = new ElementStack(arr);
 	return el;
 }
+
+
+
+
+
+var NativeClassBuilder = (function(){
+	var pack = new String();
+	var clsName = new String();
+	var parent = new String();
+	var methods = {};
+	
+	return {
+		'package': function(string){
+			var pkname = string.trim();
+			pkname = pkname.substring('package '.length,pkname.length - 1);
+			pack = pkname;
+		},
+		'class': function(string){
+			var cname = string.trim().substring('native '.length);
+			clsName = cname;
+		},
+		'method': function(string){
+			var signature = string.trim().replace(/\s+/,' ');
+			console.info(methods);
+			if(methods[signature]){
+				throw new Error('Illegal method signature: '+signature);
+			}else{
+				signature = signature.substring('function '.length);
+				var args = signature.match(/\((.+)\)/);
+				splited = signature.split(/\s/);
+				var name = splited[1];
+				var type = splited[0];
+				
+				var arguments = [];
+				if(args){
+					args = args[1].split(',');
+					
+					for(var i = 0, arg;arg = args[i++];){
+						parts = arg.split(' ');
+						arguments.push({
+							type: parts[0],
+							name: parts[1]
+						});
+					}
+				}
+				
+				methods[signature]={
+					name:name,
+					type:type,
+					arguments:arguments
+				};
+			}
+		},
+		'extends': function(string){
+			var p = string.trim().substring('extends '.length);
+			parent = p;
+		},
+		getClass: function(){
+			return {
+				pack:pack,
+				name:clsName,
+				parent:parent,
+				methods:methods
+			};
+		}
+	};
+})();
 var compiler;
 (function(){
 	//GENERAL USE EXPRESSION ELEMENTS
@@ -104,9 +211,13 @@ var compiler;
 	var SEMI_COLON = expression(/^[;]/);
 	var NATIVE = expression(/^native/);
 	var EXTENDS = expression(/^extends/);
+	var PUBLIC = expression(/^public/);
+	var FUNCTION = expression(/^function/);
 	var STRING_END = expression(/^$/);
 	var OPEN_BLOCK = expression(/^{/);
 	var CLOSE_BLOCK = expression(/^}/);
+	var OPEN_ARGS = expression(/^\(/);
+	var CLOSE_ARGS = expression(/^\)/);
 	
 	/*
 	 * identifier.identifier.identifier. ...
@@ -124,6 +235,7 @@ var compiler;
 	 */
 	var packageStatement = (function(){
 		var packagestmt = chain(PACKAGE, fullName, SEMI_COLON,BLANK);
+		packagestmt.found = NativeClassBuilder['package'];
 		return packagestmt;
 	})();
 	
@@ -144,15 +256,39 @@ var compiler;
 	 */
 	var extendsStatement = (function(){
 		var extendsstmt = stack(chain(EXTENDS, IDENTIFIER), BLANK);
+		extendsstmt.found = NativeClassBuilder['extends'];
 		return extendsstmt;
+	})();
+	
+	var nativeClassMethods = (function(){
+		var argsSerie = chain(IDENTIFIER,IDENTIFIER,COMMA);
+		var argsNames = stack(argsSerie, chain(IDENTIFIER, IDENTIFIER));
+		argsSerie.elements.push(argsNames);
+		
+		var methodName = IDENTIFIER.clone();
+		var methodType = IDENTIFIER.clone();
+		var methodSignature = chain(FUNCTION,methodType,methodName,OPEN_ARGS,argsNames,CLOSE_ARGS,SEMI_COLON);
+		methodSignature.found = NativeClassBuilder['method'];
+		
+		var methodsSerie = chain(methodSignature,BLANK);
+		var methodsNames = stack(methodsSerie,BLANK);
+		methodsSerie.elements.push(methodsNames);
+		
+		return methodsNames; 
 	})();
 	
 	/*
 	 * Elements that may be inside a native class
 	 */
 	var nativeClassBody = (function(){
-		var nativeBody = chain(OPEN_BLOCK,CLOSE_BLOCK);
+		var nativeBody = chain(OPEN_BLOCK,nativeClassMethods,CLOSE_BLOCK);
 		return nativeBody;
+	})();
+	
+	var nativeClassName = (function(){
+		var className = chain(NATIVE, IDENTIFIER);
+		className.found = NativeClassBuilder['class'];
+		return className;
 	})();
 	
 	/*
@@ -162,8 +298,7 @@ var compiler;
 		var nativecls = chain(
 				packageStatement, //package definition
 				importStatements, //Define imports
-				NATIVE, //its a native class
-				IDENTIFIER,//the name of the class
+				nativeClassName,//the name of the class
 				extendsStatement, //Extends a class
 				nativeClassBody,
 				STRING_END);
@@ -171,6 +306,7 @@ var compiler;
 	})();
 	
 	var compileNativeClass = function(code){
+		code = code.replace(/\n/g,"");
 		return nativeClass.validate(code);
 	};
 	
