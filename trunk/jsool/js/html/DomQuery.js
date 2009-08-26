@@ -1,5 +1,7 @@
 //For performance testing
 // var res;var s = +new Date; var i=10000;while(--i)res = js.html.DomQuery.get("table tr .a");(+new Date) - s;
+// REFERENCE
+// http://www.w3.org/TR/2005/WD-css3-selectors-20051215/#selectors
 js.html.DomQuery = (function(){
 	var selectorCache = {};
 	var qTIR= /^(#)?([\w-\*]+)/; //Query Type Identifier Regexp
@@ -7,6 +9,7 @@ js.html.DomQuery = (function(){
 	var byClassRe = /^\.([\w-]+)/;
 	var byAttributeRe = /^\[([\w]+)(.*[=])?(\w+)?]/;
 	var digitRe = /\{(\d+)\}/g;
+	var pseudoRe = /^:[\w]+(-[\w]+)?(\(.+\))?/;
 	
 	function getId(ctx, id){
 		if(ctx.getElementById){
@@ -82,6 +85,10 @@ js.html.DomQuery = (function(){
 	    "~=":function(a, v){return a && (' '+a+' ').indexOf(' '+v+' ') != -1;}
 	};
 	
+	var pseudo = {
+		'root':null
+	};
+	
 	function byAttribute(ctx,attr,operation,value){
 		var result=[], val;
 		attr = attr == "className" ? "class" : attr;
@@ -144,6 +151,11 @@ js.html.DomQuery = (function(){
 				fn.push("ctx=byAttribute(ctx,\"{1}\",\"{2}\",\"{3}\");".replace(digitRe,function(macth, index){
 					return m[index];
 				}));
+				selector = selector.replace(m[0],"");
+				found = true;
+			}else
+				
+			if((m = selector.match(pseudoRe))){
 				selector = selector.replace(m[0],"");
 				found = true;
 			}
