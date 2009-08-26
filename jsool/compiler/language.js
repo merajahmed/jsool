@@ -124,7 +124,6 @@ var compiler;
 	 */
 	var packageStatement = (function(){
 		var packagestmt = chain(PACKAGE, fullName, SEMI_COLON,BLANK);
-		packagestmt.failure = function(a){console.error(a);};
 		return packagestmt;
 	})();
 	
