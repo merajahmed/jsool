@@ -4,6 +4,12 @@
 	
 	<link rel="stylesheet" type="text/css" href="css/widget.css"></link>
 	
+	<style type="text/css">
+		.border{
+			border: solid 1px #000000;
+		}
+	</style>
+	
 	<script type="text/javascript" src="js/core/Main.js"></script>
 	<script type="text/javascript" src="js/core/Browser.js"></script>
 	<script type="text/javascript" src="js/core/Object.js"></script>
@@ -43,27 +49,20 @@
 	<script type="text/javascript" src="js/widget/Button.js"></script>
 	
 	<script type="text/javascript" src="compiler/language.js"></script>
+	
+	<script type="text/javascript">
+	jsool.onReady(function(){
+		var bt = new js.html.Element(js.html.DomQuery.get('#compile')[0]);
+		bt.addListener('mouseup', function(event){
+			alert(compiler['native'](js.html.DomQuery.get('#area')[0].value.trim()));
+		});
+	});
+	</script>
 
 </head>
 <body>
-	<table class="a">
-		<tr>
-			<td>Soma de X:</td>
-			<td id="sumx">&#160;</td>
-		</tr>
-		<tr>
-			<td class="a">Soma de Y:</td>
-			<td id="sumy">&#160;</td>
-		</tr>
-		<tr>
-			<td>Soma de X2:</td>
-			<td id="sumx2">&#160;</td>
-		</tr>
-		<tr class="a">
-			<td class="a">Soma de XY:</td>
-			<td id="sumxy">&#160;</td>
-		</tr>
-	</table>
-	<textarea rows="20" cols="60" id="area"></textarea>
+	<button id="calculate"class="border">Calculate</button><br>
+	<button id="compile" class="border">Compile</button><br>
+	<textarea class="border" rows="20" cols="60" id="area"></textarea>
 </body>
 </html>
