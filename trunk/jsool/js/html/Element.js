@@ -1,3 +1,34 @@
+/*  JSOOL - JavaScript Object Oriented Library 
+ *
+ *  Copyright (c) 2009, Mikhail Domanoski.
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without modification,
+ *  are permitted provided that the following conditions are met:
+ *
+ *      * Redistributions of source code must retain the above copyright notice,
+ *        this list of conditions and the following disclaimer.
+ *
+ *      * Redistributions in binary form must reproduce the above copyright notice,
+ *        this list of conditions and the following disclaimer in the documentation
+ *        and/or other materials provided with the distribution.
+ *
+ *      * Neither the name of Mikhail Domanoski nor the names of its
+ *        contributors may be used to endorse or promote products derived from this
+ *        software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ *  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ *  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ *  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ *  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 /**
  * @class js.html.Element
  * @extends js.util.Observable
@@ -46,6 +77,8 @@ js.html.Element = $extends(js.core.Object,{
 			keydown:[],keyup:[],keypress:[],
 			load:[],unload:[],abort:[],error:[],resize:[],scroll:[]
 		};
+		
+		js.html.Element.cache(this);
 	},
 	tag: null,
 	/**
@@ -237,7 +270,7 @@ js.html.Element = $extends(js.core.Object,{
 	 * @param {string} name The name of the CSS class
 	 */
 	addClass: function(name){
-		var current = this.dom.className.split(' ');
+		var current = this.dom.className.split('/\s+/');
 		current.push(name.trim());
 		this.dom.className = current.join(' ');
 	},
@@ -248,10 +281,16 @@ js.html.Element = $extends(js.core.Object,{
 	 * @param {string} name The name of the CSS class
 	 */
 	removeClass: function(name){
-		if(this.cachedClasses != undefined){
-			this.cachedClasses = this.cachedClasses.replace(name.trim(), '');
-		}else{
-			this.dom.className = this.dom.className.replace(name.trim(),'');
+		name = name.trim();
+		var classes = this.dom.className.split(/\s+/);
+		if(classes.length > 0){
+			var clsarr = [];
+			for(var i = 0, cls;cls = classes[i++];){
+				if(cls != name){
+					clsarr.push(cls);
+				}
+			}
+			this.dom.className = clsarr.join(' ');
 		}
 	},
 	/**
@@ -354,20 +393,56 @@ js.html.Element = $extends(js.core.Object,{
 		
 		//Delete DOM
 		delete this.dom;
+	},
+	query: function(selector){
+		selector = selector || "*";
+		return js.html.DomQuery.query(selector, this.dom);
+	},
+	setOpacity: function(op){
+		var s = this.dom.style;
+		if(js.core.Browser.isIE){
+			s.filter = 'alpha(opacity=' + (op * 100) + ')';
+		}else{
+			s.opacity = op;
+		}
 	}
 },'js.html.Element');
 
-
 jsool.onSystemReady(function(){
+	var cache = new js.util.HashMap();
+	var El = js.html.Element;
+	
+	El.get = function(el){
+		if(typeof el == 'string'){//Is an id
+			var cached = cache.get(el);
+			if(cached) return cached;
+			var dom = document.getElementById(el);
+			if(dom) new js.html.Element(dom);
+		}else if(typeof el == 'object' && el.nodeType){//DOM Element
+			if(el.id){
+				var e = El.get(el.id);
+				if(e != null) return e;
+			}
+			return new js.html.Element(el);
+		}
+		return null;
+	};
+	
+	El.cache = function(el){
+		if(el.instanceOf(El)){
+			cache.put(el.getId(),el);
+		}
+		return false;
+	};
+	
+	
 	js.html.Element.BODY = new js.html.Element(document.getElementsByTagName('body')[0]);
-	
 	var brw = js.core.Browser;
-	
-	if(brw.isIE()){
+	if(brw.isIE){
 		js.html.Element.BODY.addClass('ie');
-	}else if(brw.isFF()){
+	}else if(brw.isFF){
 		js.html.Element.BODY.addClass('ff');
-	}else if(brw.isOpera()){
+	}else if(brw.isOpera){
 		js.html.Element.BODY.addClass('opera');
 	}
 });

@@ -52,9 +52,9 @@
 	
 	<script type="text/javascript">
 	jsool.onReady(function(){
-		var bt = new js.html.Element(js.html.DomQuery('#compile')[0]);
+		var bt = new js.html.Element(js.html.DomQuery.query('#compile')[0]);
 		bt.addListener('mouseup', function(event){
-			alert(compiler['native'](js.html.DomQuery('#area')[0].value.trim()));
+			alert(compiler['native'](js.html.DomQuery.query('#area')[0].value.trim()));
 		});
 	});
 	</script>
