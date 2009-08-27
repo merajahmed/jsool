@@ -29,6 +29,11 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 js.data.Type = {
+	NONE: {
+		sort: function(a, b){ return 1;},
+		parse: function(o){return o;},
+		is: function(a){return true;}
+	},
 	STRING: {
 		sort: function(a, b){
 			if(a > b)
@@ -39,6 +44,9 @@ js.data.Type = {
 		},
 		parse: function(object){
 			return new String(object);
+		},
+		is: function(o){
+			return typeof o === 'string';
 		}
 	},
 	INTEGER: {
@@ -50,6 +58,9 @@ js.data.Type = {
 				radix = 10;
 			}
 			return window.parseInt(object, radix);
+		},
+		is: function(o){
+			return typeof o === 'number' && o.toString().match(/[0-9]+/) != null;
 		}
 	},
 	FLOAT: {
@@ -58,6 +69,9 @@ js.data.Type = {
 		},
 		parse: function(object){
 			return window.parseFloat(object);
+		},
+		is: function(o){
+			return typeof o === 'number' && o.toString().match(/[0-9]+\.[0-9]+/) != null;
 		}
 	},
 	DATE: {
@@ -81,6 +95,9 @@ js.data.Type = {
 				
 				return this.formater.parse(object);
 			}
+		},
+		is: function(o){
+			return o instanceof Date;
 		}
 	},
 	BOOLEAN: {
@@ -102,6 +119,9 @@ js.data.Type = {
 			}else{
 				return true;
 			}
+		},
+		is: function(o){
+			return typeof o === 'boolean';
 		}
 	},
 	OBJECT: {
@@ -114,6 +134,9 @@ js.data.Type = {
 		},
 		parse: function(object){
 			return object;
+		},
+		is: function(o){
+			return o instanceof Object;
 		}
 	}
 };

@@ -31,20 +31,41 @@
 
 js.data.Record = $extends(js.core.Object,{
 	cons: function(data, id){
-		this.id = id;
-		this.data = data;
+		this.id = id || js.data.Record.id();
+		this.data = data || {};
+		this.original = jsool.copy(this.data);
 	},
+	id: null,
+	data:null,
+	original: null,
 	modified: false,
-	fields: null
+	fields: null,
+	error: null,
+	set: function(name, value){
+		if(name && !this.data[name])return;
+		this.data[name]=value;
+		this.modified = true;
+	},
+	reset: function(){
+		this.data = this.orgiginal;
+	} 
 },'js.data.Record');
 
 js.data.Record.MODEL_ID = 0;
+js.data.Record.RECORD_ID = 0;
+js.data.Record.ID_PREFIX = 'jsool-rec';
+
+js.data.Record.id = function(){
+	return [js.data.Record.ID_PREFIX,'-',js.data.Record.RECORD_ID++];
+};
 
 js.data.Record.create = function(config){
-	var newRec = $extends(js.data.Record,{},'js.data.Record$'+(js.data.Record.MODEL_ID++));
-	newRec.fields = [];
-	for(var i = 0, field;field = condfig[i++];){
-		newRec.fields.push(new js.data.Field(field));
+	var fields = new MixedCollection();
+	var field;
+	for(var i = 0, field;field = config[i++];){
+		field = new js.data.Field(field);
+		fields.add(field.name, field);
 	}
+	var newRec = $extends(js.data.Record,{fields:fields},'js.data.Record$'+(js.data.Record.MODEL_ID++));
 	return newRec;
 };
