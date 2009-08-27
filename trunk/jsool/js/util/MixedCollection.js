@@ -28,22 +28,58 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-js.data.Field = $extends(js.core.Object,{
-	cons: function(configuration){
-		if(configuration){
-			jsool.apply(this, configuration);
-		}
-		
-		var Type = js.data.Type[this.dataType.toUpperCase()];
-		this.sorter = Type.sort;
-		this.conver = Type.parse;
+js.util.MixedCollection = $extends(js.util.Collection,{
+	cons:function(){
+		this.map = {};
+		this.data = [];
+		this.keys = []; 
 	},
-	name: null,
-	dataType: 'none',
-	sorter: null,
-	convert: null,
-	defaultValue: null,
-	defaultFormat: null,
-	allowBlank: true
-},'js.data.Field');
+	map: null,
+	data: null,
+	keys: null,
+	add: function(name, value){
+		if(!String.isString(name)){
+			throw new js.core.Exception('Illegal argument: '+name,this,arguments);
+		}
+		this.map[name] = value;
+		this.data.push(value); 
+		this.keys.push(name);
+	},
+	get: function(key){
+		if(typeof key === 'number'){
+			return this.map[this.keys[key]];
+		}else if(typeof key === 'string'){
+			return this.map[key];
+		}
+		return null;
+	},
+	addAll: function(collection){
+		var iterator = collection.iterator();
+		while(iterator.hasNext())
+			this.add(iterator.next());
+	},
+	contains: function(object){
+		return this.data.indexOf(object) != -1;
+	},
+	isEmpty: function(){return this.size() == 0;},
+	size: function(){return this.data.length;},
+	iterator: function(){
+		return new js.util.ArrayList.Iterator(this.data);
+	},
+	remove: function(object){
+		var i = this.data.indexOf(object);
+		this.keys.remove(this.keys[i]);
+		this.data.remove(object);
+		
+		for(var item in this.map){
+			if(this.map[item] == object){
+				delete this.map[item];
+				return;
+			}
+		}
+	},
+	toArray: function(){
+		return this.data.clone();
+	}
+},'js.util.MixedCollection');
+

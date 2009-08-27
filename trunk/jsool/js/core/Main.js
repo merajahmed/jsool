@@ -119,6 +119,18 @@ var jsool = (function(){
 				}
 			}
 			return object;
+		},
+		copy: function(object){
+			if(typeof object === 'object'){
+				var copy;
+				if(object.cls){
+					copy = new object.cls();
+				}else{
+					copy = {};
+				}
+				jsool.apply(copy,object);
+			}
+			return copy;
 		}
 	};
 })();
