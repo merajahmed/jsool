@@ -2,6 +2,8 @@
 <head>
 	<title>Tester</title>
 	
+	<link rel="stylesheet" type="text/css" href="css/core.css">
+	
 	<script type="text/javascript" src="js/core/Main.js"></script>
 	<script type="text/javascript" src="js/core/Browser.js"></script>
 	<script type="text/javascript" src="js/core/Object.js"></script>
@@ -38,12 +40,15 @@
 	<script type="text/javascript" src="js/data/Record.js"></script>
 	<script type="text/javascript" src="js/data/Type.js"></script>
 	
-	<script type="text/javascript" src="js/widget/Component.js"></script>
-	<script type="text/javascript" src="js/widget/Button.js"></script>
+	<script type="text/javascript" src="js/flux/UIManager.js"></script>
+	<script type="text/javascript" src="js/flux/laf/Soft.js"></script>
+	<script type="text/javascript" src="js/flux/Component.js"></script>
+	<script type="text/javascript" src="js/flux/Button.js"></script>
 	
 	<script type="text/javascript">
 	jsool.onReady(function(){
-		
+		var c = new js.flux.Component();
+		js.flux.UIManager.add(c);
 	});
 	</script>
 
