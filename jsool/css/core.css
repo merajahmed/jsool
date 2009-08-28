@@ -18,3 +18,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 * The button style must be set as the IE explorer shows. *
 ** * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+canvas.flux-proxy{
+	margin: 0px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
