@@ -29,7 +29,7 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-var js = {core:{},util:{},html:{},net:{},canvas:{},widget:{},data:{}};
+var js = {core:{},util:{},html:{},net:{},canvas:{},flux:{laf:{}},data:{}};
 
 var jsool = (function(){
 	/**

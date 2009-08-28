@@ -263,6 +263,10 @@ js.html.Element = $extends(js.core.Object,{
 			}
 		}
 	},
+	setClass: function(cls){
+		if(typeof cls === 'string')
+			this.dom.className = cls;
+	},
 	/**
 	 * @function
 	 * Adds a new CSS class to the element
