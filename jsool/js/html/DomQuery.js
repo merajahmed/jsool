@@ -41,6 +41,7 @@ js.html.DomQuery = (function(){
 	var byAttributeRe = /^\[([\w]+)(.*[=])?(\w+)?]/;
 	var digitRe = /\{(\d+)\}/g;
 	var pseudoRe = /^:[\w]+(-[\w]+)?(\(.+\))?/;
+	var plainTagRe = /^([\w-]+)/;
 	
 	function getId(ctx, id){
 		if(ctx.getElementById){
@@ -76,7 +77,7 @@ js.html.DomQuery = (function(){
 		}
 		var nodes = [];
 		for(var i = 0, node; node = ctx[i++];){
-			if(node.nodeType == 1 && node.tagName == tag){
+			if(node.tagName === tag){
 				nodes.push(node);
 			}
 		}
@@ -143,7 +144,7 @@ js.html.DomQuery = (function(){
 	function compile(selector){
 		var batch = [];
 		var m = selector.match(qTIR);
-		var fn = ['var query = function(ctx){ '];
+		var fn = ['var query=function(ctx){'];
 		if(m){
 			if(m[1] == "#"){
 				fn.push('ctx=getId(ctx,"'+m[2]+'");');
@@ -156,32 +157,42 @@ js.html.DomQuery = (function(){
 		}
 		var found = false;
 		while(selector.length > 0){
-			if(selector.charAt(0) == ' '){
-				fn.push('ctx=getNodes(ctx);');
-			}
-			selector = selector.trim();
-			if((m = selector.match(byIdRe))){
+			if(selector.charAt(0) == ' '){// "Sub select"
+				selector = selector.trim();
+				
+				if((m = selector.match(plainTagRe))){
+					fn.push('ctx=getNodes(ctx,"'+m[1]+'");');
+					selector = selector.replace(m[0],"");
+				}else{
+					fn.push('ctx=getNodes(ctx);');	
+				}
+				
+				found = true;
+				
+			}else if((m = selector.match(byIdRe))){// Filter ID
+				
 				fn.push('ctx=byId(ctx,"'+m[1]+'");');
 				selector = selector.replace(m[0],"");
 				found = true;
-			}else
-			
-			if((m = selector.match(byClassRe))){
+				
+			}else if((m = selector.match(byClassRe))){//filter class name
+				
 				fn.push('ctx=byClass(ctx,"'+m[1]+'");');
 				selector = selector.replace(m[0],"");
 				found = true;
-			}else
-			
-			if((m = selector.match(/^([\w-]+)/))){
+				
+			}else if((m = selector.match(plainTagRe))){// filter tag
+				
 				fn.push('ctx=byTag(ctx,"'+m[1]+'");');
 				selector = selector.replace(m[0],"");
 				found = true;
-			}else
-			
-			if((m = selector.match(byAttributeRe))){
+				
+			}else if((m = selector.match(byAttributeRe))){// filter by attribute
+				
 				fn.push("ctx=byAttribute(ctx,\"{1}\",\"{2}\",\"{3}\");".replace(digitRe,function(macth, index){
 					return m[index];
 				}));
+				
 				selector = selector.replace(m[0],"");
 				found = true;
 			}/*else

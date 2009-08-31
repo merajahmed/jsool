@@ -137,7 +137,7 @@ js.html.Element = $extends(js.core.Object,{
 	 * @return {string} value of the attribute
 	 */
 	getAttribute: function(name){
-		return this.dom.getAttribute(name);
+		return this.dom[name];
 	},
 	/**
 	 * @function
@@ -178,11 +178,8 @@ js.html.Element = $extends(js.core.Object,{
 	 * @throws {js.core.Exception} i the argument is not a string
 	 */
 	setText: function(value){
-		if(this.cachedText != undefined){
-			this.cachedText = value;
-		}else{
-			this.dom.appendChild(document.createTextNode(new String(value)));
-		}
+		this.dom.innerHTML = '';
+		this.dom.appendChild(document.createTextNode(new String(value)));
 	},
 	getText: function(){
 		return this.getDom().innerHTML;
@@ -334,9 +331,10 @@ js.html.Element = $extends(js.core.Object,{
 		}else{
 			var children = this.getDom().childNodes;
 			var result = [];
+			var El = js.html.Element;
 			for(var i = 0; i < children.length; i++){
 				if(children[i].nodeType != 3){
-					result.push(js.html.Element.get(children[i]));
+					result.push(El.get(children[i]));
 				}
 			}
 			return result;
@@ -437,16 +435,17 @@ jsool.onSystemReady(function(){
 			cache.put(el.getId(),el);
 		}
 		return false;
-	};
+	};	
 	
+	El.BODY = new js.html.Element(document.getElementsByTagName('body')[0]);
 	
-	js.html.Element.BODY = new js.html.Element(document.getElementsByTagName('body')[0]);
 	var brw = js.core.Browser;
+	
 	if(brw.isIE){
-		js.html.Element.BODY.addClass('ie');
+		El.BODY.addClass('ie');
 	}else if(brw.isFF){
-		js.html.Element.BODY.addClass('ff');
+		El.BODY.addClass('ff');
 	}else if(brw.isOpera){
-		js.html.Element.BODY.addClass('opera');
+		El.BODY.addClass('opera');
 	}
 });
