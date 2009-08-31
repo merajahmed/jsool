@@ -3,41 +3,14 @@
 	<title>Tester</title>
 	
 	<!-- <link rel="stylesheet" type="text/css" href="css/core.css"> -->
-	
-	<script type="text/javascript" src="js/core/Main.js"></script>
-	<script type="text/javascript" src="js/core/Browser.js"></script>
-	<script type="text/javascript" src="js/core/Object.js"></script>
-	<script type="text/javascript" src="js/core/Number.js"></script>
-	<script type="text/javascript" src="js/core/Array.js"></script>
-	<script type="text/javascript" src="js/core/String.js"></script>
-	<script type="text/javascript" src="js/core/Exception.js"></script>
-	
-	<script type="text/javascript" src="js/util/Collection.js"></script>
-	<script type="text/javascript" src="js/util/MixedCollection.js"></script>
-	<script type="text/javascript" src="js/util/List.js"></script>
-	<script type="text/javascript" src="js/util/ArrayList.js"></script>
-	<script type="text/javascript" src="js/util/LinkedList.js"></script>
-	<script type="text/javascript" src="js/util/HashSet.js"></script>
-	<script type="text/javascript" src="js/util/Map.js"></script>
-	<script type="text/javascript" src="js/util/HashMap.js"></script>
-	<script type="text/javascript" src="js/util/ReferenceMap.js"></script>
-	<script type="text/javascript" src="js/util/StringBuilder.js"></script>
-	<script type="text/javascript" src="js/util/Locale.js"></script>
-	<script type="text/javascript" src="js/util/Serializable.js"></script>
-	<script type="text/javascript" src="js/util/Observable.js"></script>
-	<script type="text/javascript" src="js/util/DateFormat.js"></script>
-	
-	<script type="text/javascript" src="js/html/DomQuery.js"></script>
-	<script type="text/javascript" src="js/html/Element.js"></script>
-	
 	<script type="text/javascript" src="yass.js"></script>
 	<script type="text/javascript" src="sizzle.js"></script>
 	<script type="text/javascript" src="Sly.js"></script>
-	
+	<script type="text/javascript" src="raze.js"></script>
 	
 	
 	<script type="text/javascript">
-	jsool.onReady(function(){
+	window.onload = function(){
 		var selectors = [
 		     			'table',
 		     			'table.a',
@@ -53,8 +26,8 @@
 		     		var results={};
 
 		     		var engines = [{
-		     			name:'jsool',
-		     			fn:function(selector){return js.html.DomQuery.query(selector,document);}
+		     			name:'raze',
+		     			fn:function(selector){return Raze.query(selector,document);}
 		     		},{
 		     			name:'Sizzle',
 		     			fn:function(selector){return Sizzle(selector,document);}
@@ -65,7 +38,7 @@
 			     		name:'Sly',
 			     		fn:function(selector){return Sly.search(selector);}
 			     	}];
-console.profile();
+
 		     		//For each selector
 		     		var res,start;
 		     		for(var s = 0, selector; selector = selectors[s++];){
@@ -82,8 +55,8 @@ console.profile();
 		     				results[selector][engine.name]={time:(+new Date)-start,results:res}; 
 		     			}
 		     		}
-		     		console.profileEnd();
 
+		     		var totals = {};
 		     		var table = ['<table>'];
 		     		var out;
 		     		var selec;
@@ -97,18 +70,32 @@ console.profile();
 			     		selec = results[sel];
 
 			     		for(var en in selec){
+				     		if(!totals[en])totals[en] = 0;
 			     			eng = selec[en];
+			     			totals[en] += eng.time;
 				     		table.push('<td>');
 				     		table.push(eng.time)
 				     		table.push('</td>');
 				     	}
-
 			     		table.push('</tr>');
 			     	}
+
+		     		table.push('<tr><td>TOTALS</td>');
+
+		     		for(var e in  totals){
+		     			table.push('<td>');
+		     			table.push(e);
+		     			table.push(': ');
+		     			table.push(totals[e]);
+		     			table.push('</td>');
+			     	}
+		     		
+		     		table.push('</tr>');
+			     	
 		     		table.push('</table>');
 
 		     		document.getElementsByTagName('body')[0].innerHTML = table.join('');
-	});
+	};
 	</script>
 
 </head>

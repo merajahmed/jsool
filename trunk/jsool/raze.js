@@ -1,4 +1,4 @@
-/*  JSOOL - JavaScript Object Oriented Library 
+/*  Raze - Javascript CSS Selector Engine  
  *
  *  Copyright (c) 2009, Mikhail Domanoski.
  *  All rights reserved.
@@ -13,7 +13,7 @@
  *        this list of conditions and the following disclaimer in the documentation
  *        and/or other materials provided with the distribution.
  *
- *      * Neither the name of Mikhail Domanoski nor the names of its
+ *      * Neither the name of Raze nor the names of its
  *        contributors may be used to endorse or promote products derived from this
  *        software without specific prior written permission.
  *
@@ -30,10 +30,10 @@
  */
 
 //For performance testing
-// var res;var s = +new Date; var i=1000;while(--i)res = js.html.DomQuery.query("table tr .a");(+new Date) - s;
+// var res;var s = +new Date; var i=1000;while(--i)res = Raze.query("table tr .a");(+new Date) - s;
 // REFERENCE
 // http://www.w3.org/TR/2005/WD-css3-selectors-20051215/#selectors
-js.html.DomQuery = (function(){
+var Raze = (function(){
 	var selectorCache = {};
 	var qTIR= /^(#|\.)?([\w-\*]+)/; //Query Type Identifier Regexp
 	var byIdRe = /^#([\w-]+)/;
@@ -43,6 +43,10 @@ js.html.DomQuery = (function(){
 	var pseudoRe = /^:(\w+(-child)?)(\((\w+)\))?/;
 	var plainTagRe = /^([\w-]+)/;
 	var features = null;
+	
+	function trim(string){
+		return string.replace(/^\s*([\S\s]*?)\s*$/,'$1');
+	}
 	
 	function getId(ctx, id){
 		if(ctx.getElementById){
@@ -218,7 +222,6 @@ js.html.DomQuery = (function(){
 		features['GetsComments'] = span.getElementsByTagName && span.getElementsByTagName('*').length > 1;
 	}
 	
-	
 	/**
 	 * Implementation inspired by ExtJs DomQuery
 	 */
@@ -266,7 +269,7 @@ js.html.DomQuery = (function(){
 		while(sel.length > 0){
 			before = sel;
 			if(sel.charAt(0) == ' '){// "Sub select"
-				sel= sel.trim();
+				sel= trim(sel);
 				if((m = sel.match(plainTagRe))){
 					fn.push('ctx=getNodes(ctx,"'+m[1]+'");');
 					sel= sel.replace(m[0],"");
@@ -309,13 +312,13 @@ js.html.DomQuery = (function(){
 			context = context || document;//assure that thres a context
 			
 			if(typeof selector == "string"){
-				selector = selector.trim();
+				selector = trim(selector);
 				
 				var result, results = [];
 				var parts = selector.split(',');
 				
 				for(var i = 0, part;part = parts[i++];){
-					part = part.trim();
+					part = trim(part);
 					if(!(batch = selectorCache[part])){
 						batch = compile(part);
 						selectorCache[part] = batch;
@@ -333,17 +336,6 @@ js.html.DomQuery = (function(){
 					return [selector];
 				}
 			}
-		},
-		wrap: function(selector, context){
-			var query = js.html.DomQuery.query(selector, context);
-			var result = [];
-			var El = js.html.Element;
-			
-			for(var i = 0, item;item = query[i++];){
-				result.push(El.get(item));
-			}
-			
-			return result;
 		}
 	};
 })();
