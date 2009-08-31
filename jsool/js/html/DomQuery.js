@@ -30,43 +30,66 @@
  */
 
 //For performance testing
-// var res;var s = +new Date; var i=10000;while(--i)res = js.html.DomQuery.get("table tr .a");(+new Date) - s;
+// var res;var s = +new Date; var i=1000;while(--i)res = js.html.DomQuery.query("table tr .a");(+new Date) - s;
 // REFERENCE
 // http://www.w3.org/TR/2005/WD-css3-selectors-20051215/#selectors
 js.html.DomQuery = (function(){
 	var selectorCache = {};
-	var qTIR= /^(#)?([\w-\*]+)/; //Query Type Identifier Regexp
+	var qTIR= /^(#|\.)?([\w-\*]+)/; //Query Type Identifier Regexp
 	var byIdRe = /^#([\w-]+)/;
 	var byClassRe = /^\.([\w-]+)/;
 	var byAttributeRe = /^\[([\w]+)(.*[=])?(\w+)?]/;
 	var digitRe = /\{(\d+)\}/g;
-	var pseudoRe = /^:[\w]+(-[\w]+)?(\(.+\))?/;
+	var pseudoRe = /^:(\w+(-child)?)(\((\w+)\))?/;
 	var plainTagRe = /^([\w-]+)/;
+	var features = null;
 	
 	function getId(ctx, id){
 		if(ctx.getElementById){
 			return [ctx.getElementById(id)];
 		}
-		var nodes = getNodes(ctx);
-		return byId(nodes, id);
+		var ns = getNodes(ctx);
+		return byId(ns, id);
 	}
 	
 	function getNodes(ctx, tag){
-		var nodes = [];
-		var childs;
-		if(typeof ctx.getElementsByTagName != "undefined"){
-			ctx = [ctx];
-        }
 		tag = tag || "*";
-		for(var i = 0, node; node = ctx[i++];){
-			childs = node.getElementsByTagName(tag);
-			for(var j = 0, child; child = childs[j++];){
-				nodes.push(child);
+		if(typeof ctx.getElementsByTagName != "undefined"){
+			return ctx.getElementsByTagName(tag);
+        }
+		var ns = [];
+		var cs;
+		for(var i = 0, n; n = ctx[i++];){
+			cs = n.getElementsByTagName(tag);
+			for(var j = 0, ch; ch = cs[j++];){
+				ns.push(ch);
 			}
 		}
-		return nodes;
+		return ns;
 	}
 	
+	function getClass(ctx, cls){
+		if(features['GetClassName']){
+			if(ctx.nodeType){
+				return ctx.getElementsByClassName(cls);
+			}else if(ctx.length){
+				var res = [];
+				for(var i = 0, n; n = ctx[i++];){
+					var ns = n.getElementsByClassName(cls);
+					for(var j = 0, ch; ch = ns[j++];){
+						res.push(ch);
+					}
+				}
+				return res;
+			}
+		}
+		var nodes = getNodes(ctx);
+		return byClass(nodes, cls);
+	}
+	
+	/**
+	 * Filter context by tag name
+	 */
 	function byTag(ctx, tag){
 		if(!tag){
 			return ctx;
@@ -75,35 +98,41 @@ js.html.DomQuery = (function(){
 		if(ctx.nodeType){
 			ctx = [ctx];
 		}
-		var nodes = [];
-		for(var i = 0, node; node = ctx[i++];){
-			if(node.tagName === tag){
-				nodes.push(node);
+		var res = [];
+		for(var i = 0, n; n = ctx[i++];){
+			if(n.tagName === tag){
+				res.push(node);
 			}
 		}
-		return nodes;
+		return res;
 	}
 	
+	/**
+	 * Filter context by id
+	 */
 	function byId(ctx, id){
 		if(ctx.nodeType){
 			ctx = [ctx];
 		}
-		for(var i = 0, node; node = ctx[i++];){
-			if(node.id == id){
-				return [node];
+		for(var i = 0, n; n = ctx[i++];){
+			if(n.id == id){
+				return [n];
 			}
 		}
 		return [];
 	}
 	
+	/**
+	 * Filter context by class name
+	 */
 	function byClass(ctx, cls){
-		var nodes = [];
-		for(var i = 0, node; node = ctx[i++];){
-			if(node.className == cls){
-				nodes.push(node);
+		var res = [];
+		for(var i = 0, n; n = ctx[i++];){
+			if(n.className == cls){
+				res.push(node);
 			}
 		}
-		return nodes;
+		return res;
 	}
 	
 	var attributeOperators = {
@@ -117,95 +146,154 @@ js.html.DomQuery = (function(){
 	    "~=":function(a, v){return a && (' '+a+' ').indexOf(' '+v+' ') != -1;}
 	};
 	
-	var pseudo = {
-		'root':null
-	};
-	
+	/**
+	 * Filter by attribute
+	 */
 	function byAttribute(ctx,attr,operation,value){
-		var result=[], val;
+		var res=[], val;
 		attr = attr == "className" ? "class" : attr;
 		op = attributeOperators[operation];
-		for(var i = 0, node; node = ctx[i++];){
+		for(var i = 0, n; n = ctx[i++];){
 			if(attr == "href"){
-				val = node.getAttribute("href",2);
+				val = n.getAttribute("href",2);
 			}else{
-				val = node.getAttribute(attr);
+				val = n.getAttribute(attr);
 			}
 			if((op && op(val, value)) || (!op && val)){
-				result.push(node);
+				res.push(node);
 			}
 		}
 		return result;
 	}
 	
+	var pseudos = {
+			'first-child':function(ctx){},
+			'last-child':function(ctx){},
+			'only-child':function(ctx){},
+			'nth-child':function(ctx, n){},
+			'empty':function(ctx){}
+		};
+	
+	function byPseudo(ctx,pseudo,arg){
+		return pseudos[pseudo](ctx,arg);
+	}
+	
+	/**
+	 * Uses browser query selector
+	 */
+	function querySelector(ctx, sel){
+		if(ctx.querySelectorAll){
+			return ctx.querySelectorAll(sel);
+		}else if(ctx.length){
+			var res = [], ns;
+			for(var i = 0, n; n = ctx[i++];){
+				ns = n.querySelectorAll(sel);
+				for(var m = 0,m;m = ns[n++];){
+					res.push(m);
+				}
+			}
+			return res;
+		}else{
+			return [ctx];
+		}
+	}
+	
+	/**
+	 * Detects some browser features
+	 */
+	function detectFeatures(){
+		var doc = window.document;
+		var span = doc.createElement('span');
+		span.innerHTML = "<span class=\"_jsool_domquery_\" id=\"_jsool_domquery_\">&#160;</span>";
+		span.appendChild(doc.createComment('test'));
+		
+		features = {};
+		//Detects if this browser implements querySelectorAll
+		features['QuerySelector'] = span.querySelectorAll && span.querySelectorAll('#_jsool_domquery_').length > 0;
+		
+		//Detects if browser implements element.getElementsByClassName
+		features['GetClassName'] = span.getElementsByClassName && span.getElementsByClassName("_jsool_domquery_").length > 0;
+		
+		//detects if browser gets comments when query for "universal tag"
+		features['GetsComments'] = span.getElementsByTagName && span.getElementsByTagName('*').length > 1;
+	}
+	
+	
 	/**
 	 * Implementation inspired by ExtJs DomQuery
 	 */
-	function compile(selector){
-		var batch = [];
-		var m = selector.match(qTIR);
+	function compile(sel){
+		//To use optimized functions
+		sel = sel.replace(/\[class=(\w*)]/g,'.$1');
+		sel = sel.replace(/\[id=(\w*)]/g,'#$1');
+		
+		//Detect current browser features
+		if(!features){detectFeatures();}
+		
+		//The header of the function
 		var fn = ['var query=function(ctx){'];
-		if(m){
-			if(m[1] == "#"){
-				fn.push('ctx=getId(ctx,"'+m[2]+'");');
+		
+		var m;//Regexp match
+		if(features['QuerySelector'] && !sel.match(/^(#|\.)?([\w-\*]+)$/)){//Use native query selector wisely
+			var diff = sel.indexOf("!=");
+			if(diff < 0){
+				fn.push('ctx=querySelector(ctx,"'+sel+'");');
+				sel = '';
 			}else{
-				fn.push('ctx=getNodes(ctx,"'+m[2]+'");');				
+				var lastSpace = sel.lastIndexOf(' ');
+				if(lastSpace < diff){
+					var partial = sel.substring(lastSpace);
+					fn.push('ctx=querySelector(ctx,"'+partial+'");');
+					sel= sel.replace(partial,'');
+				}
 			}
-			selector = selector.replace(m[0], "");
 		}else{
-			fn.push('ctx=getNodes(ctx,"*");');
+			m = sel.match(qTIR);
+			if(m){
+				if(m[1] == "#"){
+					fn.push('ctx=getId(ctx,"'+m[2]+'");');
+				}else if(m[1] == '.'){
+					fn.push('ctx=getClass(ctx,"'+m[2]+'");');				
+				}else{
+					fn.push('ctx=getNodes(ctx,"'+m[2]+'");');
+				}
+				sel = sel.replace(m[0], "");
+			}else{
+				fn.push('ctx=getNodes(ctx,"*");');
+			}
 		}
-		var found = false;
-		while(selector.length > 0){
-			if(selector.charAt(0) == ' '){// "Sub select"
-				selector = selector.trim();
-				
-				if((m = selector.match(plainTagRe))){
+		var before;
+		while(sel.length > 0){
+			before = sel;
+			if(sel.charAt(0) == ' '){// "Sub select"
+				sel= sel.trim();
+				if((m = sel.match(plainTagRe))){
 					fn.push('ctx=getNodes(ctx,"'+m[1]+'");');
-					selector = selector.replace(m[0],"");
+					sel= sel.replace(m[0],"");
 				}else{
 					fn.push('ctx=getNodes(ctx);');	
 				}
-				
-				found = true;
-				
-			}else if((m = selector.match(byIdRe))){// Filter ID
-				
+			}else if((m = sel.match(byIdRe))){// Filter ID
 				fn.push('ctx=byId(ctx,"'+m[1]+'");');
-				selector = selector.replace(m[0],"");
-				found = true;
-				
-			}else if((m = selector.match(byClassRe))){//filter class name
-				
+				sel= sel.replace(m[0],"");
+			}else if((m = sel.match(byClassRe))){//filter class name
 				fn.push('ctx=byClass(ctx,"'+m[1]+'");');
-				selector = selector.replace(m[0],"");
-				found = true;
-				
-			}else if((m = selector.match(plainTagRe))){// filter tag
-				
+				sel= sel.replace(m[0],"");
+			}else if((m = sel.match(plainTagRe))){// filter tag
 				fn.push('ctx=byTag(ctx,"'+m[1]+'");');
-				selector = selector.replace(m[0],"");
-				found = true;
-				
-			}else if((m = selector.match(byAttributeRe))){// filter by attribute
-				
+				sel= sel.replace(m[0],"");
+			}else if((m = sel.match(byAttributeRe))){// filter by attribute
 				fn.push("ctx=byAttribute(ctx,\"{1}\",\"{2}\",\"{3}\");".replace(digitRe,function(macth, index){
 					return m[index];
 				}));
-				
-				selector = selector.replace(m[0],"");
-				found = true;
-			}/*else
-				
-			if((m = selector.match(pseudoRe))){
-				selector = selector.replace(m[0],"");
-				found = true;
-			}*/
-			
-			if(!found){
+				sel= sel.replace(m[0],"");
+			}else if((m = sel.match(pseudoRe))){
+				fn.push('ctx=byPseudo(ctx,"'+m[1]+'","'+m[4]+'");');
+				sel= sel.replace(m[0],"");
+			}
+			if(before == sel){
 				throw new js.core.Exception("Error while compiling query: "+selector);
 			}
-			found = false;
 		}
 		fn.push('return ctx;};');
 		eval(fn.join(''));
@@ -223,7 +311,7 @@ js.html.DomQuery = (function(){
 			if(typeof selector == "string"){
 				selector = selector.trim();
 				
-				var batch, result, results = [];
+				var result, results = [];
 				var parts = selector.split(',');
 				
 				for(var i = 0, part;part = parts[i++];){
