@@ -30,28 +30,84 @@
 	<script type="text/javascript" src="js/html/DomQuery.js"></script>
 	<script type="text/javascript" src="js/html/Element.js"></script>
 	
-	<script type="text/javascript" src="js/canvas/Canvas.js"></script>
-	<script type="text/javascript" src="js/canvas/CanvasRenderingContext.js"></script>
-
-	<script type="text/javascript" src="js/net/HttpRequest.js"></script>
-	<script type="text/javascript" src="js/net/HttpRequestDispatcher.js"></script>
-	
-	<script type="text/javascript" src="js/data/Field.js"></script>
-	<script type="text/javascript" src="js/data/Record.js"></script>
-	<script type="text/javascript" src="js/data/Type.js"></script>
-	
-	<script type="text/javascript" src="js/flux/UIManager.js"></script>
-	<script type="text/javascript" src="js/flux/laf/Soft.js"></script>
-	<script type="text/javascript" src="js/flux/Component.js"></script>
-	<script type="text/javascript" src="js/flux/Button.js"></script>
-	
 	<script type="text/javascript" src="yass.js"></script>
 	<script type="text/javascript" src="sizzle.js"></script>
+	<script type="text/javascript" src="Sly.js"></script>
+	
 	
 	
 	<script type="text/javascript">
 	jsool.onReady(function(){
-	
+		var selectors = [
+		     			'table',
+		     			'table.a',
+		     			'.a',
+		     			'table[class]',
+		     			'table.a tr',
+		     			'table tr.b',
+		     			'table tr .c',
+		     			'table tr',
+		     			'table tr td',
+		     			'table.b tr.b td.c',
+		     			'.b'];
+		     		var results={};
+
+		     		var engines = [{
+		     			name:'jsool',
+		     			fn:function(selector){return js.html.DomQuery.query(selector,document);}
+		     		},{
+		     			name:'Sizzle',
+		     			fn:function(selector){return Sizzle(selector,document);}
+		     		},{
+		     			name:'yass',
+		     			fn:function(selector){return _(selector,document,true);}
+		     		},{
+			     		name:'Sly',
+			     		fn:function(selector){return Sly.search(selector);}
+			     	}];
+console.profile();
+		     		//For each selector
+		     		var res,start;
+		     		for(var s = 0, selector; selector = selectors[s++];){
+
+		     			if(!results[selector])results[selector]={};
+		     			
+		     			//For each engine
+		     			for(var e=0, engine;engine=engines[e++];){
+		     				start = +new Date;
+		     				//The real test
+		     				for(var i = 1000;i--;){
+		     					res = engine.fn(selector);
+		     				}
+		     				results[selector][engine.name]={time:(+new Date)-start,results:res}; 
+		     			}
+		     		}
+		     		console.profileEnd();
+
+		     		var table = ['<table>'];
+		     		var out;
+		     		var selec;
+		     		var eng;		     		
+		     		for(var sel in results){
+			     		table.push('<tr>');
+
+			     		table.push('<td>');
+			     		table.push(sel);
+			     		table.push('</td>');
+			     		selec = results[sel];
+
+			     		for(var en in selec){
+			     			eng = selec[en];
+				     		table.push('<td>');
+				     		table.push(eng.time)
+				     		table.push('</td>');
+				     	}
+
+			     		table.push('</tr>');
+			     	}
+		     		table.push('</table>');
+
+		     		document.getElementsByTagName('body')[0].innerHTML = table.join('');
 	});
 	</script>
 
