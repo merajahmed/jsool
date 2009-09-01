@@ -7,6 +7,8 @@
 	<script type="text/javascript" src="sizzle.js"></script>
 	<script type="text/javascript" src="Sly.js"></script>
 	<script type="text/javascript" src="raze.js"></script>
+	<script type="text/javascript" src="peppy.js"></script>
+	<script type="text/javascript" src="ext.js"></script>
 	
 	
 	<script type="text/javascript">
@@ -29,6 +31,9 @@
 		     			name:'raze',
 		     			fn:function(selector){return Raze.query(selector,document);}
 		     		},{
+			     		name:'Ext',
+			     		fn:function(selector){return Ext.select(selector,document);}
+			     	},{
 		     			name:'Sizzle',
 		     			fn:function(selector){return Sizzle(selector,document);}
 		     		},{
@@ -37,7 +42,13 @@
 		     		},{
 			     		name:'Sly',
 			     		fn:function(selector){return Sly.search(selector);}
-			     	}];
+			     	},{
+				     	name:'native',
+				     	fn:function(seletor){return document.querySelectorAll(selector);}
+				    },{
+					    name:'Peppy',
+					    fn: function(selector){return peppy.query(selector,document);}
+					}];
 
 		     		//For each selector
 		     		var res,start;
@@ -72,6 +83,7 @@
 			     		for(var en in selec){
 				     		if(!totals[en])totals[en] = 0;
 			     			eng = selec[en];
+			     			//totals[en] += eng.results.length;
 			     			totals[en] += eng.time;
 				     		table.push('<td>');
 				     		table.push(eng.time)

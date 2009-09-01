@@ -33,11 +33,11 @@ js.flux.Component = $extends(js.util.Observable,{
 		this.addEvent(['click','mouseup','mousedown','mousein','mouseout', 'keypress']);
 		this.z = this.seed();
 	},
-	x: null,
-	y: null,
-	z: null,
-	width: null,
-	height: null,
+	x: 0,
+	y: 0,
+	z: 0,
+	width: 0,
+	height: 0,
 	parent: null,
 	changed: false,
 	visible: true,

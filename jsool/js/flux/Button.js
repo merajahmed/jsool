@@ -30,13 +30,12 @@
  */
 js.flux.Button = $extends(js.flux.Component,{
 	cons: function(text){
-		this.element = new js.html.Element('button');
-		this.element.addClass('wgt-button');
 		if(String.isString(text)){
 			this.text = text;
 		}
-		this.element.setText(this.text);
 	},
+	width: 70,
+	height: 20,
 	text: 'button',
 	setText: function(text){
 		if(String.isString(text)){
@@ -46,6 +45,6 @@ js.flux.Button = $extends(js.flux.Component,{
 	},
 	paint: function(ctx){
 		var laf = js.flux.UIManager.getLookAndFeel();
-		
+		laf.drawButton(ctx, this.x, this.y, this.width, this.height,this.text);
 	}
 },'js.widget.Button');

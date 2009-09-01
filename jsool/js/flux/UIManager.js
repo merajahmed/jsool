@@ -41,9 +41,13 @@ js.flux.UIManager = (function(){
 	var queueUpdate = false; //Flags if a component requested UI to update
 	var components = []; // Components added to the root
 	
+	var focused = null;
+	
 	var laf; // look and feel
 	
 	function init(){
+		if(!laf)laf = js.flux.laf.Soft;
+		
 		proxy = new js.canvas.Canvas();
 		context = proxy.getContext();
 		proxy.setClass('flux-proxy');
@@ -55,11 +59,43 @@ js.flux.UIManager = (function(){
 			window.attachEvent('onresize',resize);
 		}
 		resize();
-		
-		laf = js.flux.laf.Soft;
-		
+		prepareListeners();
 		startWorker();
 		initialized = true;
+	}
+	
+	var mouseListener = function(event){
+		event = event || window.event;
+		var pos;
+		if(js.core.Browser.isIE){
+			pos = {x:event.clientX+document.body.scrollLeft,
+					y:event.clientY+document.body.scrollTop};
+		}else{
+			pos = {x:event.pageX,y:event.pageY};
+		}
+		
+		for(var i=0,c;c=components[i++];){
+			if(c.contains(pos.x,pos.y)){
+				focused = c;
+				c.fireEvent(jsool.apply({},{x:pos.x,y:pos.y},event));
+				return false;
+			}
+		}
+	};
+	
+	function prepareListeners(){
+		var w=window,f;
+		if(w.addEventListener){
+			f = function(ev, handler){
+				w.addEventListener(ev,handler,false);
+			};
+		}else{
+			f = function(ev, handler){
+				w.attachEvent('on'+ev,handler);
+			};
+		}
+		
+		f('click',mouseListener);
 	}
 	
 	function resize(){
@@ -85,12 +121,16 @@ js.flux.UIManager = (function(){
 			window.clearInterval(fluxWorker);
 	}
 	
-	function updateUI(){
+	function updateUI(){		
 		if(components.length < 1)return;
 		if(components.length > 1) components.sort(function(a,b){return a.z - b.z;});
 		context.clear();
-		for(var i = 0, c; c = components[i++];){
-			if(c.isVisible())c.updateUI(context);
+		try{
+			for(var i = 0, c; c = components[i++];){
+				if(c.isVisible())c.updateUI(context);
+			}
+		}catch(e){
+			alert(e.toString());
 		}
 	}
 	
@@ -107,6 +147,14 @@ js.flux.UIManager = (function(){
 		},
 		start: startWorker,
 		stop: stopWorker,
-		getLookAndFeel: function(){return laf;}
+		getLookAndFeel: function(){return laf;},
+		requestFocus: function(comp){
+			if(comp.instanceOf(js.flux.Component)){
+				focused = comp;
+			}
+		},
+		getFocused: function(){
+			return focused;
+		}
 	};
 })();

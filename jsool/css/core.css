@@ -1,7 +1,7 @@
 /*
 * UNDO HTML DEFAULT STYLES
 */
-*, a, a:link, a:visited, a:hover, a:active {
+.das, a, a:link, a:visited, a:hover, a:active {
 	font: normal normal normal 12px Verdana;
 	background: transparent;
 	border: 0;

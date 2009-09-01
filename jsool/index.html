@@ -2,7 +2,7 @@
 <head>
 	<title>Tester</title>
 	
-	<!-- <link rel="stylesheet" type="text/css" href="css/core.css"> -->
+	<link rel="stylesheet" type="text/css" href="css/core.css">
 	
 	<script type="text/javascript" src="js/core/Main.js"></script>
 	<script type="text/javascript" src="js/core/Browser.js"></script>
@@ -27,7 +27,7 @@
 	<script type="text/javascript" src="js/util/Observable.js"></script>
 	<script type="text/javascript" src="js/util/DateFormat.js"></script>
 	
-	<script type="text/javascript" src="js/html/DomQuery.js"></script>
+	<script type="text/javascript" src="Raze.js"></script>
 	<script type="text/javascript" src="js/html/Element.js"></script>
 	
 	<script type="text/javascript" src="js/canvas/Canvas.js"></script>
@@ -50,13 +50,22 @@
 	
 	
 	<script type="text/javascript">
+	var b;
 	jsool.onReady(function(){
-	
+		b = new js.flux.Button('CaOOL');
+		js.flux.UIManager.add(b);
+		b.setX(10);
+		b.setY(10);
+		b.addListener({
+			scope:b,
+			click: function(e){console.info(e);}
+		});
 	});
 	</script>
 
 </head>
 <body>
+	<button>OK</button>
 	<table class="a">
 		<tr class="b">
 			<td>bla bla bla bla bla bla bla</td>

@@ -66,6 +66,15 @@ js.canvas.Canvas.PATTERN = {
 	NO_REPEAT : js.canvas.Canvas.NO_REPEAT
 };
 
+js.canvas.TextBaseline = {
+	TOP:'top',
+	HANGING:'hanging',
+	MIDDLE:'middle',
+	ALPHABETIC:'alphabetic',
+	IDEOGRAPHIC:'ideographic',
+	BOTTON:'bottom'
+};
+
 //COMPOSITE OPERATION================================================
 //https://developer.mozilla.org/en/Canvas_tutorial/Compositing
 js.canvas.CompositeOperation = {

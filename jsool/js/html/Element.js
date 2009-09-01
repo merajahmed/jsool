@@ -56,6 +56,7 @@ js.html.Element = $extends(js.core.Object,{
 		
 		if(type == 'string' && tags.test(obj)){
 			this.dom = document.createElement(obj);
+			this.dom.id = this.id;
 		}else if(type == 'object' && obj.tagName){
 			this.dom = obj;
 			this.tag = obj.tagName;
@@ -435,7 +436,20 @@ jsool.onSystemReady(function(){
 			cache.put(el.getId(),el);
 		}
 		return false;
-	};	
+	};
+	
+	El.query = function(selector, context){
+		return Raze.query(selector,context);
+	};
+	
+	El.wrap = function(selector, context){
+		var els = Raze.query(selector,context);
+		var res = [];
+		for(var i=0,e;e=els[i++];){
+			res.push(El.get(e));
+		}
+		return res;
+	};
 	
 	El.BODY = new js.html.Element(document.getElementsByTagName('body')[0]);
 	
