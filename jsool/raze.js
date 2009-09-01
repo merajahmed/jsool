@@ -170,12 +170,54 @@ var Raze = (function(){
 		return result;
 	}
 	
+    function next(n){
+        while((n = n.nextSibling) && n.nodeType != 1);
+        return n;
+    };
+
+    function prev(n){
+        while((n = n.previousSibling) && n.nodeType != 1);
+        return n;
+    };
+	
 	var pseudos = {
-			'first-child':function(ctx){},
-			'last-child':function(ctx){},
-			'only-child':function(ctx){},
+			'first-child':function(ctx){
+				var res = [],f;
+				for(var i = 0,n;n = ctx[i++];){
+					if((f = n.firstChild)){
+						res.push(f);
+					}
+				}
+				return res;
+			},
+			'last-child':function(ctx){
+				var res = [],l;
+				for(var i = 0,n;n = ctx[i++];){
+					if((l = n.lastChild)){
+						res.push(l);
+					}
+				}
+				return res;
+			},
+			'only-child':function(ctx){
+				var res = [];
+				for(var i = 0,n;n = ctx[i++];){
+					if(!prev(n) && !next(n)){
+						res.push(n);
+					}
+				}
+				return res;
+			},
 			'nth-child':function(ctx, n){},
-			'empty':function(ctx){}
+			'empty':function(ctx){
+				var res=[];
+				for(var i = 0,n;n = ctx[i++];){
+					if(n.innerHTML == ""){
+						res.push(n);
+					}
+				}
+				return res;
+			}
 		};
 	
 	function byPseudo(ctx,pseudo,arg){
