@@ -49,7 +49,7 @@ var Raze = (function(){
 	}
 	
 	function getId(ctx, id){
-		if(ctx.getElementById){
+		if(ctx.nodeType&&ctx.nodeType===9){
 			return [ctx.getElementById(id)];
 		}
 		var ns = getNodes(ctx);
@@ -57,13 +57,13 @@ var Raze = (function(){
 	}
 	
 	function getNodes(ctx, tag){
-		tag = tag || "*";
-		if(typeof ctx.getElementsByTagName != "undefined"){
+		//tag = tag || "*";
+		if(ctx.nodeType&&ctx.nodeType===9){
 			return ctx.getElementsByTagName(tag);
         }
 		var ns = [];
 		var cs;
-		for(var i = 0, n; n = ctx[i++];){
+		for(var i=0,n;n=ctx[i++];){
 			cs = n.getElementsByTagName(tag);
 			for(var j = 0, ch; ch = cs[j++];){
 				ns.push(ch);
@@ -73,7 +73,7 @@ var Raze = (function(){
 	}
 	
 	function getClass(ctx, cls){
-		if(features['GetClassName']){
+		if(features.getClassName){
 			if(ctx.nodeType){
 				return ctx.getElementsByClassName(cls);
 			}else if(ctx.length){
@@ -133,7 +133,7 @@ var Raze = (function(){
 		var res = [];
 		for(var i = 0, n; n = ctx[i++];){
 			if(n.className == cls){
-				res.push(node);
+				res.push(n);
 			}
 		}
 		return res;
@@ -164,10 +164,10 @@ var Raze = (function(){
 				val = n.getAttribute(attr);
 			}
 			if((op && op(val, value)) || (!op && val)){
-				res.push(node);
+				res.push(n);
 			}
 		}
-		return result;
+		return res;
 	}
 	
     function next(n){
@@ -257,13 +257,13 @@ var Raze = (function(){
 		
 		features = {};
 		//Detects if this browser implements querySelectorAll
-		features['QuerySelector'] = span.querySelectorAll && span.querySelectorAll('#_jsool_domquery_').length > 0;
+		features.querySelector = span.querySelectorAll && span.querySelectorAll('#_jsool_domquery_').length > 0;
 		
 		//Detects if browser implements element.getElementsByClassName
-		features['GetClassName'] = span.getElementsByClassName && span.getElementsByClassName("_jsool_domquery_").length > 0;
+		features.getClassName = span.getElementsByClassName && span.getElementsByClassName("_jsool_domquery_").length > 0;
 		
 		//detects if browser gets comments when query for "universal tag"
-		features['GetsComments'] = span.getElementsByTagName && span.getElementsByTagName('*').length > 1;
+		features.getsComments = span.getElementsByTagName && span.getElementsByTagName('*').length > 1;
 	}
 	
 	/**
@@ -278,10 +278,13 @@ var Raze = (function(){
 		if(!features){detectFeatures();}
 		
 		//The header of the function
-		var fn = ['var query=function(ctx){'];
-		
+		var fn = ['var q=function(ctx){'];
 		var m;//Regexp match
-		if(features['QuerySelector'] && !sel.match(/^(#|\.)?([\w-\*]+)$/)){//Use native query selector wisely
+		/*
+		 * Use native query selector wisely
+		 * Its not efficient to one member queries
+		 */
+		if(features.querySelector && sel.split(/\s+/).length > 1){
 			var diff = sel.indexOf("!=");
 			if(diff < 0){
 				fn.push('ctx=querySelector(ctx,"'+sel+'");');
@@ -300,7 +303,7 @@ var Raze = (function(){
 				if(m[1] == "#"){
 					fn.push('ctx=getId(ctx,"'+m[2]+'");');
 				}else if(m[1] == '.'){
-					fn.push('ctx=getClass(ctx,"'+m[2]+'");');				
+					fn.push('ctx=getClass(ctx,"'+m[2]+'");');
 				}else{
 					fn.push('ctx=getNodes(ctx,"'+m[2]+'");');
 				}
@@ -344,7 +347,7 @@ var Raze = (function(){
 		}
 		fn.push('return ctx;};');
 		eval(fn.join(''));
-		return query;
+		return q;
 	}
 	
 	/**
@@ -356,13 +359,10 @@ var Raze = (function(){
 			context = context || document;//assure that thres a context
 			
 			if(typeof selector == "string"){
-				selector = trim(selector);
-				
 				var result, results = [];
 				var parts = selector.split(',');
 				
 				for(var i = 0, part;part = parts[i++];){
-					part = trim(part);
 					if(!(batch = selectorCache[part])){
 						batch = compile(part);
 						selectorCache[part] = batch;
@@ -382,4 +382,4 @@ var Raze = (function(){
 			}
 		}
 	};
-})();
+})();window.das = false;

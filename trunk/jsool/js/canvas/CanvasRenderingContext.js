@@ -31,6 +31,8 @@
 js.canvas.CanvasRenderingContext = $extends(js.core.Object,{
 	cons: function(canvas2dContext){
 		this.context = canvas2dContext;
+		//BY DEFAULT
+		this.setTextBaseline(js.canvas.TextBaseline.TOP);
 	},
 	context: null,
 	clear: function(){
@@ -50,6 +52,33 @@ js.canvas.CanvasRenderingContext = $extends(js.core.Object,{
 	},
 	clearRect : function(x, y, width, height) {
 		this.context.clearRect(x, y, width, height);
+	},
+	fillRoundRect: function(x,y,w,h,r){
+		var deg = (Math.PI / 180);
+		this.context.beginPath();
+		this.context.arc(x+r,y+r,r, Math.PI, 3*Math.PI/2, false);
+		this.context.lineTo(w-r + x, y);
+		this.context.arc(x + w - r, y+r, r, deg*270, deg*360, false);
+		this.context.lineTo(x+w, y+h- r);
+		this.context.arc(x+w-r,y+h-r, r, deg*360, deg*90, false);
+		this.context.lineTo(x+r, y+h);
+		this.context.arc(x+r,y+h- r,r, deg*90, deg*180, false);
+		this.context.lineTo(x,y+r);
+		this.context.fill();
+		//this.context.stroke();
+	},
+	strokeRoundRect: function(x,y,w,h,r){
+		var deg = (Math.PI / 180);
+		this.context.beginPath();
+		this.context.arc(x+r,y+r,r, Math.PI, 3*Math.PI/2, false);
+		this.context.lineTo(w-r + x, y);
+		this.context.arc(x + w - r, y+r, r, deg*270, deg*360, false);
+		this.context.lineTo(x+w, y+h- r);
+		this.context.arc(x+w-r,y+h-r, r, deg*360, deg*90, false);
+		this.context.lineTo(x+r, y+h);
+		this.context.arc(x+r,y+h- r,r, deg*90, deg*180, false);
+		this.context.lineTo(x,y+r);
+		this.context.stroke();
 	},
 	fillCircle : function(x, y, radius) {
 		this.beginPath();
@@ -174,7 +203,7 @@ js.canvas.CanvasRenderingContext = $extends(js.core.Object,{
 		if(!String.isString(text))
 			throw new js.core.Exception('Invalid argument type: '+ typeof text, this, arguments);
 		
-		return this.context.measureText(text);
+		return this.context.measureText(text).width;
 	},
 	saveState : function() {
 		this.context.save();
@@ -195,5 +224,8 @@ js.canvas.CanvasRenderingContext = $extends(js.core.Object,{
 	},
 	setComposition : function(type) {
 		this.context.globalCompositeOperation = type;
+	},
+	setTextBaseline: function(type){
+		this.context.textBaseline = type; 
 	}
 },'js.canvas.CanvasRenderingContext');
