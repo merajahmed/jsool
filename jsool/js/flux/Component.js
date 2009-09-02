@@ -30,7 +30,7 @@
  */
 js.flux.Component = $extends(js.util.Observable,{
 	cons: function(){
-		this.addEvent(['click','mouseup','mousedown','mousein','mouseout', 'keypress']);
+		this.addEvent(['click','mouseup','mousedown','mousein','mouseout', 'keypress','mousemove']);
 		this.z = this.seed();
 	},
 	x: 0,

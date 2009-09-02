@@ -36,7 +36,7 @@ js.flux.UIManager = (function(){
 	
 	var initialized = false;
 	var idle = true;
-	var updateInterval = 30;
+	var updateInterval = 33;
 	
 	var queueUpdate = false; //Flags if a component requested UI to update
 	var components = []; // Components added to the root
@@ -64,6 +64,8 @@ js.flux.UIManager = (function(){
 		initialized = true;
 	}
 	
+	var mouseover = null;
+	
 	var mouseListener = function(event){
 		event = event || window.event;
 		var pos;
@@ -76,7 +78,6 @@ js.flux.UIManager = (function(){
 		
 		for(var i=0,c;c=components[i++];){
 			if(c.contains(pos.x,pos.y)){
-				focused = c;
 				c.fireEvent(jsool.apply({},{x:pos.x,y:pos.y},event));
 				return false;
 			}
@@ -96,6 +97,11 @@ js.flux.UIManager = (function(){
 		}
 		
 		f('click',mouseListener);
+		/*f('dblclick',mouseListener);
+		f('mouseover',mouseListener);
+		f('mouseup',mouseListener);
+		f('mousedown',mouseListener);
+		f('mousemove',mouseListener);*/
 	}
 	
 	function resize(){
@@ -126,8 +132,13 @@ js.flux.UIManager = (function(){
 		if(components.length > 1) components.sort(function(a,b){return a.z - b.z;});
 		context.clear();
 		try{
-			for(var i = 0, c; c = components[i++];){
-				if(c.isVisible())c.updateUI(context);
+			var comp;
+			for(var i = 0; comp = components[i++];){
+				if(comp.isVisible()){
+					//window.setTimeout(function(){
+						comp.updateUI(context);
+					//},0);
+				}
 			}
 		}catch(e){
 			alert(e.toString());
