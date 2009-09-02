@@ -76,7 +76,7 @@ js.util.Observable = $extends(js.core.Object, {
 			for(var i = 0; i < len; i++){
 				listener = listeners[i];
 				//Using timeout, so the handlers may be execute simultaneously
-				window.setTimeout(function(){
+				window.setTimeout(function handler(){
 					listener.func.apply(listener.scope, [event]);
 				},0);
 			}

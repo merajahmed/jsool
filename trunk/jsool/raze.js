@@ -184,9 +184,8 @@ var Raze = (function(){
 			'first-child':function(ctx){
 				var res = [],f;
 				for(var i = 0,n;n = ctx[i++];){
-					if((f = n.firstChild)){
-						res.push(f);
-					}
+					while((f = n.firstChild).nodeType != 1);
+					res.push(f);
 				}
 				return res;
 			},
