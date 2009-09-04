@@ -4,6 +4,7 @@
 = Performance Tips =
 
   * [PerformanceTips#For_Loops For Loops]
+  * [PerformanceTips#Mathematical_Operations Mathematical Operations]
 
 == For Loops ==
 
@@ -24,3 +25,22 @@ Using a new variable to store the array length, makes no diference to performanc
     }
 }}}
 This case is faster if you want a reference of the current item but dont have to change its value on array
+
+== Mathematical Operations ==
+*Tip:*
+
+Operators like -=, +=, /=, `*`= ... are faster than reading the variable and "operating" it:
+{{{
+var a = 0;
+//Slower
+for(var i = 10000;i--;){
+    a = a + i;
+}
+
+
+
+//Faster
+for(var j = 10000;j--;){
+    a += j;
+}
+}}}
