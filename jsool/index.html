@@ -43,8 +43,13 @@
 	<script type="text/javascript">
 	var b;
 	jsool.onReady(function(){
-		
-		
+		var s = jsool.time();
+		Raze.test('table tr:nth-child(3)');
+		alert(jsool.time() - s);
+
+		s = jsool.time();
+		Raze.test('table tr:nth-child(3)');
+		alert(jsool.time() - s);
 	});
 	</script>
 
@@ -93,5 +98,6 @@
 			<td class="c">bla bla bla bla bla bla bla</td>
 		</tr>
 	</table>
+	<input disabled="disabled" type="checkbox" />
 </body>
 </html>

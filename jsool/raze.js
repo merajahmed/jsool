@@ -34,25 +34,34 @@
 // REFERENCE
 // http://www.w3.org/TR/2005/WD-css3-selectors-20051215/#selectors
 var Raze = (function(){
-	var selectorCache = {};
-	var queryCache = {};
+	var selectorCache = {};//Cache the query functions
+	var queryCache = {};//Smart query cache
 	var qTIR= /^(#|\.)?([\w-\*]+)/; //Query Type Identifier Regexp
-	var byIdRe = /^#([\w-]+)/;
-	var byClassRe = /^\.([\w-]+)/;
-	var byAttributeRe = /^\[([\w]+)(.*[=])?(\w+)?]/;
-	var digitRe = /\{(\d+)\}/g;
-	var pseudoRe = /^:(\w+(-child)?)(\((\w+)\))?/;
-	var plainTagRe = /^([\w-]+)/;
+	var byIdRe = /^#([\w-]+)/;//is an ID?
+	var byClassRe = /^\.([\w-]+)/;//is a Class?
+	var byAttributeRe = /^\[([\w]+)(.*[=])?(\w+)?]/;//is an Attribute? 
+	var digitRe = /\{(\d+)\}/g;// is it like {1} ??
+	var pseudoRe = /^:(\w+(-child)?)(\((\w+)\))?/;//is it a Pseudo?
+	var plainTagRe = /^([\w-]+)/;//is it a plain tag?
 	var features = null;
 	
+	/**
+	 * Clears the smart cache
+	 */
 	function clearCache(){
 		queryCache = {};
 	}
 	
+	/**
+	 * Removes white spaces in the begin and the end of a string
+	 */
 	function trim(string){
 		return string.replace(/^\s*([\S\s]*?)\s*$/,'$1');
 	}
 	
+	/**
+	 * Gets elements of "id" from a root node
+	 */
 	function getId(ctx, id){
 		if(ctx.nodeType&&ctx.nodeType===9){
 			return [ctx.getElementById(id)];
@@ -61,8 +70,10 @@ var Raze = (function(){
 		return byId(ns, id);
 	}
 	
+	/**
+	 * Get elements of "tag" from a root element
+	 */
 	function getNodes(ctx, tag){
-		//tag = tag || "*";
 		if(ctx.nodeType&&ctx.nodeType===9){
 			return ctx.getElementsByTagName(tag);
         }
@@ -77,6 +88,9 @@ var Raze = (function(){
 		return ns;
 	}
 	
+	/**
+	 * Gets elements of "cls" from a root element
+	 */
 	function getClass(ctx, cls){
 		if(features.getClassName){
 			if(ctx.nodeType){
@@ -144,6 +158,9 @@ var Raze = (function(){
 		return res;
 	}
 	
+	/**
+	 * Operators that will be used on byAttribute filter
+	 */
 	var attributeOperators = {
 		"=": function(a, v){return a == v;},
 	    "!=":function(a, v){return a != v;},
@@ -175,72 +192,90 @@ var Raze = (function(){
 		return res;
 	}
 	
+	/**
+	 * Gets the next element from a reference
+	 */
     function next(n){
         while((n = n.nextSibling) && n.nodeType != 1);
         return n;
-    };
+    }
 
+    /**
+	 * Gets the previous element frm a reference
+	 */
     function prev(n){
         while((n = n.previousSibling) && n.nodeType != 1);
         return n;
     };
 	
+	/**
+     * Pseudo operators
+     */
 	var pseudos = {
-			'first-child':function(ctx){
-				var res = [],p;
-				for(var i = 0,n;n = ctx[i++];){
-					if(!prev(n))res.push(n);
+		'first-child':function(n){			
+			while(n = n.previousSibling){
+				if(n.nodeType == 1){
+					return false;
 				}
-				return res;
-			},
-			'last-child':function(ctx){
-				var res = [],p;
-				for(var i = 0,n;n = ctx[i++];){
-					if(!next(n))res.push(n);
-				}
-				return res;
-			},
-			'only-child':function(ctx){
-				var res = [];
-				for(var i = 0,n;n = ctx[i++];){
-					if(!prev(n) && !next(n)){
-						res.push(n);
-					}
-				}
-				return res;
-			},
-			'nth-child':function(ctx, n){
-				
-			},
-			'empty':function(ctx){
-				var res=[];
-				for(var i = 0,n;n = ctx[i++];){
-					if(n.innerHTML == ""){
-						res.push(n);
-					}
-				}
-				return res;
-			},
-			'next': function(ctx){
-				var res = [],nn;
-				for(var i=0,n;n=ctx[i++];){
-					nn = next(n);
-					if(nn)res.push(nn);
-				}
-				return res;
-			},
-			'prev': function(ctx){
-				var res = [],pn;
-				for(var i=0,n;n=ctx[i++];){
-					pn = prev(n);
-					if(pn)res.push(pn);
-				}
-				return res;
 			}
-		};
+			return true;
+		},
+		'last-child':function(n){
+			while(n = n.nextSibling){
+				if(n.nodeType == 1){
+					return false;
+				}
+			}
+			return true;
+		},
+		'only-child':function(n){
+			var prev = n;
+			while ((prev = prev.previousSibling)) {
+				if (prev.nodeType === 1) return false;
+			}
+			var next = n;
+			while ((next = next.nextSibling)) {
+				if (next.nodeType === 1) return false;
+			}
+			return true;
+		},
+		'nth-child':function(n, nth){
+			var i=0,j=-1,c,cs = n.parentNode.childNodes;
+			while(c=cs[i++]){
+				if(c.nodeType === 1){
+					j+=1;
+					if(j==nth && c==n){
+						return true;
+					}else if(j>nth){
+						return false;
+					}
+				}
+			}
+			return false;
+		},
+		'empty':function(n){
+			return !(n.innerText || n.textContent || '').length;
+		},
+		'checked': function(n){
+			return n.checked;
+		},
+		'disabled': function(n){
+			return n.disabled;
+		},
+		'enabled': function(n){
+			return !n.disabled;
+		}
+	};
 	
+	/**
+	 * Filters context by a pseudo-class
+	 */
 	function byPseudo(ctx,pseudo,arg){
-		return pseudos[pseudo](ctx,arg);
+		var res=[];
+		for(var i=0,n;n=ctx[i++];){
+			if(pseudos[pseudo](n,arg))res.push(n);
+		}
+		return res;
 	}
 	
 	/**
@@ -274,7 +309,8 @@ var Raze = (function(){
 		
 		features = {};
 		//Detects if this browser implements querySelectorAll
-		features.querySelector = span.querySelectorAll && span.querySelectorAll('#_jsool_domquery_').length > 0;
+		//TODO false to test my codes
+		features.querySelector = false && span.querySelectorAll && span.querySelectorAll('#_jsool_domquery_').length > 0;
 		
 		//Detects if browser implements element.getElementsByClassName
 		features.getClassName = span.getElementsByClassName && span.getElementsByClassName("_jsool_domquery_").length > 0;
@@ -295,8 +331,6 @@ var Raze = (function(){
 			addEvent("DOMNodeRemoved", clearCache, false);
 		}
 	}
-	
-	
 	
 	/**
 	 * Implementation inspired by ExtJs DomQuery
@@ -382,6 +416,9 @@ var Raze = (function(){
 		return q;
 	}
 	
+	/**
+	 * Gets previous results from smart cache
+	 */
 	function getCache(selector, context){
 		var cache = queryCache[selector];
 		if(!cache)return null;
@@ -393,6 +430,9 @@ var Raze = (function(){
 		return null;
 	}
 	
+	/**
+	 * Executes a dom query
+	 */
 	function executeQuery(selector, context){
 		var query;
 		if(!(query = selectorCache[selector])){
@@ -418,6 +458,9 @@ var Raze = (function(){
 		}
 	}
 	
+	/**
+	 * Checks if two objects or Arrays are equal
+	 */
 	function equals(a,b){
 		if(a == b){
 			return true;
@@ -430,10 +473,11 @@ var Raze = (function(){
 		}
 	}
 	
-	/**
-	 * Returns the elements that match the providen selector
-	 */
-	return{ 
+	
+	return{
+		/**
+		 * Returns the elements that match the providen selector
+		 */
 		query: function(selector, context){
 			selector = selector || document;//assure that theres a selector
 			context = context || document;//assure that thres a context
@@ -458,9 +502,11 @@ var Raze = (function(){
 				}
 			}
 		},
+		/**
+		 * Used while developmento to debug performance
+		 */
 		test: function(selector,context){
 			var res;var s = +new Date; var i=1000;while(--i)res = Raze.query(selector,context);
-			console.info((+new Date) - s);
 			return res;
 		}
 	};
