@@ -35,6 +35,7 @@
 // http://www.w3.org/TR/2005/WD-css3-selectors-20051215/#selectors
 var Raze = (function(){
 	var selectorCache = {};
+	var queryCache = {};
 	var qTIR= /^(#|\.)?([\w-\*]+)/; //Query Type Identifier Regexp
 	var byIdRe = /^#([\w-]+)/;
 	var byClassRe = /^\.([\w-]+)/;
@@ -43,6 +44,10 @@ var Raze = (function(){
 	var pseudoRe = /^:(\w+(-child)?)(\((\w+)\))?/;
 	var plainTagRe = /^([\w-]+)/;
 	var features = null;
+	
+	function clearCache(){
+		queryCache = {};
+	}
 	
 	function trim(string){
 		return string.replace(/^\s*([\S\s]*?)\s*$/,'$1');
@@ -182,19 +187,16 @@ var Raze = (function(){
 	
 	var pseudos = {
 			'first-child':function(ctx){
-				var res = [],f;
+				var res = [],p;
 				for(var i = 0,n;n = ctx[i++];){
-					while((f = n.firstChild).nodeType != 1);
-					res.push(f);
+					if(!prev(n))res.push(n);
 				}
 				return res;
 			},
 			'last-child':function(ctx){
-				var res = [],l;
+				var res = [],p;
 				for(var i = 0,n;n = ctx[i++];){
-					if((l = n.lastChild)){
-						res.push(l);
-					}
+					if(!next(n))res.push(n);
 				}
 				return res;
 			},
@@ -216,6 +218,22 @@ var Raze = (function(){
 					if(n.innerHTML == ""){
 						res.push(n);
 					}
+				}
+				return res;
+			},
+			'next': function(ctx){
+				var res = [],nn;
+				for(var i=0,n;n=ctx[i++];){
+					nn = next(n);
+					if(nn)res.push(nn);
+				}
+				return res;
+			},
+			'prev': function(ctx){
+				var res = [],pn;
+				for(var i=0,n;n=ctx[i++];){
+					pn = prev(n);
+					if(pn)res.push(pn);
 				}
 				return res;
 			}
@@ -263,7 +281,22 @@ var Raze = (function(){
 		
 		//detects if browser gets comments when query for "universal tag"
 		features.getsComments = span.getElementsByTagName && span.getElementsByTagName('*').length > 1;
+		
+		var ua = navigator.userAgent.toString().toUpperCase();
+		var isIE = ua.indexOf("MSIE") != -1;
+		var isWebkit = ua.indexOf("Webkit") != -1;
+		
+		features.useCache = !isIE && !isWebkit;
+		
+		if(features.useCache){
+			var addEvent = document.addEventListener || document.attachEvent;
+			addEvent("DOMAttrModified", clearCache, false);
+			addEvent("DOMNodeInserted", clearCache, false);
+			addEvent("DOMNodeRemoved", clearCache, false);
+		}
 	}
+	
+	
 	
 	/**
 	 * Implementation inspired by ExtJs DomQuery
@@ -349,6 +382,54 @@ var Raze = (function(){
 		return q;
 	}
 	
+	function getCache(selector, context){
+		var cache = queryCache[selector];
+		if(!cache)return null;
+		for(var i = 0, c;c=cache[i++];){
+			if(equals(c.ctx,context)){
+				return c.res;
+			}
+		}
+		return null;
+	}
+	
+	function executeQuery(selector, context){
+		var query;
+		if(!(query = selectorCache[selector])){
+			query = compile(selector);
+			selectorCache[selector] = query;
+		}
+		
+		if(features.useCache){
+			var cache;
+			if(!(cache = queryCache[selector])){
+				cache = [];
+				queryCache[selector] = cache;
+			}
+			
+			var res = getCache(selector, context);
+			if(!res){
+				res = query(context);
+				cache.push({ctx:context,res:res});
+			}
+			return res;
+		}else{
+			return query(context);
+		}
+	}
+	
+	function equals(a,b){
+		if(a == b){
+			return true;
+		}else if(a.constructor == Array && b.constructor == Array){
+			var i = 0;
+			while(a[i] == b[i] && (i < a.length && i < b.length))i++;
+			return i == a.length && i == b.length;
+		}else{
+			return false;
+		}
+	}
+	
 	/**
 	 * Returns the elements that match the providen selector
 	 */
@@ -362,11 +443,8 @@ var Raze = (function(){
 				var parts = selector.split(',');
 				
 				for(var i = 0, part;part = parts[i++];){
-					if(!(batch = selectorCache[part])){
-						batch = compile(part);
-						selectorCache[part] = batch;
-					}
-					result = batch(context);
+					result = executeQuery(part, context);
+					
 					if(parts.length == 1){
 						return result;
 					}else{
@@ -379,6 +457,11 @@ var Raze = (function(){
 					return [selector];
 				}
 			}
+		},
+		test: function(selector,context){
+			var res;var s = +new Date; var i=1000;while(--i)res = Raze.query(selector,context);
+			console.info((+new Date) - s);
+			return res;
 		}
 	};
-})();window.das = false;
+})();

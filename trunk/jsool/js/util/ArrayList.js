@@ -78,17 +78,12 @@ js.util.ArrayList = $extends(js.util.List,{
 		return -1;
 	},
 	clone: function(){
-		var clone = new ArrayList();
+		var clone = new js.util.ArrayList();
 		clone.addAll(this.data);
 		return clone;
 	},
 	toArray: function(){
-		var arr = new Array();
-		for(var i = 0; i < this._size; i++){
-			arr.push(this.data[i]);
-		}
-		
-		return arr;
+		return this.data.clone();
 	},
 	get: function(index){
 		if(index >= this._size){
@@ -115,21 +110,10 @@ js.util.ArrayList = $extends(js.util.List,{
 		if(index >= this.length || index < 0){
 			throw new js.core.Exception("Array index out of bounds: "+index, this, arguments);
 		}
-		/* Old implementation
-		delete this.data[index];
-		
-		var length = this._size - 1;
-		for(var i = index ; i < length; i++){		
-			this.data[i] = this.data[i+1];
-		}
-		this._size--;
-		if(this.pop) this.pop();
-		*/
 		this.data.splice(index, 1);
 	},
 	clear: function(){
 		delete this.data;
-		
 		this.data = new Array();
 		this._size = 0;
 	},

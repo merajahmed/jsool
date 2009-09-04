@@ -69,8 +69,7 @@ jsool.applyIf(Array.prototype,{
 	 * Returns true if the provided function returns true for every item on the array
 	 */
 	every: function(action){
-		var length = this.length;
-		for(var i = 0; i < length; i++){
+		for(var i = this.length; i--;){
 			if(!action(this[i])){
 				return false;
 			}

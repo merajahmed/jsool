@@ -39,7 +39,7 @@ js.util.DateFormat = $extends(js.core.Object,{
 			this.patternKeyMap.put('{'+this.patterns[i].key+'}', this.patterns[i]);
 		}
 	},
-	pattern: 'mm/dd/yyyy',
+	pattern: 'yyyy/mm/dd',
 	locale: null,
 	compiled: null,
 	weekdays: null,

@@ -24,7 +24,9 @@
 		     			'table tr',
 		     			'table tr td',
 		     			'table.b tr.b td.c',
-		     			'.b'];
+		     			'.b',
+		     			'tr:first-child',
+		     			'tr:last-child'];
 		     		var results={};
 
 		     		var engines = [{
@@ -38,13 +40,10 @@
 		     			fn:function(selector){return Sizzle(selector,document);}
 		     		},{
 		     			name:'yass',
-		     			fn:function(selector){return _(selector,document,true);}
+		     			fn:function(selector){return _(selector,document);}
 		     		},{
 			     		name:'Sly',
 			     		fn:function(selector){return Sly.search(selector);}
-			     	},{
-				     	name:'native',
-				     	fn:function(seletor){return document.querySelectorAll(selector);}
 				    },{
 					    name:'Peppy',
 					    fn: function(selector){return peppy.query(selector,document);}

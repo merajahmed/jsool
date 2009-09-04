@@ -42,11 +42,9 @@ jsool.applyIf(String.prototype,{
 	
 	
 	toCharArray: function(){
-		var chars = new Array();
-		var str = new String(this);
-		var l = str.length;
-		for(var i = 0; i < l; i++){
-			chars.push(str[i]);
+		var chars = [];
+		for(var i = 0; i < this.length; i++){
+			chars.push(this[i]);
 		}
 		return chars;
 	},
@@ -62,15 +60,12 @@ jsool.applyIf(String.prototype,{
 		var h = this.hash;	
 		if(h == 0){
 			var offset = 0;
-			var len = this.length;
-			
-			for(var i = 0; i < len; i++){
+			for(var i = 0; i < this.length; i++){
 				h = 31*h + this.charCodeAt(offset++);
 			}
 			
 			this.hash = h;
 		}
-		
 		return h;
 	},
 	
