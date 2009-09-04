@@ -15,7 +15,7 @@ Good Luck!
 *Case 1:* Simple index loop;
 {{{
     var arr = new Array(10000);
-    for(var i = arr.length-1; i--;){
+    for(var i = arr.length; i--;){
         //... do cool stuff with array items
     }
 }}}
