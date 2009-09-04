@@ -1,6 +1,10 @@
 #summary Some performance and code optimization tips
 #labels Performance
 
+_NOTE:_ Most of these performance tips are not so significant individually but on a large scale, it can make some difference.
+
+Good Luck!
+
 = Performance Tips =
 
   * [PerformanceTips#For_Loops For Loops]
@@ -11,8 +15,8 @@
 *Case 1:* Simple index loop;
 {{{
     var arr = new Array(10000);
-    for(var i = 0; i < arr.length; i++){
-        //... do stuff with array items
+    for(var i = arr.length-1; i--;){
+        //... do cool stuff with array items
     }
 }}}
 Using a new variable to store the array length, makes no diference to performance.
