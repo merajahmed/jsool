@@ -32,11 +32,10 @@ js.util.Observable = $extends(js.core.Object, {
 	events: null,
 	addEvent: function(ev){
 		if(!this.events)this.events = new js.util.HashMap();
-		
 		if(Array.isArray(ev)){
 			var l = ev.length;
-			for(var i = 0; i < l; i++){
-				this.events.put(ev[i], null);
+			for(var i=0,h; h = ev[i++];){
+				this.events.put(h, null);
 			}
 		}else if(!this.events.containsKey(ev)){
 			this.events.put(ev, null);
@@ -73,8 +72,7 @@ js.util.Observable = $extends(js.core.Object, {
 		var listener;
 		if(listeners){
 			var len = listeners.length;
-			for(var i = 0; i < len; i++){
-				listener = listeners[i];
+			for(var i = 0,listener; listener = listeners[i++];){
 				//Using timeout, so the handlers may be execute simultaneously
 				window.setTimeout(function handler(){
 					listener.func.apply(listener.scope, [event]);
