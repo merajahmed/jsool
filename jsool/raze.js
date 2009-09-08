@@ -74,7 +74,7 @@ var Raze = (function(){
 	 * Get elements of "tag" from a root element
 	 */
 	function getNodes(ctx, tag){
-		if(ctx.nodeType&&ctx.nodeType===9){
+		if(ctx.nodeType&&ctx.nodeType!==9){
 			return ctx.getElementsByTagName(tag);
         }
 		var ns = [];
@@ -501,6 +501,10 @@ var Raze = (function(){
 					return [selector];
 				}
 			}
+		},
+		queryNode: function(selector, context){
+			var ns = Raze.query(selector, context);
+			return ns.length > 0 ? ns[0] : null;
 		},
 		/**
 		 * Used while developmento to debug performance

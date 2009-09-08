@@ -28,7 +28,10 @@
 	<script type="text/javascript" src="js/util/DateFormat.js"></script>
 	
 	<script type="text/javascript" src="Raze.js"></script>
+	
+	<script type="text/javascript" src="js/html/Template.js"></script>	
 	<script type="text/javascript" src="js/html/Element.js"></script>
+	<script type="text/javascript" src="js/html/Query.js"></script>
 	
 	<script type="text/javascript" src="js/canvas/Canvas.js"></script>
 	<script type="text/javascript" src="js/canvas/CanvasRenderingContext.js"></script>
@@ -40,16 +43,23 @@
 	<script type="text/javascript" src="js/data/Record.js"></script>
 	<script type="text/javascript" src="js/data/Type.js"></script>
 	
+	<script type="text/javascript" src="js/widget/Component.js"></script>
+	<script type="text/javascript" src="js/widget/ViewPort.js"></script>
+	<script type="text/javascript" src="js/widget/Button.js"></script>
+	
 	<script type="text/javascript">
 	var b;
 	jsool.onReady(function(){
-		var s = jsool.time();
-		Raze.test('table tr:nth-child(3)');
-		alert(jsool.time() - s);
+		b = new js.widget.Button("Master");
+		var i = 0;
+		b.addListener({
+			scope:b,
+			click:function(){
+				this.setText("Master " + (i++));
+			}
+		});
 
-		s = jsool.time();
-		Raze.test('table tr:nth-child(3)');
-		alert(jsool.time() - s);
+		b.renderOn("ake");
 	});
 	</script>
 
@@ -92,10 +102,10 @@
 			<td class="c">bla bla bla bla bla bla bla</td>
 		</tr>
 		<tr class="b">
-			<td>bla bla bla bla bla bla bla</td>
+			<td id="aki">bla bla bla bla bla bla bla</td>
 		</tr>
 		<tr class="b">
-			<td class="c">bla bla bla bla bla bla bla</td>
+			<td id="ake"class="c">bla bla bla bla bla bla bla</td>
 		</tr>
 	</table>
 	<input disabled="disabled" type="checkbox" />

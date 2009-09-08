@@ -41,15 +41,17 @@ js.util.Observable = $extends(js.core.Object, {
 			this.events.put(ev, null);
 		}
 	},
-	addListener: function(listener){
+	addListener: function(listener,fn){
+		if(String.isString(listener)){
+			listener={listener:fn};
+		}
+		
 		var listeners;
 		var scope;
-		
 		if(listener.scope)
 			scope = listener.scope;
 		else
 			scope = this;
-		
 		for(var i in listener){
 			if(this.events.containsKey(i)){
 				listeners = this.events.get(i);
@@ -66,13 +68,14 @@ js.util.Observable = $extends(js.core.Object, {
 	},
 	fireEvent: function(event){
 		var type = event.type;
+		
 		if(!this.events) return;
 		
 		var listeners = this.events.get(type);
-		var listener;
-		if(listeners){
-			var len = listeners.length;
-			for(var i = 0,listener; listener = listeners[i++];){
+		if(listeners != null){
+			var listener;
+			for(var i = 0; i < listeners.length;i++){
+				listener = listeners[i];
 				//Using timeout, so the handlers may be execute simultaneously
 				window.setTimeout(function handler(){
 					listener.func.apply(listener.scope, [event]);
