@@ -29,6 +29,9 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 js.widget.Component = $extends(js.util.Observable,{
+	cons:function(){
+		this.addEvent(["focus","blur","mouseup","mousedown","mouseover","mouseout","click","dblclick"]);
+	},
 	visible: false,
 	x: 0,
 	y: 0,
@@ -37,7 +40,13 @@ js.widget.Component = $extends(js.util.Observable,{
 	height: 0,
 	parent: null,
 	element: null,
+	name:"",
 	zSeed: (function(){var zseed = 0;return function(){return zseed++;};})(),
+	units: /(pt|px|em|pc|in|cm|mm|ex)/,
+	defaultUnit: "px",
+	elStyle: null,
+	rendered: false,
+	defaultElement: "div",
 	setParent: function(parent){
 		if(!parent.instanceOf(js.widget.Component)){
 			this.parent = parent;
@@ -49,49 +58,54 @@ js.widget.Component = $extends(js.util.Observable,{
 		return this.parent;
 	},
 	getX: function(){
-		return this.x;
+		return this.rendered ?
+				this.element.getPosition().x :
+				this.x;
 	},
 	getY: function(){
-		return this.y;
+		return this.rendered ? 
+				this.element.getPosition().y : 
+				this.y;
 	},
 	setX: function(x){
-		this.x = x;
-		this.element.applyStyle('left',x);
+		this.x = x;		
+		this.elStyle.left = x + this.defaultUnit;
 	},
 	setY: function(y){
 		this.y = y;
-		this.element.applyStyle('top',y);
+		this.elStyle.top = y + this.defaultUnit;
 	},
 	setZ: function(z){
 		this.z = z;
-		this.element.applyStyle('zIndex',z);
+		this.elStyle.zIndex = z;
+	},
+	getZ: function(){
+		return this.z;
 	},
 	setWidth: function(w){
 		this.width = w;
-		this.element.applyStyle('width',w+'px');
+		this.elStyle.width = w; + this.defaultUnit 
 	},
 	setHeight: function(h){
 		this.height = h;
-		this.element.applyStyle('height',h+'px');
+		this.elStyle.height  = h + this.defaultUnit;
 	},
 	getWidth: function(){
-		return this.width;
+		return this.rendered ? 
+				this.element.dom.clientWidth : 
+				this.width;
 	},
 	getHeight: function(){
-		return this.height;
+		return this.rendered ? 
+				this.element.dom.clientHeight : 
+				this.height;
 	},
 	setVisible: function(vis){
 		this.visible = vis;
-		if(vis)
-			this.element.applyStyle('visibility','visible');
-		else
-			this.element.applyStyle('visibility','hidden');
+		this.elStyle.visibility = vis ? 'visible' : 'hidden';
 	},
 	isVisible: function(){
 		return this.visible;
-	},
-	updateUI: function(canvas){
-		this.paint(canvas);
 	},
 	show: function(){
 		this.setVisible(true);
@@ -101,13 +115,40 @@ js.widget.Component = $extends(js.util.Observable,{
 	},
 	renderOn: function(toRender){
 		var element;
-		if(typeof toRender == 'string'){
+		if(typeof toRender === 'string'){
 			element = js.html.Element.get(toRender);
-		}else if(typeof toRender == 'object' && toRender.instanceOf(js.html.Element)){
+		}else if(typeof toRender === 'object' && toRender.instanceOf(js.html.Element)){
 			element = toRender;
 		}else{
 			throw new js.core.Exception('Invalid argument: '+ toRender, this);
 		}
+		this.render();
 		element.append(this.element);
-	}
+	},
+	render: function(){
+		this.fireEvent({type:"beforerender",component:this});
+		if(this.rendered)return false;
+		if(!this.element){
+			this.element = new js.html.Element(this.defaultElement);
+			this.elStyle = this.element.dom.style;
+		}
+		this.fireEvent({type:"render",component:this});
+		this.doRender();
+		this.initEvents();
+		this.rendered = true;
+		this.fireEvent({type:"afterrender",component:this});
+	},
+	initEvents: function(){
+		var cmp = this;
+		var el = this.element;
+		var fire = function(ename){			
+			el.addListener(ename,function(ev){
+				cmp.fireEvent(ev);
+			});
+		};
+		var events = this.events.keys;
+		for(var ev in events){
+			fire(ev);
+		}
+	} 
 },'js.widget.Component');

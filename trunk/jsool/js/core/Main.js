@@ -29,7 +29,7 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-var js = {core:{},util:{},html:{},net:{},canvas:{},flux:{laf:{}},data:{}};
+var js = {core:{},util:{},html:{},net:{},canvas:{},flux:{laf:{}},data:{},widget:{}};
 
 var jsool = (function(){
 	/**
@@ -77,11 +77,21 @@ var jsool = (function(){
 		/**
 		 * Adds a function that wil be fired just after the framework
 		 */
-		onReady: function(fn){onReadyActions.push(fn);},
+		onReady: function(fn){
+			onReadyActions.push(fn);
+			if(this.isReady()){
+				fn.call(jsool,[]);
+			}
+		},
 		/**
 		 * Adds a function that wil be fired just after the page is ready
 		 */
-		onSystemReady: function(fn){systemOperations.push(fn);},
+		onSystemReady: function(fn){
+			systemOperations.push(fn);
+			if(this.isReady()){
+				fn.call(jsool,[]);
+			}
+		},
 		/**
 		 * returns tha system time in milli-seconds
 		 */
@@ -131,6 +141,11 @@ var jsool = (function(){
 				jsool.apply(copy,object);
 			}
 			return copy;
+		},
+		iterate: function(it,fn,sc){
+			for(var i=0,e;e=it[i++];){
+				fn.call(sc||it,e);
+			}
 		}
 	};
 })();

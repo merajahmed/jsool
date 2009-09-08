@@ -30,20 +30,33 @@
  */
 js.widget.Button = $extends(js.widget.Component,{
 	cons: function(text){
-		this.element = new js.html.Element('button');
-		this.element.addClass('wgt-button');
-		
 		if(String.isString(text)){
 			this.text = text;
 		}
-		
-		this.element.setText(this.text);
 	},
 	text: 'button',
+	defaultElement: "table",
 	setText: function(text){
 		if(String.isString(text)){
-			this.text = text;
-			this.element.setText(text);
+			text = String(text);
 		}
+		this.text = text;
+		if(this.rendered){
+			js.html.Element.get(this.element.query("button")[0]).setText(text);
+		}
+	},
+	getText: function(){
+		return this.text;
+	},
+	doRender: function(){
+		if(!this.template){
+			this.template = js.widget.Button.template = js.widget.Button.template ? js.widget.Button.template: new js.html.Template(
+				"<tr><td class=\"wgt-btn-bor-t-l\"/><td class=\"wgt-btn-bor-t\"/><td class=\"wgt-btn-bor-t-r\"/></tr>",
+				"<tr><td class=\"wgt-btn-bor-l\"/><td><button>{text}</button></td><td class=\"wgt-btn-bor-r\" /></tr>",
+				"<tr><td class=\"wgt-btn-bor-b-l\"/><td class=\"wgt-btn-bor-b\" /><td class=\"wgt-btn-bor-b-r\"/></tr>"
+			);
+		}
+		this.element.setClass("jsool wgt-btn");
+		this.element.append(this.template.compile({text:this.text}));
 	}
 },'js.widget.Button');

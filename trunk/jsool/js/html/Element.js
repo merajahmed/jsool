@@ -49,7 +49,7 @@ js.html.Element = $extends(js.core.Object,{
 	 */
 	cons: function(obj){
 		var type = typeof obj;
-		var tags = /\b(a|button|div|object|label|option|p|script|select|span|td|tr|th|tbody|thead|tfoot|svg|iframe|canvas)\b/;
+		var tags = /\b(a|button|div|object|label|option|p|script|select|span|td|tr|th|tbody|thead|tfoot|svg|iframe|canvas|table)\b/;
 		
 		this.id = 'jsool-'+this.global.count;
 		this.global.count++;
@@ -121,11 +121,11 @@ js.html.Element = $extends(js.core.Object,{
 		if(arguments.length == 2 && typeof arguments[0] == 'string'){
 			var name = arguments[0];
 			var value = arguments[1];
-			this.dom.setAttribute(name, value);
+			this.dom[name] = value;
 		}else if(arguments.length == 1 && typeof arguments[0] == 'object'){
 			var options = arguments[0];
 			for(var p in options){
-				this.dom.setAttribute(p, options[p]);
+				this.dom[p] = options[p];
 			}
 		}
 	},
@@ -163,9 +163,11 @@ js.html.Element = $extends(js.core.Object,{
 		}else if(type == 'object'){
 			if(child.nodeType){
 				this.dom.appendChild(child.getDom());
+			
 			}else if(child.instanceOf(js.html.Element)){
+				if(child.parent){child.parent.remove(child);}
+				
 				this.dom.appendChild(child.getDom());
-				if(child.parent)child.parent.remove(child);
 				child.parent = this;
 			}
 		}
@@ -201,7 +203,10 @@ js.html.Element = $extends(js.core.Object,{
 	 * The element to be removed
 	 */
 	remove: function(element){
-		this.getDom().removeChild(element.getDom());
+		if(!element.nodeType){
+			element = element.getDom();
+		}
+		this.getDom().removeChild(element);
 	},
 	/**
 	 * Adds an event listener to element
@@ -359,9 +364,16 @@ js.html.Element = $extends(js.core.Object,{
 	},
 	getBox: function(){
 		var pos = this.getPosition();
-		pos.w = this.getDom().clientWidth;
-		pos.h = this.getDom().clientHeight;
+		var dom = this.dom;
+		pos.w = dom.clientWidth;
+		pos.h = dom.clientHeight;
 		return pos;
+	},
+	getWidth: function(){
+		return this.dom.clientWidth;
+	},
+	getHeight: function(){
+		return this.dom.clientHeight;
 	},
 	/**
 	 * @function
@@ -398,8 +410,7 @@ js.html.Element = $extends(js.core.Object,{
 		delete this.dom;
 	},
 	query: function(selector){
-		selector = selector || "*";
-		return js.html.DomQuery.query(selector, this.dom);
+		return Raze.query(selector, this.dom);
 	},
 	setOpacity: function(op){
 		var s = this.dom.style;
@@ -420,7 +431,7 @@ jsool.onSystemReady(function(){
 			var cached = cache.get(el);
 			if(cached) return cached;
 			var dom = document.getElementById(el);
-			if(dom) new js.html.Element(dom);
+			if(dom) return new js.html.Element(dom);
 		}else if(typeof el == 'object' && el.nodeType){//DOM Element
 			if(el.id){
 				var e = El.get(el.id);
