@@ -320,10 +320,9 @@ var Raze = (function(){
 		
 		var ua = navigator.userAgent.toString().toUpperCase();
 		var isIE = ua.indexOf("MSIE") != -1;
-		var isWebkit = ua.indexOf("Webkit") != -1;
+		var isWebKit = ua.indexOf("WEBKIT") != -1;
 		
-		features.useCache = !isIE && !isWebkit;
-		
+		features.useCache = !isIE && !isWebKit;
 		if(features.useCache){
 			var addEvent = document.addEventListener || document.attachEvent;
 			addEvent("DOMAttrModified", clearCache, false);
