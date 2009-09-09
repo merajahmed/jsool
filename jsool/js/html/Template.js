@@ -5,7 +5,7 @@ js.html.Template = $extends(js.core.Object,{
 			this.html = args[0].join("");
 		}else if(args.length > 1){
 			var buffer =[];
-			jsool.iterate(args,function(e){
+			Array.iterate(args,function(e){
 				buffer.push(e);
 			});
 			this.html = buffer.join("");
