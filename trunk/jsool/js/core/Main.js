@@ -29,7 +29,7 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-var js = {core:{},util:{},html:{},net:{},canvas:{},flux:{laf:{}},data:{},widget:{}};
+var js = {core:{},util:{},html:{},net:{},canvas:{},flux:{laf:{}},data:{},juif:{}};
 
 var jsool = (function(){
 	/**
@@ -142,9 +142,9 @@ var jsool = (function(){
 			}
 			return copy;
 		},
-		iterate: function(it,fn,sc){
-			for(var i=0,e;e=it[i++];){
-				fn.call(sc||it,e);
+		iterate: function(it,fn){
+			for(var at in it){
+				fn(at,it[at]);
 			}
 		}
 	};

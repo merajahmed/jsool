@@ -38,6 +38,15 @@ Array.isArray = function(obj){
 	return obj.constructor == Array;
 };
 
+/**
+ * Iterates array-like objects
+ */
+Array.iterate = function(a, fn){
+	for(var i=0,e;e=a[i++];){
+		fn(e,i);
+	}
+};
+
 jsool.applyIf(Array.prototype,{
 	/**
 	 * Shuffles the current array

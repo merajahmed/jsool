@@ -28,14 +28,14 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-js.widget.Button = $extends(js.widget.Component,{
+js.juif.Button = $extends(js.juif.Component,{
 	cons: function(text){
 		if(String.isString(text)){
 			this.text = text;
 		}
 	},
 	text: 'button',
-	defaultElement: "table",
+	defaultElement: "span",
 	setText: function(text){
 		if(String.isString(text)){
 			text = String(text);
@@ -50,12 +50,16 @@ js.widget.Button = $extends(js.widget.Component,{
 	},
 	doRender: function(){
 		if(!this.template){
-			this.template = js.widget.Button.template = js.widget.Button.template ? js.widget.Button.template: new js.html.Template(
-				"<tr><td class=\"wgt-btn-bor-t-l\"/><td class=\"wgt-btn-bor-t\"/><td class=\"wgt-btn-bor-t-r\"/></tr>",
-				"<tr><td class=\"wgt-btn-bor-l\"/><td><button>{text}</button></td><td class=\"wgt-btn-bor-r\" /></tr>",
-				"<tr><td class=\"wgt-btn-bor-b-l\"/><td class=\"wgt-btn-bor-b\" /><td class=\"wgt-btn-bor-b-r\"/></tr>"
-			);
+			if(!js.juif.Button.template){
+				js.juif.Button.template = new js.html.Template(
+					"<table><tr><td class=\"wgt-btn-bor-t-l\"/><td class=\"wgt-btn-bor-t\"/><td class=\"wgt-btn-bor-t-r\"/></tr>",
+					"<tr><td class=\"wgt-btn-bor-l\"/><td><button>{text}</button></td><td class=\"wgt-btn-bor-r\" /></tr>",
+					"<tr><td class=\"wgt-btn-bor-b-l\"/><td class=\"wgt-btn-bor-b\" /><td class=\"wgt-btn-bor-b-r\"/></tr></table>"
+				);
+			}
+			this.template = js.juif.Button.template;
 		}
+		
 		this.element.setClass("jsool wgt-btn");
 		this.element.append(this.template.compile({text:this.text}));
 	}

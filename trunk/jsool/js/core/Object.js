@@ -76,5 +76,13 @@ js.core.Object.prototype = {
 			
 			return false;
 		}
+	},
+	clone: function(){
+		var c = new this.supercls;
+		jsool.apply(c, this);
+		//c.hash = 0;
+		return c;
 	}
 };
+
+Object.isObject = function(o){return typeof o === "object";};

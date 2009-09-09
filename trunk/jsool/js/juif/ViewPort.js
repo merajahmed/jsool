@@ -1,4 +1,4 @@
-js.widget.ViewPort=(function(){
+js.juif.ViewPort=(function(){
 	var proxy;
 	
 	function init(){

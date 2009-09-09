@@ -74,7 +74,7 @@ var Raze = (function(){
 	 * Get elements of "tag" from a root element
 	 */
 	function getNodes(ctx, tag){
-		if(ctx.nodeType&&ctx.nodeType!==9){
+		if(ctx.getElementsByTagName){
 			return ctx.getElementsByTagName(tag);
         }
 		var ns = [];
@@ -124,7 +124,7 @@ var Raze = (function(){
 		var res = [];
 		for(var i = 0, n; n = ctx[i++];){
 			if(n.tagName === tag){
-				res.push(node);
+				res.push(n);
 			}
 		}
 		return res;
@@ -288,7 +288,7 @@ var Raze = (function(){
 			var res = [], ns;
 			for(var i = 0, n; n = ctx[i++];){
 				ns = n.querySelectorAll(sel);
-				for(var m = 0,m;m = ns[n++];){
+				for(var n = 0,m;m = ns[n++];){
 					res.push(m);
 				}
 			}
