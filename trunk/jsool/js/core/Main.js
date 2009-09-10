@@ -73,6 +73,11 @@ var jsool = (function(){
 		}
 	};
 	
+	window.onload = function(){
+		jsool.start();
+		delete jsool.start;
+	};
+	
 	return {
 		/**
 		 * Adds a function that wil be fired just after the framework
@@ -96,16 +101,28 @@ var jsool = (function(){
 		 * returns tha system time in milli-seconds
 		 */
 		time: function(){return+new Date;},
+		/**
+		 * Starts the framework
+		 */
 		start: function(){
 			documentReady = true;
 			that.prepareSystem();
 			systemReady = true;
 			that.doReady();
 		},
+		/**
+		 * Checks if the page and framework is ready
+		 */
 		isReady: function(){
 			return systemReady && documentReady;
 		},
+		/**
+		 * An empty function
+		 */
 		emptyFn: function(){return undefined;},
+		/**
+		 * Copy all attributos from source object to object
+		 */
 		apply: function(object, source, defaults){
 			if(defaults){
 				jsool.apply(object, defaults);
@@ -117,9 +134,15 @@ var jsool = (function(){
 			}
 			return object;
 		},
+		/**
+		 * Checks if the object is undefined
+		 */
 		isDefined: function(i){
 			return typeof i !== 'undefined';
 		},
+		/**
+		 * Copy from source all attributes that object does not have
+		 */
 		applyIf: function(object, source){
 			if(object){
 				for(var p in source){
@@ -130,6 +153,9 @@ var jsool = (function(){
 			}
 			return object;
 		},
+		/**
+		 * Create a copy of a object
+		 */
 		copy: function(object){
 			if(typeof object === 'object'){
 				var copy;
@@ -142,9 +168,14 @@ var jsool = (function(){
 			}
 			return copy;
 		},
+		/**
+		 * Iterate an object attributes
+		 */
 		iterate: function(it,fn){
 			for(var at in it){
-				fn(at,it[at]);
+				if(typeof it[at] !== 'function'){
+					fn(at,it[at]);
+				}
 			}
 		}
 	};
@@ -217,8 +248,3 @@ jsool.$extends = function(superclass, prototype, type){
 };
 
 var $extends = jsool.$extends;
-
-window.onload = function(){
-	jsool.start();
-	delete jsool.start;
-};
