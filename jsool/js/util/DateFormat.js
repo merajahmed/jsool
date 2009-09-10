@@ -28,6 +28,11 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+/**
+ * Formarts and parse date Objects according with patterns provided by the locale or the user.
+ * It provides format methods (Date -> text) and parse methods (text -> date)
+ */
 js.util.DateFormat = $extends(js.core.Object,{
 	cons: function(pattern,locale){
 		this.setLocale(locale ? locale : js.util.Locale.DEFAULT);
@@ -35,16 +40,34 @@ js.util.DateFormat = $extends(js.core.Object,{
 		
 		this.patternKeyMap = new js.util.HashMap();
 		
-		for(var i = 0; i < this.patterns.length; i++){
-			this.patternKeyMap.put('{'+this.patterns[i].key+'}', this.patterns[i]);
+		for(var i=0,p;p=this.patterns[i++];){
+			this.patternKeyMap.put('{'+p.key+'}', p);
 		}
 	},
+	/**
+	 * Default data pattern
+	 */
 	pattern: 'yyyy/mm/dd',
+	/**
+	 * The current locale
+	 */
 	locale: null,
+	/**
+	 * The compiled pattern
+	 */
 	compiled: null,
+	/**
+	 * The weekdays names array
+	 */
 	weekdays: null,
-	months: null,
+	/**
+	 * the month names array
+	 */
+	months: null,	
 	patternKeyMap: null,
+	/**
+	 * Formats the data into a pattern-macth text
+	 */
 	format: function(date){
 		var formated = new String(this.pattern);
 		var pattern;		
@@ -58,6 +81,9 @@ js.util.DateFormat = $extends(js.core.Object,{
 		}
 		return formated;
 	},
+	/**
+	 * Set the DateFormat Locale
+	 */
 	setLocale: function(locale){
 		if(!locale.instanceOf(js.util.Locale)){
 			throw new js.core.Exception('Invalid argument: '+ locale, this, arguments);
@@ -68,6 +94,9 @@ js.util.DateFormat = $extends(js.core.Object,{
 		this.pattern = locale.datePattern;
 		this.compiled = null; 
 	},
+	/**
+	 * Compiles the current patten
+	 */
 	compile: function(){
 		var compiled = new String(this.pattern);
 		var pattern;
@@ -80,6 +109,9 @@ js.util.DateFormat = $extends(js.core.Object,{
 		
 		this.compiled = compiled;
 	},
+	/**
+	 * Parse a string into a Date
+	 */
 	parse: function(string){
 		if(!String.isString(string)){
 			throw new js.core.Exception('invalid argument type: '+ string, this, arguments);

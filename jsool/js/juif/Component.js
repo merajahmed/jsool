@@ -101,7 +101,7 @@ js.juif.Component = $extends(js.util.Observable,{
 	 * @property Flags if the component has already been rendered
 	 */
 	rendered: false,
-	/**
+	/**	
 	 * @property The component default wraper element that is crated to inserts the component on the document
 	 */
 	defaultElement: "div",

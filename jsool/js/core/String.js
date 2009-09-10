@@ -30,6 +30,8 @@
  */
 
 jsool.applyIf(String.prototype,{
+	
+	
 	replaceAll: function(search, replacement){
 		var str = this;
 		var pos = str.indexOf(search);	
@@ -54,8 +56,8 @@ jsool.applyIf(String.prototype,{
 		return this.replace(/^\s*([\S\s]*?)\s*$/, '$1');
 	},
 	
-	
 	hash: 0,
+	
 	hashCode: function(){
 		var h = this.hash;	
 		if(h == 0){

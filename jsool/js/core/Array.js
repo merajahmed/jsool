@@ -47,6 +47,7 @@ Array.iterate = function(a, fn){
 	}
 };
 
+//Adding new methods to array
 jsool.applyIf(Array.prototype,{
 	/**
 	 * Shuffles the current array
@@ -98,6 +99,9 @@ jsool.applyIf(Array.prototype,{
 		}
 		return newArray;
 	},
+	/**
+	 * Retuns a new array with the results of action
+	 */
 	map: function(action){
 		var length = this.length;
 		var newArray = new Array();		
@@ -106,6 +110,9 @@ jsool.applyIf(Array.prototype,{
 		}
 		return newArray;
 	},
+	/**
+	 * Returns the index of a element
+	 */
 	indexOf: function(elt /*, from*/){
 		var len = this.length >>> 0;
 		var from = Number(arguments[1]) || 0;
@@ -116,6 +123,9 @@ jsool.applyIf(Array.prototype,{
 		}
 		return -1;
 	},
+	/**
+	 * Create a copy of an array
+	 */
 	clone: function(){
 		var result = [];
 		for(var i = 0, item; item = this[i++];){
@@ -123,6 +133,9 @@ jsool.applyIf(Array.prototype,{
 		}
 		return result;
 	},
+	/**
+	 * Create a new array by concatenating the arguments
+	 */
 	concat: function(){
 		var result = this.clone();
 		for(var a = 0, arr; arr = arguments[a++];){
@@ -133,6 +146,9 @@ jsool.applyIf(Array.prototype,{
 		}
 		return result;
 	},
+	/**
+	 * Removes an item from the array
+	 */
 	remove: function(s){
 		for (var i=0; i < this.length; i++){
 			if (s == this[i]) this.splice(i, 1);
