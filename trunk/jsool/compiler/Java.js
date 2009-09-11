@@ -24,9 +24,9 @@
 	var KEYWORD = expression(/^[abstract|default|if|private|this|boolean|do|implements|protected|throw|break|double|import|public|throws|byte|else|instanceof|return|transient|case|extends|int|short|try|catch|final|interface|static|void|char|finally|long|strictfp|volatile|class|float|native|super|while|const|for|new|switch|continue|goto|package|synchronized]/);
 	
 	//46750
-	var INTEGER_LITERAL = expression(/^([0-9]+[lL]{0,1})|(0[xX][0-9a-fA-F])/);
+	var INTEGER_LITERAL = expression(/^(0[xX][0-9a-fA-F]+)|([0-9]+[lL]{0,1})/);
 	
-	var FLOATING_POINT_LITERAL = expression(/^[0-9]+(\.[0-9]+)?([Ee][+-]{0,1})?([fFdD])?/);
+	var FLOATING_POINT_LITERAL = expression(/^[0-9]+(\.[0-9]+)?([Ee](([+-]{0,1})?[0-9]+))?([fFdD])?/);
 	
 	var BOOLEAN_LITERAL = expression(/^(true|false)/);
 	
@@ -37,7 +37,7 @@
 	var NULL_LITERAL = expression(/^null/);
 	
 	//228794
-	var LITERAL = stack(INTEGER_LITERAL,FLOATING_POINT_LITERAL,BOOLEAN_LITERAL,CHARACTER_LITERAL,STRING_LITERAL,NULL_LITERAL);
+	var LITERAL = stack(FLOATING_POINT_LITERAL,INTEGER_LITERAL,BOOLEAN_LITERAL,CHARACTER_LITERAL,STRING_LITERAL,NULL_LITERAL);
 	
 	var SEPARATOR = expression(/^[(){}[];,.]/);
 	
@@ -45,7 +45,7 @@
 	
 	// http://java.sun.com/docs/books/jls/second_edition/html/lexical.doc.html#25688
 	var SUB = expression(/^\cZ/);
-	var TOLKEN = stack(LITERAL, IDENTIFIER, KEYWORD, SEPARATOR, OPERATOR);	
+	var TOLKEN = stack(LITERAL, IDENTIFIER, KEYWORD, OPERATOR, SEPARATOR);	
 	var INPUT_ELEMENT = stack(TOLKEN, WHITE_SPACE);
 	
 	//ERRO AQUI
