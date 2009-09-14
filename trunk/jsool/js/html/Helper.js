@@ -7,7 +7,7 @@ js.html.Helper = (function(){
 			var el;
 			if(String.isString(html)){
 				el = DOC.createDocumentFragment();
-				el.innerHTML = html;//inserts the fragment
+				el.innerHTML = html;
 			}else if(Array.isArray(html)){
 				el = DOC.createDocumentFragment();
 				html.forEach(function(e){
