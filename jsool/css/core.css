@@ -15,6 +15,7 @@
 	min-height: 0px;
 	border-spacing: 0px;
 	border-colapse: colapse;
+	border-width: 0px
 }
 
 canvas.flux-proxy{

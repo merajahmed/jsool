@@ -279,7 +279,7 @@ js.html.Element = $extends(js.core.Object,{
 	addClass: function(name){
 		var current = this.dom.className.split('/\s+/');
 		current.push(name.trim());
-		this.dom.className = current.join(' ');
+		this.dom.className = current.join(' ').trim();
 	},
 	/**
 	 * @function

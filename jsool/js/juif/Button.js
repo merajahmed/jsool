@@ -35,7 +35,7 @@ js.juif.Button = $extends(js.juif.Component,{
 		}
 	},
 	text: 'button',
-	defaultElement: "table",
+	defaultElement: "div",
 	setText: function(text){
 		if(String.isString(text)){
 			text = String(text);
@@ -52,9 +52,9 @@ js.juif.Button = $extends(js.juif.Component,{
 		if(!this.template){
 			if(!js.juif.Button.template){
 				js.juif.Button.template = new js.html.Template(
-					"<tr><td class=\"wgt-btn-bor-t-l\"/><td class=\"wgt-btn-bor-t\"/><td class=\"wgt-btn-bor-t-r\"/></tr>",
+					"<table><tr><td class=\"wgt-btn-bor-t-l\"/><td class=\"wgt-btn-bor-t\"/><td class=\"wgt-btn-bor-t-r\"/></tr>",
 					"<tr><td class=\"wgt-btn-bor-l\"/><td><button>{text}</button></td><td class=\"wgt-btn-bor-r\" /></tr>",
-					"<tr><td class=\"wgt-btn-bor-b-l\"/><td class=\"wgt-btn-bor-b\" /><td class=\"wgt-btn-bor-b-r\"/></tr>"
+					"<tr><td class=\"wgt-btn-bor-b-l\"/><td class=\"wgt-btn-bor-b\" /><td class=\"wgt-btn-bor-b-r\"/></tr></table>"
 				);
 			}
 			this.template = js.juif.Button.template;
