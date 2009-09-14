@@ -1,7 +1,7 @@
 #summary Things that needs to be done.
 
 = TODOs =
-  # Implements full selector API on [http://code.google.com/p/jsool/source/browse/trunk/jsool/Raze.js Raze]; (partial)
+  # Implements full selector API on [http://code.google.com/p/jsool/source/browse/trunk/jsool/raze.js Raze]; (partial)
   # Finish [http://code.google.com/p/jsool/source/browse/trunk/jsool/js/util/DateFormat.js js.util.DateFormat] implementation; (partial)
   # Work on [http://code.google.com/p/jsool/source/browse/trunk/jsool/js/data js.data] package;
   # Research a better way to use AJAX requests;
