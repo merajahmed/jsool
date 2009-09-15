@@ -37,12 +37,12 @@ js.core.Browser = {
 			|| "an unknown version";
 		this.OS = this.searchString(this.dataOS) || "an unknown OS";
 		
-		this.isIE = this.browser == "Explorer";
-		this.isFF = this.browser == "Firefox";
-		this.isOpera = this.browser == "Opera";
-		this.isChrome = this.browser == "Chrome";
-		this.isSafari = this.browser == "Safari";
-		this.isWebKit = this.isChrome || this.isSafari;
+		jsool.isIE = this.browser == "Explorer";
+		jsool.isFF = this.browser == "Firefox";
+		jsool.isOpera = this.browser == "Opera";
+		jsool.isChrome = this.browser == "Chrome";
+		jsool.isSafari = this.browser == "Safari";
+		jsool.isWebKit = jsool.isChrome || jsool.isSafari;
 	},
 	searchString: function (data) {
 		for (var i=0;i<data.length;i++)	{

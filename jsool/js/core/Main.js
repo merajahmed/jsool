@@ -29,7 +29,7 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-var js = {core:{},util:{},html:{},net:{},canvas:{},flux:{laf:{}},data:{},juif:{}};
+var js = {core:{},util:{},dom:{},net:{},canvas:{},flux:{laf:{}},data:{},juif:{}};
 
 var jsool = (function(){
 	/**
@@ -50,6 +50,8 @@ var jsool = (function(){
 	var systemReady = false;
 	
 	var that = this;
+	
+	var idCount = 0;
 	
 	that.doReady = function(){
 		for(var i = 0; i< onReadyActions.length; i++){
@@ -73,10 +75,19 @@ var jsool = (function(){
 		}
 	};
 	
-	window.onload = function(){
-		jsool.start();
-		delete jsool.start;
-	};
+	if(window.addEventListener){
+		window.addEventListener("load",function(){
+			jsool.start();
+			delete jsool.start;
+			window.removeEventListener("load",arguments.callee,false);
+		},false);
+	}else{
+		window.onload = function(){
+			jsool.start();
+			delete jsool.start;
+			delete window.onload;
+		};
+	}
 	
 	return {
 		/**
@@ -135,12 +146,6 @@ var jsool = (function(){
 			return object;
 		},
 		/**
-		 * Checks if the object is undefined
-		 */
-		isDefined: function(i){
-			return typeof i !== 'undefined';
-		},
-		/**
 		 * Copy from source all attributes that object does not have
 		 */
 		applyIf: function(object, source){
@@ -177,6 +182,31 @@ var jsool = (function(){
 					fn(at,it[at]);
 				}
 			}
+		},
+		id: function(el){
+			el.id = el.id || ("jsool-" + (idCount++));
+			return el.id;
+		},
+		/**
+		 * Checks if the object is undefined
+		 */
+		isDefined: function(o){
+			return typeof o !== 'undefined';
+		},
+		isArray: function(o){
+			return o.constructor == Array;
+		},
+		isObject: function(o){
+			return typeof o === "object";
+		},
+		isNumber: function(o){
+			return typeof o === "number";
+		},
+		isBoolean: function(o){
+			return typeof o === "boolean";
+		},
+		isDate: function(o){
+			return o.constructor == Date;
 		}
 	};
 })();
@@ -228,7 +258,7 @@ jsool.$extends = function(superclass, prototype, type){
 		cls.prototype[sp] = superclass.prototype[sp];
 	}
 	
-	if(js.core.Browser.isIE)
+	if(jsool.isIE)
 		cls.prototype['toString'] = superclass.prototype['toString'];
 	
 	for(var p in prototype){

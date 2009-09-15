@@ -51,7 +51,7 @@ js.flux.UIManager = (function(){
 		proxy = new js.canvas.Canvas();
 		context = proxy.getContext();
 		proxy.setClass('flux-proxy');
-		js.html.Element.BODY.append(proxy);
+		js.dom.Element.BODY.append(proxy);
 		
 		if(window.addEventListener){
 			window.addEventListener('resize',resize,false);
@@ -69,7 +69,7 @@ js.flux.UIManager = (function(){
 	var mouseListener = function(event){
 		event = event || window.event;
 		var pos;
-		if(js.core.Browser.isIE){
+		if(jsool.isIE){
 			pos = {x:event.clientX+document.body.scrollLeft,
 					y:event.clientY+document.body.scrollTop};
 		}else{

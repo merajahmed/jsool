@@ -41,9 +41,11 @@ js.util.Observable = $extends(js.core.Object, {
 			this.events.put(ev, null);
 		}
 	},
-	addListener: function(listener,fn){
+	on: function(listener,fn){
 		if(String.isString(listener)){
-			listener={listener:fn};
+			var t = {};
+			t[listener] = fn;
+			listener = t;
 		}
 		
 		var listeners;

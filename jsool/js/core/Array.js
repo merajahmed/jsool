@@ -43,7 +43,7 @@ Array.isArray = function(obj){
  */
 Array.iterate = function(a, fn){
 	for(var i=0,e;e=a[i++];){
-		fn(e,i);
+		fn(i,e);
 	}
 };
 
@@ -137,14 +137,10 @@ jsool.applyIf(Array.prototype,{
 	 * Create a new array by concatenating the arguments
 	 */
 	concat: function(){
-		var result = this.clone();
 		for(var a = 0, arr; arr = arguments[a++];){
-			var arr = arguments[a];
-			for(var b = 0, item; item = arr[b++];){
-				result.push(item);
-			}
+			this.push(arguments[a]);
 		}
-		return result;
+		return this;
 	},
 	/**
 	 * Removes an item from the array

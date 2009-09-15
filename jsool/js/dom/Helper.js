@@ -1,4 +1,4 @@
-js.html.Helper = (function(){
+js.dom.Helper = (function(){
 	var DOC = window.document;
 	var getTagRe = /^[<]([\w]+)/;
 	
@@ -11,7 +11,7 @@ js.html.Helper = (function(){
 			}else if(Array.isArray(html)){
 				el = DOC.createDocumentFragment();
 				html.forEach(function(e){
-					js.html.Helper.createDom(e, el);
+					js.dom.Helper.createDom(e, el);
 				});
 			}else if(Object.isObject(html)){
 				el = DOC.createElement(html.tag || "div");
@@ -23,11 +23,11 @@ js.html.Helper = (function(){
 				});
 				
 				if(html.style){
-					js.html.Helper.applyStyle(el, html.style);
+					js.dom.Helper.applyStyle(el, html.style);
 				}
 				
 				if(html.children){
-					js.html.Helper.createDom(html.children, el);
+					js.dom.Helper.createDom(html.children, el);
 				}else if(html.html){
 					el.innerHTML = html.html;
 				}
