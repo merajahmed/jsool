@@ -28,7 +28,7 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-js.canvas.Canvas = $extends(js.html.Element,{
+js.canvas.Canvas = $extends(js.dom.Element,{
 	ccons: function(){
 		this.$super('canvas');
 	},

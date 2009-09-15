@@ -42,7 +42,7 @@ js.juif.Button = $extends(js.juif.Component,{
 		}
 		this.text = text;
 		if(this.rendered){
-			js.html.Element.get(this.element.query("button")[0]).setText(text);
+			js.dom.Element.get(this.element.query("button")[0]).setText(text);
 		}
 	},
 	getText: function(){
@@ -51,7 +51,7 @@ js.juif.Button = $extends(js.juif.Component,{
 	doRender: function(){
 		if(!this.template){
 			if(!js.juif.Button.template){
-				js.juif.Button.template = new js.html.Template(
+				js.juif.Button.template = new js.dom.Template(
 					"<table><tr><td class=\"wgt-btn-bor-t-l\"/><td class=\"wgt-btn-bor-t\"/><td class=\"wgt-btn-bor-t-r\"/></tr>",
 					"<tr><td class=\"wgt-btn-bor-l\"/><td><button>{text}</button></td><td class=\"wgt-btn-bor-r\" /></tr>",
 					"<tr><td class=\"wgt-btn-bor-b-l\"/><td class=\"wgt-btn-bor-b\" /><td class=\"wgt-btn-bor-b-r\"/></tr></table>"
@@ -63,4 +63,4 @@ js.juif.Button = $extends(js.juif.Component,{
 		this.element.setClass("jsool wgt-btn");
 		this.element.append(this.template.compile({text:this.text}));
 	}
-},'js.widget.Button');
+},'js.juif.Button');

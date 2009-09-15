@@ -118,17 +118,19 @@ js.util.ArrayList = $extends(js.util.List,{
 		this._size = 0;
 	},
 	addAll: function(collection){
-		if(Array.isArray(collection)){
-			var length = collection.length;
-			this.data = this.data.concat(collection);
-			this._size = this._size + length;
-		}else if(typeof collection == 'object' && collection.instanceOf(js.util.Collection)){
+		if(collection.instanceOf && collection.instanceOf(js.util.Collection)){
 			var iterator = collection.iterator();
 			
 			while(iterator.hasNext()){
 				this.data.push(iterator.next());
 				this._size++;
 			}
+		}else{
+			var that = this;
+			Array.iterate(collection, function add(i,el){
+				that.data.push(el);
+				that._size += 1;
+			});
 		}
 	},
 	size: function(){

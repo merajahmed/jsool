@@ -1,12 +1,12 @@
-js.html.Template = $extends(js.core.Object,{
+js.dom.Template = $extends(js.core.Object,{
 	cons: function(){
 		var args = arguments;
 		if(Array.isArray(args[0])){
 			this.html = args[0].join("");
 		}else if(args.length > 1){
 			var buffer =[];
-			Array.iterate(args,function(e){
-				buffer.push(e);
+			Array.iterate(args,function concatenateTemplate(i,el){
+				buffer.push(el);
 			});
 			this.html = buffer.join("");
 		}else if(String.isString(args[0])){
@@ -20,4 +20,4 @@ js.html.Template = $extends(js.core.Object,{
 			return jsool.isDefined(values[name]) ? values[name] : "";
 		});
 	}
-},"js.html.Template");
+},"js.dom.Template");

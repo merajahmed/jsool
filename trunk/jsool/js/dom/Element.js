@@ -30,12 +30,12 @@
  */
 
 /**
- * @class js.html.Element
+ * @class js.dom.Element
  * @extends js.util.Observable
  * 
  * Base class for any html element
  */
-js.html.Element = $extends(js.core.Object,{
+js.dom.Element = $extends(js.core.Object,{
 	/**
 	 * @constructor
 	 * Creates a new html element.
@@ -51,42 +51,17 @@ js.html.Element = $extends(js.core.Object,{
 		var type = typeof obj;
 		var tags = /\b(a|button|div|object|label|option|p|script|select|span|td|tr|th|tbody|thead|tfoot|svg|iframe|canvas|table)\b/;
 		
-		this.id = 'jsool-'+this.global.count;
-		this.global.count++;
-		
 		if(type == 'string' && tags.test(obj)){
 			this.dom = document.createElement(obj);
-			this.dom.id = this.id;
 		}else if(type == 'object' && obj.tagName){
 			this.dom = obj;
-			this.tag = obj.tagName;
-			
-			if(this.dom.id){
-				this.id = this.dom.id;
-			}else{
-				this.dom.id = this.id;
-			}
-			
 		}else{
 			throw new js.core.Exception('Invalid tag: ' + obj, this);
 		}
 		
-		this.events = {
-			focus:[],blur:[],
-			mousedown:[],mouseup:[],click:[],dblclick:[],
-			mousein:[],mouseout:[],mousemove:[],
-			keydown:[],keyup:[],keypress:[],
-			load:[],unload:[],abort:[],error:[],resize:[],scroll:[]
-		};
+		this.id = jsool.id(this.dom);
 		
-		js.html.Element.cache(this);
-	},
-	tag: null,
-	/**
-	 * @property {Object} commom variables for all elements 
-	 */
-	global: {
-		count:0
+		js.dom.Element.cache(this);
 	},
 	/**
 	 * @property {js.util.List} the children elements of this Element
@@ -97,7 +72,7 @@ js.html.Element = $extends(js.core.Object,{
 	 */
 	dom: null,
 	/**
-	 * @property {js.html.Element} parent element
+	 * @property {js.dom.Element} parent element
 	 */
 	parent: null,	
 	/**
@@ -117,7 +92,7 @@ js.html.Element = $extends(js.core.Object,{
 	 * @param {object} attributes
 	 * a map of attributes
 	 */
-	setAttribute: function(){
+	set: function(){
 		if(arguments.length == 2 && typeof arguments[0] == 'string'){
 			var name = arguments[0];
 			var value = arguments[1];
@@ -137,7 +112,7 @@ js.html.Element = $extends(js.core.Object,{
 	 * 
 	 * @return {string} value of the attribute
 	 */
-	getAttribute: function(name){
+	get: function(name){
 		return this.dom[name];
 	},
 	/**
@@ -152,9 +127,9 @@ js.html.Element = $extends(js.core.Object,{
 	 * @function
 	 * adds a new child into the elements dom and the children collection
 	 * 
-	 * @param {js.html.Element} child 
+	 * @param {js.dom.Element} child 
 	 * 
-	 * @throws {js.core.Exception} if the object is not an instance of js.html.Element
+	 * @throws {js.core.Exception} if the object is not an instance of js.dom.Element
 	 */
 	append: function(child){
 		var type = typeof child;
@@ -164,7 +139,7 @@ js.html.Element = $extends(js.core.Object,{
 			if(child.nodeType){
 				this.dom.appendChild(child.getDom());
 			
-			}else if(child.instanceOf(js.html.Element)){
+			}else if(child.instanceOf(js.dom.Element)){
 				if(child.parent){child.parent.remove(child);}
 				
 				this.dom.appendChild(child.getDom());
@@ -187,6 +162,9 @@ js.html.Element = $extends(js.core.Object,{
 	getText: function(){
 		return this.getDom().innerHTML;
 	},
+	setHtml: function(html){
+		this.dom.innerHTML = new String(html);
+	},
 	/**
 	 * @function
 	 * 
@@ -199,7 +177,7 @@ js.html.Element = $extends(js.core.Object,{
 	 * @function
 	 * Removes a child node from the Element
 	 * 
-	 * @param {js.html.Element} element
+	 * @param {js.dom.Element} element
 	 * The element to be removed
 	 */
 	remove: function(element){
@@ -211,22 +189,14 @@ js.html.Element = $extends(js.core.Object,{
 	/**
 	 * Adds an event listener to element
 	 */
-	addListener: function(event, handler){
-		var dom = this.getDom();
-		if(!(this.events[event] == undefined)){
-			var that = this;
-			var handlerFunction = function(event){
-				event = event || window.event;
-				handler.apply(that, [event]);
-			};
-			//Stores for removal after destroy
-			this.events[event].push(handlerFunction);
-			
-			if(dom.addEventListener){
-				dom.addEventListener(event, handlerFunction, false);
-			}else{
-				dom.attachEvent('on'+event, handlerFunction);
-			}
+	on: function(event, handler){
+		js.core.EventManager.on(this.dom, event, handler,this);
+	},
+	un: function(event, handler){
+		if(event){
+			js.core.EventManager.un(this.dom, event, handler);
+		}else{
+			js.core.EventManager.destroy(this.dom);
 		}
 	},
 	/**
@@ -238,33 +208,7 @@ js.html.Element = $extends(js.core.Object,{
 	 * 
 	 */
 	destroyListeners: function(){
-		if(!this.dom)return;
-		var w3c = this.dom.addEventListener != undefined;
-		var len;
-		
-		if(arguments.length == 0){
-			for(var ev in this.events){
-				len = this.events[ev].length;
-				for(var i = 0; i < len; i++){
-					if(w3c){
-						this.dom.removeEventListener(ev, this.events[ev][i], false);
-					}else{
-						this.dom.detachEvent('on'+ev, this.events[ev][i]);
-					}
-				}
-			}
-		}else if(arguments.length == 1){
-			var ev = arguments[0];
-			var l = this.events[ev];
-			len = l.length;
-			for( var j = 0; j < len; j++){
-				if(w3c){
-					this.dom.removeEventListener(ev, l[j], false);
-				}else{
-					this.dom.detachEvent('on'+ev, l[j]);
-				}
-			}
-		}
+		js.core.EventManager.destroy(this.dom);
 	},
 	setClass: function(cls){
 		if(typeof cls === 'string')
@@ -297,7 +241,7 @@ js.html.Element = $extends(js.core.Object,{
 					clsarr.push(cls);
 				}
 			}
-			this.dom.className = clsarr.join(' ');
+			this.dom.className = clsarr.join(' ').trim();
 		}
 	},
 	/**
@@ -330,21 +274,8 @@ js.html.Element = $extends(js.core.Object,{
 	 * 
 	 * @return {collection} the element's children
 	 */
-	getChildren: function(el){
-		var toEl = (el == null ? false : el);
-		if(!toEl){
-			return this.getDom().childNodes;
-		}else{
-			var children = this.getDom().childNodes;
-			var result = [];
-			var El = js.html.Element;
-			for(var i = 0; i < children.length; i++){
-				if(children[i].nodeType != 3){
-					result.push(El.get(children[i]));
-				}
-			}
-			return result;
-		}
+	children: function(el){
+		return Raze.query("*",this.dom);
 	},
 	/**
 	 * @function
@@ -379,7 +310,7 @@ js.html.Element = $extends(js.core.Object,{
 	 * @function
 	 * Return parent Element
 	 * 
-	 * @return {js.html.Element} The parent Element
+	 * @return {js.dom.Element} The parent Element
 	 */
 	getParent: function(){
 		return this.parent; 
@@ -405,7 +336,7 @@ js.html.Element = $extends(js.core.Object,{
 		for(var a in this.dom){
 			this.dom[a] = null;
 		}
-		
+		js.dom.Element.unCache(this);
 		//Delete DOM
 		delete this.dom;
 	},
@@ -414,37 +345,52 @@ js.html.Element = $extends(js.core.Object,{
 	},
 	setOpacity: function(op){
 		var s = this.dom.style;
-		if(js.core.Browser.isIE){
+		if(jsool.isIE){
 			s.filter = 'alpha(opacity=' + (op * 100) + ')';
 		}else{
 			s.opacity = op;
 		}
 	}
-},'js.html.Element');
+},'js.dom.Element');
+
+js.dom.Element.attributes={
+	"class":"className"
+};
 
 jsool.onSystemReady(function(){
 	var cache = new js.util.HashMap();
-	var El = js.html.Element;
+	var El = js.dom.Element;
 	
 	El.get = function(el){
 		if(typeof el == 'string'){//Is an id
 			var cached = cache.get(el);
 			if(cached) return cached;
 			var dom = document.getElementById(el);
-			if(dom) return new js.html.Element(dom);
+			if(dom) return new js.dom.Element(dom);
 		}else if(typeof el == 'object' && el.nodeType){//DOM Element
 			if(el.id){
 				var e = El.get(el.id);
 				if(e != null) return e;
 			}
-			return new js.html.Element(el);
+			return new js.dom.Element(el);
 		}
 		return null;
 	};
 	
+	jsool.get = El.get;
+	
 	El.cache = function(el){
 		if(el.instanceOf(El)){
 			cache.put(el.getId(),el);
+			return true;
+		}
+		return false;
+	};
+	
+	El.unCache = function(el){
+		if(el.instanceOf(EL)){
+			cache.remove(el);
+			return true;
 		}
 		return false;
 	};
@@ -453,16 +399,9 @@ jsool.onSystemReady(function(){
 		return Raze.query(selector,context);
 	};
 	
-	El.wrap = function(selector, context){
-		var els = Raze.query(selector,context);
-		var res = [];
-		for(var i=0,e;e=els[i++];){
-			res.push(El.get(e));
-		}
-		return res;
-	};
+	jsool.query = El.query;
 	
-	El.BODY = new js.html.Element(document.getElementsByTagName('body')[0]);
+	El.BODY = new js.dom.Element(Raze.queryNode("body"));
 	
 	var brw = js.core.Browser;
 	

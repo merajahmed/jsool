@@ -11,6 +11,7 @@
 	<script type="text/javascript" src="js/core/Array.js"></script>
 	<script type="text/javascript" src="js/core/String.js"></script>
 	<script type="text/javascript" src="js/core/Exception.js"></script>
+	<script type="text/javascript" src="js/core/EventManager.js"></script>
 	
 	<script type="text/javascript" src="js/util/Collection.js"></script>
 	<script type="text/javascript" src="js/util/MixedCollection.js"></script>
@@ -29,9 +30,10 @@
 	
 	<script type="text/javascript" src="Raze.js"></script>
 	
-	<script type="text/javascript" src="js/html/Template.js"></script>
-	<script type="text/javascript" src="js/html/Helper.js"></script>	
-	<script type="text/javascript" src="js/html/Element.js"></script>
+	<script type="text/javascript" src="js/dom/Template.js"></script>
+	<script type="text/javascript" src="js/dom/Helper.js"></script>	
+	<script type="text/javascript" src="js/dom/Element.js"></script>
+	<script type="text/javascript" src="js/dom/CompositeElement.js"></script>
 	
 	<script type="text/javascript" src="js/canvas/Canvas.js"></script>
 	<script type="text/javascript" src="js/canvas/CanvasRenderingContext.js"></script>
@@ -49,10 +51,12 @@
 	
 	<script type="text/javascript">
 	var b;
+	
 	jsool.onReady(function(){
 		(b = new js.juif.Button("Master")).renderOn("aki");
-		//(new js.juif.Button("Das")).renderOn("ake");
+		(new js.juif.Button("Das")).renderOn("ake");
 	});
+	
 	</script>
 
 </head>

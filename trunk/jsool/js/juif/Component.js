@@ -256,8 +256,8 @@ js.juif.Component = $extends(js.util.Observable,{
 	renderOn: function(toRender){
 		var element;
 		if(typeof toRender === 'string'){
-			element = js.html.Element.get(toRender);
-		}else if(typeof toRender === 'object' && toRender.instanceOf(js.html.Element)){
+			element = js.dom.Element.get(toRender);
+		}else if(typeof toRender === 'object' && toRender.instanceOf(js.dom.Element)){
 			element = toRender;
 		}else{
 			throw new js.core.Exception('Invalid argument: '+ toRender, this);
@@ -267,13 +267,13 @@ js.juif.Component = $extends(js.util.Observable,{
 	/**
 	 * @function Render the component inside a container
 	 * 
-	 * @param {js.html.Element} The components container
+	 * @param {js.dom.Element} The components container
 	 */
 	render: function(container){
 		this.fireEvent({type:"beforerender",component:this});
 		if(this.rendered)return false;
 		if(!this.element){
-			this.element = new js.html.Element(this.defaultElement);
+			this.element = new js.dom.Element(this.defaultElement);
 			this.elStyle = this.element.dom.style;
 		}
 		this.fireEvent({type:"render",component:this});
@@ -289,14 +289,14 @@ js.juif.Component = $extends(js.util.Observable,{
 	initEvents: function(){
 		var cmp = this;
 		var el = this.element;
-		var fire = function(ename){			
-			el.addListener(ename,function(ev){
+		var addListenerToElement = function(ename){			
+			el.on(ename,function(ev){
 				cmp.fireEvent(ev);
-			});
+			},cmp);
 		};
 		var events = this.events.keys;
 		for(var ev in events){
-			fire(ev);
+			addListenerToElement(ev);
 		}
 	} 
-},'js.widget.Component');
+},'js.juif.Component');
