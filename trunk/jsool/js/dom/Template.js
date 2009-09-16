@@ -1,3 +1,5 @@
+jsool.namespace("js.dom");
+
 js.dom.Template = $extends(js.core.Object,{
 	cons: function(){
 		var args = arguments;

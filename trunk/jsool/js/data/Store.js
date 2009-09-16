@@ -29,6 +29,8 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+jsool.namespace("js.data");
+
 js.data.Store = $extends(js.core.Object,{
 	cons: function(config){
 		jsool.apply(this,config);

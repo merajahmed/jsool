@@ -29,6 +29,8 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+jsool.namespace("js.data");
+
 js.data.Field = $extends(js.core.Object,{
 	cons: function(configuration){
 		if(configuration){

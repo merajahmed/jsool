@@ -29,6 +29,8 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+jsool.namespace("js.core");
+
 js.core.EventManager = (function(){
 	var elsMap = {};
 	

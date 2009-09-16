@@ -28,6 +28,9 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+jsool.namespace("js.util");
+
 /**
  * Map that may store a key-value pair where the key is a number, string or a object that have the hashCode method
  */

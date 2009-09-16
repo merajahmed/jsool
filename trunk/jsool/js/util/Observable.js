@@ -28,6 +28,9 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+jsool.namespace("js.util");
+
 js.util.Observable = $extends(js.core.Object, {
 	events: null,
 	addEvent: function(ev){
@@ -41,10 +44,11 @@ js.util.Observable = $extends(js.core.Object, {
 			this.events.put(ev, null);
 		}
 	},
-	on: function(listener,fn){
+	on: function(listener,fn,scope){
 		if(String.isString(listener)){
 			var t = {};
 			t[listener] = fn;
+			t.scope = scope || this;
 			listener = t;
 		}
 		

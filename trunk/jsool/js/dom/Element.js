@@ -29,9 +29,11 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+jsool.namespace("js.dom");
+
 /**
  * @class js.dom.Element
- * @extends js.util.Observable
+ * @extends js.core.Object
  * 
  * Base class for any html element
  */
@@ -63,10 +65,6 @@ js.dom.Element = $extends(js.core.Object,{
 		
 		js.dom.Element.cache(this);
 	},
-	/**
-	 * @property {js.util.List} the children elements of this Element
-	 */
-	children: null,
 	/**
 	 * @property {HTMLElement} the dom of the Element
 	 */
@@ -134,7 +132,12 @@ js.dom.Element = $extends(js.core.Object,{
 	append: function(child){
 		var type = typeof child;
 		if(type == 'string'){
-			this.dom.innerHTML = this.dom.innerHTML + child;
+			if(jsool.isIE){
+				var d = js.dom.Helper.createDom(child);
+				this.dom.appendChild(d.cloneNode(true));
+			}else{
+				this.dom.innerHTML = this.dom.innerHTML + child;
+			}
 		}else if(type == 'object'){
 			if(child.nodeType){
 				this.dom.appendChild(child.getDom());

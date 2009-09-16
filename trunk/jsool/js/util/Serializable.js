@@ -28,6 +28,9 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+jsool.namespace("js.util");
+
 js.util.Serializable = $extends(js.core.Object,{
 	serialize: function(){
 		var proto = this.cls.prototype;

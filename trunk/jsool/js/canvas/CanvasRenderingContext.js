@@ -28,6 +28,9 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+jsool.namespace("js.canvas");
+
 js.canvas.CanvasRenderingContext = $extends(js.core.Object,{
 	cons: function(canvas2dContext){
 		this.context = canvas2dContext;

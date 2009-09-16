@@ -1,13 +1,45 @@
+jsool.namespace("js.dom");
+
 js.dom.Helper = (function(){
 	var DOC = window.document;
+	var BODY;
 	var getTagRe = /^[<]([\w]+)/;
+	
+	var proxy;
+	
+	function init(){
+		proxy = document.getElementById("jsool-proxy");
+		if(!proxy){
+			proxy = DOC.createElement("span");
+			proxy.style.display = "none";
+			proxy.innerHTML = "";
+			proxy.id="jsool-proxy";
+			BODY = DOC.getElementsByTagName("body")[0];
+			BODY.appendChild(proxy);
+		}
+	}
+	
+	function userProxy(string){
+		if(!proxy) init();
+		proxy.innerHTML = string;
+		
+		var f = DOC.createDocumentFragment();
+		
+		Array.iterate(proxy.childNodes,function(i,el){
+			if(el.nodeType == 1){
+				f.appendChild(el);
+			}
+		});
+		
+		proxy.innerHTML = "";
+		return f;
+	}
 	
 	return{
 		createDom: function(html, parent){
 			var el;
 			if(String.isString(html)){
-				el = DOC.createDocumentFragment();
-				el.innerHTML = html;
+				el = userProxy(html);
 			}else if(Array.isArray(html)){
 				el = DOC.createDocumentFragment();
 				html.forEach(function(e){

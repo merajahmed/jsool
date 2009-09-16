@@ -29,6 +29,25 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/*
+ * Patterns:
+ * yyy(y) = Four digits year
+ * y(y) = two digits year
+ * 
+ * mmmm = Long month name
+ * mmm = Short month name
+ * mm = Two digits month number
+ * m = One or two digits month number
+ * 
+ * dd = Two digits day number
+ * d = One or two digits day number
+ * 
+ * EEEE = Long weekday name
+ * E(EE) = Short weekday name
+ */
+
+jsool.namespace("js.util");
+
 /**
  * Formarts and parse date Objects according with patterns provided by the locale or the user.
  * It provides format methods (Date -> text) and parse methods (text -> date)

@@ -28,6 +28,9 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+jsool.namespace("js.util");
+
 js.util.LinkedList = $extends(js.util.List, {
 	cons: function(){
 		this.header = {element: null, next: null, previous: null};

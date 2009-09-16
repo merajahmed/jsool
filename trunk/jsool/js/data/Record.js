@@ -29,6 +29,8 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+jsool.namespace("js.data");
+
 js.data.Record = $extends(js.core.Object,{
 	cons: function(data, id){
 		this.id = id || js.data.Record.id();

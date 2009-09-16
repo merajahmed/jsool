@@ -29,6 +29,8 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+jsool.namespace("js.net");
+
 //REFERENCE http://code.google.com/p/mikhas/source/browse/trunk/mikhas/mikhas-script/net/Request.js?r=133
 js.net.HttpRequestDispatcher = $extends(js.util.Observable,{
 	cons: function(){

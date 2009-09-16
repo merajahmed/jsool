@@ -29,6 +29,8 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+jsool.namespace("js.juif");
+
 /**
  * @class js.widget.Component
  * @extends js.util.Observable
@@ -248,38 +250,29 @@ js.juif.Component = $extends(js.util.Observable,{
 		this.setVisible(false);
 	},
 	/**
-	 * @function Provides to component an element where it can be rendered
-	 * 
-	 * @param {string} The id of the element where the component will be rendered
-	 * @param {HTMLDOMElement} the element where the component will be rendered
-	 */
-	renderOn: function(toRender){
-		var element;
-		if(typeof toRender === 'string'){
-			element = js.dom.Element.get(toRender);
-		}else if(typeof toRender === 'object' && toRender.instanceOf(js.dom.Element)){
-			element = toRender;
-		}else{
-			throw new js.core.Exception('Invalid argument: '+ toRender, this);
-		}
-		this.render(element);
-	},
-	/**
 	 * @function Render the component inside a container
 	 * 
-	 * @param {js.dom.Element} The components container
+	 * @param {DomElement} The components container
 	 */
 	render: function(container){
 		this.fireEvent({type:"beforerender",component:this});
+		
 		if(this.rendered)return false;
+		
+		container = jsool.get(container);
+		
 		if(!this.element){
 			this.element = new js.dom.Element(this.defaultElement);
 			this.elStyle = this.element.dom.style;
 		}
+		
 		this.fireEvent({type:"render",component:this});
+		
 		this.doRender();
 		this.initEvents();
+		
 		container.append(this.element);
+		
 		this.rendered = true;
 		this.fireEvent({type:"afterrender",component:this});
 	},

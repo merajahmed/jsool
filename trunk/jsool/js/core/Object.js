@@ -31,6 +31,8 @@
 
 var global_objects_count = 0;
 
+jsool.namespace("js.core");
+
 js.core.Object = function(){
 	global_objects_count++;
 };
