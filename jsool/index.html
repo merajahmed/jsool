@@ -5,11 +5,11 @@
 	<link rel="stylesheet" type="text/css" href="css/core.css">
 	
 	<script type="text/javascript" src="js/core/Main.js"></script>
-	<script type="text/javascript" src="js/core/Browser.js"></script>
-	<script type="text/javascript" src="js/core/Object.js"></script>
 	<script type="text/javascript" src="js/core/Number.js"></script>
-	<script type="text/javascript" src="js/core/Array.js"></script>
 	<script type="text/javascript" src="js/core/String.js"></script>
+	<script type="text/javascript" src="js/core/Array.js"></script>
+	<script type="text/javascript" src="js/core/Object.js"></script>
+	<script type="text/javascript" src="js/core/Browser.js"></script>
 	<script type="text/javascript" src="js/core/Exception.js"></script>
 	<script type="text/javascript" src="js/core/EventManager.js"></script>
 	
@@ -51,10 +51,17 @@
 	
 	<script type="text/javascript">
 	var b;
-	
 	jsool.onReady(function(){
-		(b = new js.juif.Button("Master")).renderOn("aki");
-		(new js.juif.Button("Das")).renderOn("ake");
+		if(!jsool.isFF){
+			var ff = new js.dom.Element("script");
+			ff.set("src","firebug.js");
+			ff.set("type","text/javascript");
+			js.dom.Element.BODY.append(ff);
+		}
+
+		
+		(b = new js.juif.Button("Master")).render("aki");
+		(new js.juif.Button("Das")).render("ake");
 	});
 	
 	</script>
@@ -105,5 +112,6 @@
 		</tr>
 	</table>
 	<input disabled="disabled" type="checkbox" />
+	<span id="FBPROXY">&#160;</span>
 </body>
 </html>

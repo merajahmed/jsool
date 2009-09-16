@@ -1,3 +1,5 @@
+jsool.namespace("js.flux.laf");
+
 js.flux.laf.Soft = (function(){
 	var FLUX_PACK = js.flux;
 	

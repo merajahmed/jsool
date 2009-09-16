@@ -1,3 +1,5 @@
+jsool.namespace("js.juif");
+
 js.juif.ViewPort=(function(){
 	var proxy;
 	

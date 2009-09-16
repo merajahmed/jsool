@@ -29,6 +29,8 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+jsool.namespace("js.dom");
+
 js.dom.CompositeElement = $extends(js.core.Object,{
 	cons: function(els){
 		this.elements = new js.util.ArrayList();

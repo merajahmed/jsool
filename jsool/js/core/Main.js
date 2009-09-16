@@ -29,8 +29,6 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-var js = {core:{},util:{},dom:{},net:{},canvas:{},flux:{laf:{}},data:{},juif:{}};
-
 var jsool = (function(){
 	/**
 	 * Operations that will be fired after the page is ready but before the application start
@@ -52,6 +50,18 @@ var jsool = (function(){
 	var that = this;
 	
 	var idCount = 0;
+	
+	that.namespace = function(name){
+		var names = name.split(/\./);
+		var cur, lst = window;
+		for(var i=0,n;n=names[i++];){
+			cur = lst[n];
+			if(typeof cur === "undefined"){
+				lst[n] = {};
+			}
+			lst = lst[n];
+		}
+	};
 	
 	that.doReady = function(){
 		for(var i = 0; i< onReadyActions.length; i++){
@@ -85,7 +95,7 @@ var jsool = (function(){
 		window.onload = function(){
 			jsool.start();
 			delete jsool.start;
-			delete window.onload;
+			window.onload = null;
 		};
 	}
 	
@@ -207,7 +217,8 @@ var jsool = (function(){
 		},
 		isDate: function(o){
 			return o.constructor == Date;
-		}
+		},
+		namespace:that.namespace
 	};
 })();
 

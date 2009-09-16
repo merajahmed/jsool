@@ -29,6 +29,8 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+jsool.namespace("js.flux");
+
 js.flux.UIManager = (function(){
 	var proxy; // The element that will be used do insert the element in the page
 	var context; //Graphical context where the elements will be rendered

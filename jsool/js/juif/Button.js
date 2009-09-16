@@ -28,6 +28,9 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+jsool.namespace("js.juif");
+
 js.juif.Button = $extends(js.juif.Component,{
 	cons: function(text){
 		if(String.isString(text)){
@@ -35,7 +38,7 @@ js.juif.Button = $extends(js.juif.Component,{
 		}
 	},
 	text: 'button',
-	defaultElement: "div",
+	defaultElement: "span",
 	setText: function(text){
 		if(String.isString(text)){
 			text = String(text);
