@@ -45,6 +45,7 @@ js.util.Observable = $extends(js.core.Object, {
 		}
 	},
 	on: function(listener,fn,scope){
+		if(!this.events)return;
 		if(String.isString(listener)){
 			var t = {};
 			t[listener] = fn;
@@ -72,8 +73,15 @@ js.util.Observable = $extends(js.core.Object, {
 			}
 		}
 	},
-	fireEvent: function(event){
-		var type = event.type;
+	fireEvent: function(){
+		var args = arguments;
+		var type;
+		if(typeof args[0] === "string"){
+			type = args[0];
+			args = args.splice(1);
+		}else{
+			type = args[0].type;
+		}
 		
 		if(!this.events) return;
 		
@@ -84,7 +92,7 @@ js.util.Observable = $extends(js.core.Object, {
 				listener = listeners[i];
 				//Using timeout, so the handlers may be execute simultaneously
 				window.setTimeout(function handler(){
-					listener.func.apply(listener.scope, [event]);
+					listener.func.apply(listener.scope, args);
 				},0);
 			}
 		}

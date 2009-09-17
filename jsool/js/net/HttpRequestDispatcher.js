@@ -96,7 +96,7 @@ js.net.HttpRequestDispatcher = $extends(js.util.Observable,{
 		var url = request.url + '?' + request.getParams();
 
 		try{
-			this.fireEvent({type:'start', request: this.dispatcher});
+			this.fireEvent('start', this.dispatcher);
 			this.dispatcher.open(request.method, url, true);
 			var that = this;
 			this.dispatcher.onreadystatechange = function(){
@@ -113,15 +113,15 @@ js.net.HttpRequestDispatcher = $extends(js.util.Observable,{
 					try{
 						that.doCallback(request);
 					}catch(e){
-						that.fireEvent({type:'error', request: that.dispatcher});
+						that.fireEvent('error',that.dispatcher);
 						throw new js.core.Exception('Error while executing callback', that, null, e);
 					}
-					that.fireEvent({type:'complete', request: that.dispatcher});
+					that.fireEvent('complete', that.dispatcher);
 				}
 			};
 			this.dispatcher.send(null);
 		}catch(e){
-			this.fireEvent({type:'error', request: that.dispatcher});
+			this.fireEvent('error', that.dispatcher);
 			throw new js.core.Exception(e.toString(), this, arguments);
 		}
 	},
@@ -129,27 +129,27 @@ js.net.HttpRequestDispatcher = $extends(js.util.Observable,{
 		var url = request.url + '?' + request.getParams();
 		
 		try{
-			this.fireEvent({type:'start', request: this.dispatcher});
+			this.fireEvent('start',this.dispatcher);
 			this.dispatcher.open(request.method, url, false);
 			this.dispatcher.send(null);
 		}catch(e){
-			this.fireEvent({type:'error', request: this.dispatcher});
+			this.fireEvent('error', this.dispatcher);
 			throw new js.core.Exception(e.toString(), this, arguments);
 		}
 		
 		try{
 			this.doCallback(request);
 		}catch(e){
-			this.fireEvent({type:'error', request: this.dispatcher});
+			this.fireEvent('error', this.dispatcher);
 			throw new js.core.Exception('Error while executing callback', this, arguments, e);
 		}
-		this.fireEvent({type:'complete', request: this.dispatcher});
+		this.fireEvent('complete', this.dispatcher);
 	},
 	doAsyncPost: function(request){
 		var url = request.url;
 
 		try{
-			this.fireEvent({type:'start', request: this.dispatcher});
+			this.fireEvent('start', this.dispatcher);
 			this.dispatcher.open(request.method, url, true);
 			
 			this.dispatcher.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -172,15 +172,15 @@ js.net.HttpRequestDispatcher = $extends(js.util.Observable,{
 					try{
 						that.doCallback(request);
 					}catch(e){
-						that.fireEvent({type:'error', request: that.dispatcher});
+						that.fireEvent('error', that.dispatcher);
 						throw new js.core.Exception('Error while executing callback', that, null, e);
 					}
-					that.fireEvent({type:'complete', request: that.dispatcher});
+					that.fireEvent('complete', that.dispatcher);
 				}
 			};
 			this.dispatcher.send(request.getParams());
 		}catch(e){
-			this.fireEvent({type:'error', request: that.dispatcher});
+			this.fireEvent('error', that.dispatcher);
 			throw new js.core.Exception(e.toString(), this, arguments);
 		}
 	},
@@ -188,7 +188,7 @@ js.net.HttpRequestDispatcher = $extends(js.util.Observable,{
 		var url = request.url + '?' + request.getParams();
 		
 		try{
-			this.fireEvent({type:'start', request: this.dispatcher});
+			this.fireEvent('start', this.dispatcher);
 			this.dispatcher.open(request.method, url, false);
 			
 			this.dispatcher.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -197,25 +197,25 @@ js.net.HttpRequestDispatcher = $extends(js.util.Observable,{
 			
 			this.dispatcher.send(request.getParams());
 		}catch(e){
-			this.fireEvent({type:'error', request: this.dispatcher});
+			this.fireEvent('error', this.dispatcher);
 			throw new js.core.Exception(e.toString(), this, arguments);
 		}
 		
 		try{
 			this.doCallback(request);
 		}catch(e){
-			this.fireEvent({type:'error', request: this.dispatcher});
+			this.fireEvent('error', this.dispatcher);
 			throw new js.core.Exception('Error while executing callback', this, arguments, e);
 		}
-		this.fireEvent({type:'complete', request: this.dispatcher});
+		this.fireEvent('complete', this.dispatcher);
 	},
 	doCallback: function(request){
 		if(this.dispatcher.status < 400){
 			request.callback('success', this.dispatcher['response'+request.responseType]);			
-			this.fireEvent({type:'success', request: this.dispatcher});
+			this.fireEvent('success', this.dispatcher);
 		}else{
 			request.callback('failure', this.dispatcher['response'+request.responseType]);			
-			this.fireEvent({type:'failure', request: this.dispatcher});
+			this.fireEvent('failure',  this.dispatcher);
 		}
 	}
 },'js.net.HttpRequestDispatcher');

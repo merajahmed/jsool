@@ -244,6 +244,8 @@ jsool.$extends = function(superclass, prototype, type){
 				constructor.apply(this, arguments);
 			};
 		})();
+		
+		delete prototype['cons'];
 	//ClassConstructor	
 	}else if(prototype['ccons'] && typeof prototype['ccons'] == 'function'){
 		cls = (function(){
@@ -254,6 +256,8 @@ jsool.$extends = function(superclass, prototype, type){
 				constructor.apply(this, arguments);
 			};
 		})();
+		
+		delete prototype['ccons'];
 	}else{
 		cls = (function(){
 			var constructor = superclass;
