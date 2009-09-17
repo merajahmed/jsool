@@ -255,7 +255,7 @@ js.juif.Component = $extends(js.util.Observable,{
 	 * @param {DomElement} The components container
 	 */
 	render: function(container){
-		this.fireEvent({type:"beforerender",component:this});
+		this.fireEvent("beforerender",this);
 		
 		if(this.rendered)return false;
 		
@@ -266,7 +266,7 @@ js.juif.Component = $extends(js.util.Observable,{
 			this.elStyle = this.element.dom.style;
 		}
 		
-		this.fireEvent({type:"render",component:this});
+		this.fireEvent("render",this);
 		
 		this.doRender();
 		this.initEvents();
@@ -274,7 +274,7 @@ js.juif.Component = $extends(js.util.Observable,{
 		container.append(this.element);
 		
 		this.rendered = true;
-		this.fireEvent({type:"afterrender",component:this});
+		this.fireEvent("afterrender",this);
 	},
 	/**
 	 * @function Binds the component elements events with the components events  

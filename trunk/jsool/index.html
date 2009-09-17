@@ -51,6 +51,7 @@
 	
 	<script type="text/javascript">
 	var b;
+	var o;
 	jsool.onReady(function(){
 		if(!jsool.isFF){
 			var ff = new js.dom.Element("script");
@@ -62,6 +63,16 @@
 		
 		(b = new js.juif.Button("Master")).render("aki");
 		(new js.juif.Button("Das")).render("ake");
+
+		o = new js.util.Observable();
+
+		
+		
+		o.on("a",function(a,b,c,d,e){
+			console.info(a,b,c,d,e);
+		});
+
+		o.fireEvent("a",1,2,3,4);
 	});
 	
 	</script>
