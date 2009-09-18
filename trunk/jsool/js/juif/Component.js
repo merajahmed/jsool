@@ -43,7 +43,8 @@ js.juif.Component = $extends(js.util.Observable,{
 	 * Creates a new component an defines the default events
 	 */
 	cons:function(){
-		this.addEvent(["focus","blur","mouseup","mousedown","mouseover","mouseout","click","dblclick"]);
+		this.addEvent("beforerender","render","afterrender");
+		this.domEvents = [];
 	},
 	/**
 	 * @property Flags if the component is visible 
@@ -107,6 +108,10 @@ js.juif.Component = $extends(js.util.Observable,{
 	 * @property The component default wraper element that is crated to inserts the component on the document
 	 */
 	defaultElement: "div",
+	/**
+	 * @property holds the names of the events that have aready been added to the component's root element
+	 */
+	domEvents: null,
 	/**
 	 * @function sets the component parent
 	 * 
@@ -269,7 +274,6 @@ js.juif.Component = $extends(js.util.Observable,{
 		this.fireEvent("render",this);
 		
 		this.doRender();
-		this.initEvents();
 		
 		container.append(this.element);
 		
@@ -277,19 +281,45 @@ js.juif.Component = $extends(js.util.Observable,{
 		this.fireEvent("afterrender",this);
 	},
 	/**
-	 * @function Binds the component elements events with the components events  
+	 * @function Adds a new event listener to the component and its element
 	 */
-	initEvents: function(){
-		var cmp = this;
-		var el = this.element;
-		var addListenerToElement = function(ename){			
-			el.on(ename,function(ev){
-				cmp.fireEvent(ev);
-			},cmp);
-		};
-		var events = this.events.keys;
-		for(var ev in events){
-			addListenerToElement(ev);
+	on: function(listener, fn, scope){
+		var EM = js.core.EventManager,
+			that = this,
+			listeners,
+			el = this.element.dom;
+		
+		if(String.isString(listener)){
+			var temp = {};
+			temp[listener] = fn;
+			temp.scope = scope || this;
+			listener = temp;
 		}
-	} 
+		
+		listener.scope = listener.scope || this;
+		
+		var addEventToElement = function(ev){
+			return EM.on(el, ev, function(e){
+				that.fireEvent(e);
+			},that);
+		};
+
+		for(var l in listener){
+			if(l != "scope" && this.events.containsKey(l)){
+				listeners = this.events.get(l);
+				if(!listeners){					
+					this.events.put(l,listeners = []);
+				}
+				listeners.push({
+					scope: listener.scope,
+					func:listener[l]
+				});
+				
+				if(EM.isDomEvent(l) && this.domEvents.indexOf(l) < 0){
+					this.domEvents.push(l);
+					addEventToElement(l);
+				}
+			}
+		}
+	}
 },'js.juif.Component');

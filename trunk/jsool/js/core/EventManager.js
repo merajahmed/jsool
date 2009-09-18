@@ -32,10 +32,23 @@
 jsool.namespace("js.core");
 
 js.core.EventManager = (function(){
+	var domEvents = [
+	                 "focus","blur",
+	                 "mouseover","mouseout","mouseup","mousedown",	                 
+	                 "click","dblclick",
+	                 "keydown","keypress","keyup",
+	                 "change","error","load",
+	                 "contextmenu",
+	                 "resize","reset",
+	                 "scroll","select","submit"];
+	
+	var domEventsRe = new RegExp("("+domEvents.join("|")+")");
+	
 	var elsMap = {};
 	
 	// Adds an event listener to a DOM element
 	function addListener(el, ev, fn, scope){
+		if(!ev.match(domEventsRe))return false;
 		var id = jsool.id(el);//The id of the element
 		var elEvs = elsMap[id] = elsMap[id] || {};//All the registered events of the element
 		var hs = elEvs[ev] = elEvs[ev] || [];//All handlers registered for the event
@@ -45,6 +58,8 @@ js.core.EventManager = (function(){
 		var handler = function(event){
 			event = event || window.event;
 			var res = fn.apply(scope, [event]);
+			event.cancelBubble = true;
+			if(event.stopPropagation)event.stopPropagation();
 			if(res) return res;
 			else return false;
 		};
@@ -62,6 +77,8 @@ js.core.EventManager = (function(){
 		}else{
 			el.addEventListener(ev, handler, false);
 		}
+		
+		return true;
 	}
 	
 	// Do removes an event listener to a DOM element
@@ -116,6 +133,9 @@ js.core.EventManager = (function(){
 		un: removeListener,
 		removeListener: removeListener,
 		destroy: detroyListeners,
-		detroyListeners: detroyListeners
+		detroyListeners: detroyListeners,
+		isDomEvent: function(name){
+			return name.match(domEventsRe) != null;
+		}
 	};
 })();
