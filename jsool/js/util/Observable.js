@@ -33,15 +33,24 @@ jsool.namespace("js.util");
 
 js.util.Observable = $extends(js.core.Object, {
 	events: null,
-	addEvent: function(ev){
+	addEvent: function(){
+		var args = arguments;
 		if(!this.events)this.events = new js.util.HashMap();
-		if(Array.isArray(ev)){
-			var l = ev.length;
+		
+		if(Array.isArray(args[0])){
+			var ev = args[0];
 			for(var i=0,h; h = ev[i++];){
 				this.events.put(h, null);
 			}
-		}else if(!this.events.containsKey(ev)){
-			this.events.put(ev, null);
+		}else if(args.length > 1){
+			var that = this;
+			Array.iterate(args,function(i,o){
+				if(!that.events.containsKey(o)){
+					that.events.put(o,null);
+				}
+			});
+		}else if(args.length == 1 && !this.events.containsKey(args[0])){
+			this.events.put(args[0], null);
 		}
 	},
 	on: function(listener,fn,scope){
@@ -78,11 +87,10 @@ js.util.Observable = $extends(js.core.Object, {
 		var type;
 		if(typeof args[0] === "string"){
 			type = args[0];
-			args = args.splice(1);
+			args = Array.prototype.slice.apply(args,[1]);
 		}else{
 			type = args[0].type;
 		}
-		
 		if(!this.events) return;
 		
 		var listeners = this.events.get(type);

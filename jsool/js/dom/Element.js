@@ -404,6 +404,12 @@ jsool.onSystemReady(function(){
 	
 	jsool.query = El.query;
 	
+	El.queryNode = function(selector, context){
+		return Raze.queryNode(selector,context);
+	};
+	
+	jsool.queryNode = El.queryNode;
+	
 	El.BODY = new js.dom.Element(Raze.queryNode("body"));
 	
 	var brw = js.core.Browser;

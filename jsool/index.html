@@ -50,29 +50,20 @@
 	<script type="text/javascript" src="js/juif/Button.js"></script>
 	
 	<script type="text/javascript">
-	var b;
+	var b,c ;
 	var o;
 	jsool.onReady(function(){
-		if(!jsool.isFF){
-			var ff = new js.dom.Element("script");
-			ff.set("src","firebug.js");
-			ff.set("type","text/javascript");
-			js.dom.Element.BODY.append(ff);
+		if(!jsool.isFF && !jsool.isIE){
+			jsool.queryNode("body").appendChild(
+				js.dom.Helper.createDom({
+					tag: "script",
+					src:"firebug.js",
+					type:"text/javascript"
+				})
+			);
 		}
-
-		
 		(b = new js.juif.Button("Master")).render("aki");
-		(new js.juif.Button("Das")).render("ake");
-
-		o = new js.util.Observable();
-
-		
-		
-		o.on("a",function(a,b,c,d,e){
-			console.info(a,b,c,d,e);
-		});
-
-		o.fireEvent("a",1,2,3,4);
+		(c = new js.juif.Button("Das")).render("ake");
 	});
 	
 	</script>
@@ -123,6 +114,5 @@
 		</tr>
 	</table>
 	<input disabled="disabled" type="checkbox" />
-	<span id="FBPROXY">&#160;</span>
 </body>
 </html>

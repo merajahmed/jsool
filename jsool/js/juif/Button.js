@@ -45,7 +45,7 @@ js.juif.Button = $extends(js.juif.Component,{
 		}
 		this.text = text;
 		if(this.rendered){
-			js.dom.Element.get(this.element.query("button")[0]).setText(text);
+			jsool.get(this.element.query("button")[0]).setText(text);
 		}
 	},
 	getText: function(){

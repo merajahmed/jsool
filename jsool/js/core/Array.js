@@ -147,7 +147,7 @@ jsool.applyIf(Array.prototype,{
 	 */
 	remove: function(s){
 		for (var i=0; i < this.length; i++){
-			if (s == this[i]) this.splice(i, 1);
+			if (s == this[i]) this.slice(i, 1);
 		}
 	}
 	

@@ -129,6 +129,13 @@ js.dom.CompositeElement = $extends(js.core.Object,{
 			cur.remove(cls);
 			el.className = cur.join("").trim();
 		});
+	},
+	setText: function(text){
+		var tn = document.createTextNode(text);
+		Array.iterate(this.elements,function(i,e){
+			e.innerHTML = "";
+			e.appendChild(tn.cloneNode());
+		});
 	}
 },"js.dom.CompositeElement");
 
