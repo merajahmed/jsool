@@ -140,8 +140,7 @@ js.dom.Element = $extends(js.core.Object,{
 			}
 		}else if(type == 'object'){
 			if(child.nodeType){
-				this.dom.appendChild(child.getDom());
-			
+				this.dom.appendChild(child);
 			}else if(child.instanceOf(js.dom.Element)){
 				if(child.parent){child.parent.remove(child);}
 				

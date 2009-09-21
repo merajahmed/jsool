@@ -48,6 +48,8 @@
 	<script type="text/javascript" src="js/juif/Component.js"></script>
 	<script type="text/javascript" src="js/juif/ViewPort.js"></script>
 	<script type="text/javascript" src="js/juif/Button.js"></script>
+	<script type="text/javascript" src="js/juif/TextField.js"></script>
+	<script type="text/javascript" src="js/juif/Combo.js"></script>
 	
 	<script type="text/javascript">
 	var b,c ;
@@ -62,8 +64,15 @@
 				})
 			);
 		}
-		(b = new js.juif.Button("Master")).render("aki");
-		(c = new js.juif.Button("Das")).render("ake");
+
+		b = new js.juif.Button("master");
+		c = new js.juif.TextField();
+		e = new js.juif.Combo();
+		
+		
+		b.render("aki");
+		c.render("ake");
+		e.render("la");
 	});
 	
 	</script>
@@ -104,7 +113,7 @@
 			<td>bla bla bla bla bla bla bla</td>
 		</tr>
 		<tr>
-			<td class="c">bla bla bla bla bla bla bla</td>
+			<td class="c" id="la">bla bla bla bla bla bla bla</td>
 		</tr>
 		<tr class="b">
 			<td id="aki">bla bla bla bla bla bla bla</td>

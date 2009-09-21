@@ -1,7 +1,7 @@
 /*
 * UNDO HTML DEFAULT STYLES
 */
-.jsool, .jsool * {
+.juif, .juif * {
 	font: normal normal normal 12px Verdana;
 	background: transparent;
 	border: 0;
@@ -36,68 +36,119 @@ t = top
 b = bottom
 
 */
-.wgt-btn{
-	background-color:#DFEAF8;
-	display: inline-block;
-	margin: 2px;
-}
-
-.wgt-btn button{
-	height: 16px;
-}
-
-.wgt-btn-bor-t{
+.juif .bor-t{
 	height: 3px;
 	background-image: url(../images/bor-t-b.png);
 	background-position: 0px 0px;
 }
 
-.wgt-btn-bor-t-r{
+.juif .bor-t-r{
 	width: 3px;
 	height: 3px;
 	background-image: url(../images/bor-corners.png);
 	background-position: 3px 0px;
 }
 
-.wgt-btn-bor-r{
+.juif .bor-r{
 	width: 3px;
 	background-image: url(../images/bor-l-r.png);
 	background-position: right;
 }
 
-.wgt-btn-bor-b-r{
+.juif .bor-b-r{
 	width: 3px;
 	height: 3px;
 	background-image: url(../images/bor-corners.png);
 	background-position: 3px 3px;
 }
 
-.wgt-btn-bor-b{
+.juif .bor-b{
 	height: 3px;
 	background-image: url(../images/bor-t-b.png);
 	background-position: 0px 3px;
 }
 
-.wgt-btn-bor-b-l{
+.juif .bor-b-l{
 	height: 3px;
 	width: 3px;
 	background-image: url(../images/bor-corners.png);
 	background-position: 0px 3px;
 }
 
-.wgt-btn-bor-l{
+.juif .bor-l{
 	width: 3px;
 	background-image: url(../images/bor-l-r.png);
 	background-position: left;
 }
 
-.wgt-btn-bor-t-l{
+.juif .bor-t-l{
 	height: 3px;
 	width: 3px;
 	background-image: url(../images/bor-corners.png);
 	background-position: 0px 0px;
 }
 
-.wgt-btn button:hover{
+.juif-btn{
+	background-color:#DFEAF8;
+	display: inline-block;
+	margin: 2px;
+	width: 150px;
+}
+
+.juif-btn button{
+	height: 16px;
+	color: #000000;
+}
+
+.juif-btn button:hover{
 	color: #445ABD;
+}
+
+.juif-field{
+	border: solid 1px #C5CDE2;
+	display: inline-block;
+	color: #000000;
+}
+
+.juif-field.empty{
+	color: #555555;
+}
+
+.juif-text-field input{
+	height: 20px;
+	line-height: 16px;
+	vertical-align: middle;
+	padding: 2px 3px 0px 3px;
+	width: 100%;
+	background-color: transparent;
+	color: inherit;
+}
+
+.juif-no-select , .juif-no-select * {
+	-moz-user-select: none;
+}
+
+.juif-trigger {
+	height: 20px;
+	width: 16px;
+	position:absolute;
+	background-image: url(../images/trigger.png);
+	background-position: 0 0;
+	cursor: pointer;
+}
+
+.juif-trigger:hover {
+	height: 20px;
+	width: 16px;
+	position:absolute;
+	background-image: url(../images/trigger.png);
+	background-position: 16px 0;
+}
+
+.juif-combo-list {
+	position: absolute;
+	border: solid 1px #C5CDE2;
+	height: 100px;
+	background-color: #FFFFFF;
+	overflow: auto;
 }

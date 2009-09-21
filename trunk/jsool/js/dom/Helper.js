@@ -75,7 +75,9 @@ js.dom.Helper = (function(){
 			if(el.nodeType && style){
 				var els = el.style;
 				jsool.iterate(style,function(at,val){
-					els[at] = val;
+					if(typeof val !== "undefined"){
+						els[at] = val;						
+					}
 				});
 			}
 		}
