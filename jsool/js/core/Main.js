@@ -69,8 +69,8 @@ var jsool = (function(){
 				onReadyActions[i]();
 			}catch(e){
 				if(typeof console != 'undefined'){
-					console.info(e.toString());
-					console.error(e.toString());
+					console.error(e.message || e.toString());
+					console.info(e);
 				}else{
 					alert(e.description || e.toString());
 					throw e;

@@ -53,7 +53,7 @@ js.core.EventManager = (function(){
 		var elEvs = elsMap[id] = elsMap[id] || {};//All the registered events of the element
 		var hs = elEvs[ev] = elEvs[ev] || [];//All handlers registered for the event
 		
-		scope = el || scope;
+		scope = scope || el;
 		
 		var handler = function(event){
 			event = event || window.event;

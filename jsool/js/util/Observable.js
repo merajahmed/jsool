@@ -104,6 +104,11 @@ js.util.Observable = $extends(js.core.Object, {
 				},0);
 			}
 		}
+		// Fire "on class" listener
+		type = "on" + type;
+		if(jsool.isDefined(this[type])){
+			this[type].apply(this, args);
+		}
 	},
 	destroyListeners: function(){
 		delete this.events;

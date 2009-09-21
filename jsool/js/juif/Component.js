@@ -42,7 +42,7 @@ js.juif.Component = $extends(js.util.Observable,{
 	 * @constructor
 	 * Creates a new component an defines the default events
 	 */
-	cons:function(){
+	cons:function(config){
 		this.addEvent("beforerender","render","afterrender");
 		this.domEvents = [];
 	},
@@ -53,11 +53,11 @@ js.juif.Component = $extends(js.util.Observable,{
 	/**
 	 * @property Stores the component X axis position
 	 */
-	x: 0,
+	x: undefined,
 	/**
 	 * @property Stores the component Y axis position
 	 */
-	y: 0,
+	y: undefined,
 	/**
 	 * @property Stores the component Z order
 	 */
@@ -65,11 +65,11 @@ js.juif.Component = $extends(js.util.Observable,{
 	/**
 	 * @property Stores the component width
 	 */
-	width: 0,
+	width: undefined,
 	/**
 	 * @property Stores the component height
 	 */
-	height: 0,
+	height: undefined,
 	/**
 	 * @property The current parent of the componenet 
 	 */
@@ -274,11 +274,35 @@ js.juif.Component = $extends(js.util.Observable,{
 		this.fireEvent("render",this);
 		
 		this.doRender();
-		
 		container.append(this.element);
+		this.initComponent();
 		
 		this.rendered = true;
 		this.fireEvent("afterrender",this);
+	},
+	initComponent: function(){
+		//add the "on class listeners" to the element
+		var EM = js.core.EventManager,
+			EH = js.dom.Helper,
+			el = this.element.dom,
+			that = this,
+			ev;
+		
+		for(var p in this){
+			ev = p.substring(2);
+			if(EM.isDomEvent(ev)){
+				EM.on(el, ev, function(e){
+					that.fireEvent(e);
+				},that);
+			}
+		}
+		
+		//apply some default css styles
+		var u = undefined;
+		EH.applyStyle(el,{
+			width: this.width ? this.width + this.defaultUnit : u,
+			height: this.height ?  this.height + this.defaultUnit : u
+		});
 	},
 	/**
 	 * @function Adds a new event listener to the component and its element

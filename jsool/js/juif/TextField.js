@@ -31,45 +31,85 @@
 
 jsool.namespace("js.juif");
 
-js.juif.Button = $extends(js.juif.Component,{
+js.juif.TextField = $extends(js.juif.Component,{
 	cons: function(config){
-		if(String.isString(config)){
-			this.text = config	;
-		}else{
-			jsool.apply(this,config);
-			if(this.renderOn){
-				this.render(this.renderOn);
-				delete this.renderOn;
-			}
+		jsool.apply(this,config);
+		this.empty = this.value.length > 0;
+		if(this.renderOn){
+			this.render(this.renderOn);
+			delete this.renderOn;
 		}
 	},
-	text: 'button',
-	defaultElement: "span",
-	setText: function(text){
-		if(String.isString(text)){
-			text = String(text);
-		}
-		this.text = text;
-		if(this.rendered){
-			jsool.get(this.element.query("button")[0]).setText(text);
-		}
+	name: "",
+	value: "",
+	input: null,
+	max: 255,
+	empty: true,
+	width: 150,
+	emptyText: "",
+	getName: function(){
+		return this.input.name || this.name;
 	},
-	getText: function(){
-		return this.text;
+	setName: function(name){		
+		this.name = name;
+		this.input.name = name;
 	},
+	getValue: function(){
+		return this.empty ? "" :this.input.value || "";
+	},
+	setValue: function(val){		
+		this.input.value = val;
+	},
+	defaultElement: "div",
 	doRender: function(){
-		if(!this.template){
-			if(!js.juif.Button.template){
-				js.juif.Button.template = new js.dom.Template(
-					"<table width=\"100%\"><tr><td class=\"bor-t-l\"/><td class=\"bor-t\"/><td class=\"bor-t-r\"/></tr>",
-					"<tr><td class=\"bor-l\"/><td align=\"center\"><button>{text}</button></td><td class=\"bor-r\" /></tr>",
-					"<tr><td class=\"bor-b-l\"/><td class=\"bor-b\" /><td class=\"bor-b-r\"/></tr></table>"
-				);
-			}
-			this.template = js.juif.Button.template;
+		this.input = js.dom.Helper.createDom({
+			tag: "input",
+			value: this.value || this.emptyText,
+			type:"text",
+			name: this.name||"",
+			maxlength: this.max
+		});
+		
+		this.element.setClass("juif juif-field juif-text-field");
+		this.element.append(this.input);	
+	},
+	isEmpty: function(){
+		return this.empty ? true :this.input.value ? this.input.value.length <= 0 : true; 
+	},
+	initComponent: function(){
+		js.juif.Component.prototype.initComponent.apply(this, arguments);
+		
+		if(!this.value || this.value == ""){
+			this.element.addClass("empty");
+			this.empty = true;
 		}
 		
-		this.element.setClass("juif juif-btn");
-		this.element.append(this.template.compile({text:this.text}));
+		var EM = js.core.EventManager,
+			i = this.input,
+			that = this;
+		
+		EM.on(i,"keyup",function(ev){
+			var l = this.input.value.length;
+			if(l == 0 && !this.empty){
+				this.element.addClass("empty");
+				this.empty = true;
+			}else if(l > 0 && this.empty){
+				this.element.removeClass("empty");
+				this.empty = false;
+			}
+		},that);
+		
+		EM.on(i,"blur",function(ev){
+			if(this.empty){
+				this.input.value = this.emptyText;
+			}
+		},that);
+		
+		EM.on(i,"focus",function(ev){
+			if(this.empty){
+				this.input.value = "";
+			}
+		},that);
+		
 	}
-},'js.juif.Button');
+},'js.juif.TextField');
