@@ -39,7 +39,7 @@ js.util.StringBuilder = $extends(js.core.Object, {
 	_length: 0,
 	buffer: null,
 	append: function(object){
-		var string = object.toString();
+		var string = String(object);
 		this.buffer.push(string);
 		this._length += string.length;
 

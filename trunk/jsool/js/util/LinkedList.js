@@ -156,7 +156,7 @@ js.util.LinkedList = $extends(js.util.List, {
 }, 'js.util.LinkedList');
 
 js.util.LinkedList.Iterator = $extends(js.core.Object,{
-	constructor: function(list){
+	cons: function(list){
 		js.core.Object.apply(this,arguments);
 		this.size = list._size;
 		this.nextNode = list.header.next;
