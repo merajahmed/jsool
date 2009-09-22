@@ -40,12 +40,12 @@ js.data.Store = $extends(js.core.Object,{
 	collection: null,
 	cache: null,
 	fields: null,
-	id: 'id',
+	loaded: false,
 	query: function(fieldName, expression){},
 	queryBy: function(filterFunction){},
 	add: function(record){
 		if(!record.instanceOf(js.data.Record)){
-			throw new js.core.Exception('Invalid argument type: '+record, this);
+			throw new js.core.Exception('Invalid argument type: '+record, this, arguments);
 		}
 		this.collection.add(record);
 		this.cache.put(record);

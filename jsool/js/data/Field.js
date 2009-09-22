@@ -37,9 +37,11 @@ js.data.Field = $extends(js.core.Object,{
 			jsool.apply(this, configuration);
 		}
 		
-		var Type = js.data.Type[this.dataType.toUpperCase()];
-		this.sorter = Type.sort;
-		this.conver = Type.parse;
+		if(String.isString(this.dataType)){
+			this.dataType = js.data.Type[this.dataType.toUpperCase()];
+		}
+		this.sorter = this.sorter || this.dataType.sort;
+		this.conver = this.parser || this.dataType.parse;
 	},
 	name: null,
 	dataType: 'none',

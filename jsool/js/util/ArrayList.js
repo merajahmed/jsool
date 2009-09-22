@@ -148,7 +148,7 @@ js.util.ArrayList = $extends(js.util.List,{
 },'js.util.ArrayList');
 
 js.util.ArrayList.Iterator = $extends(js.core.Object,{
-	constructor: function(list){
+	cons: function(list){
 		js.core.Object.apply(this,arguments);
 		this.size = list.length;
 		this.list = list;

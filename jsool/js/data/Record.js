@@ -36,6 +36,7 @@ js.data.Record = $extends(js.core.Object,{
 		this.id = id || js.data.Record.id();
 		this.data = data || {};
 		this.original = jsool.copy(this.data);
+		this.validate(this.data);
 	},
 	id: null,
 	data:null,
@@ -50,7 +51,29 @@ js.data.Record = $extends(js.core.Object,{
 	},
 	reset: function(){
 		this.data = this.orgiginal;
-	} 
+	},
+	validate: function(data){
+		var it = this.fields.iterator(),
+			field,
+			type,
+			value;
+		
+		while(it.hasNext()){
+			field = it.next();
+			type = field.dataType;
+			
+			data[field.name] = data[field.name] || field.defaultValue;			
+			value = data[field.name];
+			
+			if(value){
+				if(!type.is(value)){
+					throw new js.core.Exception("Invalid value on record: "+value,this, arguments);
+				}
+			}else if(!field.allowBlank){
+				throw new js.core.Exception("Invalid record data",this, arguments);
+			}
+		}
+	}
 },'js.data.Record');
 
 js.data.Record.MODEL_ID = 0;
@@ -58,11 +81,12 @@ js.data.Record.RECORD_ID = 0;
 js.data.Record.ID_PREFIX = 'jsool-rec';
 
 js.data.Record.id = function(){
-	return [js.data.Record.ID_PREFIX,'-',js.data.Record.RECORD_ID++];
+	return [js.data.Record.ID_PREFIX,js.data.Record.RECORD_ID++].join("-");
 };
 
-js.data.Record.create = function(config){
-	var fields = new MixedCollection();
+js.data.Record.create = function(){
+	var config = arguments;
+	var fields = new js.util.MixedCollection();
 	var field;
 	for(var i = 0, field;field = config[i++];){
 		field = new js.data.Field(field);
