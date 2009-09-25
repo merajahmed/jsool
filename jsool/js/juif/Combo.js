@@ -83,7 +83,7 @@ js.juif.Combo = $extends(js.juif.TextField,{
 			}
 		});
 		
-		this.element.setClass("juif juif-field juif-text-field");
+		this.element.setClass("juif juif-field juif-text-field juif-wrapper");
 		this.element.append(this.input);
 		this.element.append(this.trigger);
 		this.element.append(this.list);

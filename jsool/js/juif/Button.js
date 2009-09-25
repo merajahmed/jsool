@@ -71,5 +71,8 @@ js.juif.Button = $extends(js.juif.Component,{
 		
 		this.element.setClass("juif juif-btn");
 		this.element.append(this.template.compile({text:this.text}));
+	},
+	onmouseover: function(event){
+		console.info(event);
 	}
 },'js.juif.Button');

@@ -30,58 +30,59 @@ canvas.flux-proxy{
 /*
 btn = button
 bor = border
+con = container
 l = left
 r = right
 t = top
 b = bottom
 
 */
-.juif .bor-t{
-	height: 3px;
+
+.bor-t{
 	background-image: url(../images/bor-t-b.png);
 	background-position: 0px 0px;
 }
 
-.juif .bor-t-r{
+.bor-t-r{
 	width: 3px;
 	height: 3px;
 	background-image: url(../images/bor-corners.png);
 	background-position: 3px 0px;
 }
 
-.juif .bor-r{
+.bor-r{
 	width: 3px;
 	background-image: url(../images/bor-l-r.png);
 	background-position: right;
 }
 
-.juif .bor-b-r{
+.bor-b-r{
 	width: 3px;
 	height: 3px;
 	background-image: url(../images/bor-corners.png);
 	background-position: 3px 3px;
 }
 
-.juif .bor-b{
+.bor-b{
 	height: 3px;
 	background-image: url(../images/bor-t-b.png);
 	background-position: 0px 3px;
 }
 
-.juif .bor-b-l{
+.bor-b-l{
 	height: 3px;
 	width: 3px;
 	background-image: url(../images/bor-corners.png);
 	background-position: 0px 3px;
 }
 
-.juif .bor-l{
+.bor-l{
 	width: 3px;
 	background-image: url(../images/bor-l-r.png);
 	background-position: left;
 }
 
-.juif .bor-t-l{
+.bor-t-l{
 	height: 3px;
 	width: 3px;
 	background-image: url(../images/bor-corners.png);
@@ -104,10 +105,9 @@ b = bottom
 	color: #445ABD;
 }
 
-.juif-field{
+.juif-wrapper{
 	border: solid 1px #C5CDE2;
 	display: inline-block;
-	color: #000000;
 }
 
 .juif-field.empty{
