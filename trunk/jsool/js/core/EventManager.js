@@ -58,10 +58,8 @@ js.core.EventManager = (function(){
 		var handler = function(event){
 			event = event || window.event;
 			var res = fn.apply(scope, [event]);
-			event.cancelBubble = true;
-			if(event.stopPropagation)event.stopPropagation();
-			if(res) return res;
-			else return false;
+			if(typeof res != "undefined") return res;
+			else return true;
 		};
 		
 		hs.push({

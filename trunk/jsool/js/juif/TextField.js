@@ -70,7 +70,7 @@ js.juif.TextField = $extends(js.juif.Component,{
 			maxlength: this.max
 		});
 		
-		this.element.setClass("juif juif-field juif-text-field");
+		this.element.setClass("juif juif-field juif-text-field juif-wrapper");
 		this.element.append(this.input);	
 	},
 	isEmpty: function(){
@@ -110,6 +110,5 @@ js.juif.TextField = $extends(js.juif.Component,{
 				this.input.value = "";
 			}
 		},that);
-		
 	}
 },'js.juif.TextField');
