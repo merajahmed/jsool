@@ -88,26 +88,20 @@ js.juif.TextField = $extends(js.juif.Component,{
 			i = this.input,
 			that = this;
 		
-		EM.on(i,"keyup",function(ev){
-			var l = this.input.value.length;
-			if(l == 0 && !this.empty){
+		EM.on(i,"blur",function(ev){
+			if(i.value.length < 1){
+				i.value = this.emptyText;
 				this.element.addClass("empty");
 				this.empty = true;
-			}else if(l > 0 && this.empty){
-				this.element.removeClass("empty");
+			}else{
 				this.empty = false;
-			}
-		},that);
-		
-		EM.on(i,"blur",function(ev){
-			if(this.empty){
-				this.input.value = this.emptyText;
 			}
 		},that);
 		
 		EM.on(i,"focus",function(ev){
 			if(this.empty){
-				this.input.value = "";
+				i.value = "";
+				this.element.removeClass("empty");
 			}
 		},that);
 	}
