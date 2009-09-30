@@ -151,8 +151,7 @@ js.util.DateFormat = $extends(js.core.Object,{
 			
 			currentPattern = this.patternKeyMap.get(referenceString.substring(openToken,closeToken));
 			
-			try{
-			string = this['parse'+currentPattern.name](string, resultDate);}catch(e){console.error(e);}
+			string = this['parse'+currentPattern.name](string, resultDate);
 			
 			referenceString = referenceString.substring(closeToken);
 		}
