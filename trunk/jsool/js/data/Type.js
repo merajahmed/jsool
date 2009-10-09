@@ -74,7 +74,7 @@ js.data.Type = {
 			return window.parseFloat(object);
 		},
 		is: function(o){
-			return typeof o === 'number' && o.toString().match(/[0-9]+\.[0-9]+/) != null;
+			return typeof o === 'number' && o.toString().match(/[0-9]+(\.[0-9]+)?/) != null;
 		}
 	},
 	DATE: {

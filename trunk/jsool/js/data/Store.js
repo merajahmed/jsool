@@ -34,20 +34,21 @@ jsool.namespace("js.data");
 js.data.Store = $extends(js.core.Object,{
 	cons: function(config){
 		jsool.apply(this,config);
-		this.collection = new js.util.ArrayList();
-		this.cache = new js.util.HashMap();
+		this.records = new js.util.ArrayList();
+		this.cache = new js.util.HashMap();		
 	},
 	collection: null,
 	cache: null,
 	fields: null,
 	loaded: false,
+	records: null,
 	query: function(fieldName, expression){},
 	queryBy: function(filterFunction){},
 	add: function(record){
 		if(!record.instanceOf(js.data.Record)){
 			throw new js.core.Exception('Invalid argument type: '+record, this, arguments);
 		}
-		this.collection.add(record);
+		this.records.add(record);
 		this.cache.put(record);
 	}
 },'js.data.Store');

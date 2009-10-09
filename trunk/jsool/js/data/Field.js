@@ -36,7 +36,7 @@ js.data.Field = $extends(js.core.Object,{
 		if(configuration){
 			jsool.apply(this, configuration);
 		}
-		
+		this.name = this.name.toLowerCase();
 		if(String.isString(this.dataType)){
 			this.dataType = js.data.Type[this.dataType.toUpperCase()];
 		}
