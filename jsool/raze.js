@@ -151,7 +151,7 @@ var Raze = (function(){
 	function byClass(ctx, cls){
 		var res = [];
 		for(var i = 0, n; n = ctx[i++];){
-			if(n.className == cls){
+			if(typeof n.className === "string" && n.className.match("\\b"+cls+"\\b")){
 				res.push(n);
 			}
 		}

@@ -46,6 +46,10 @@ js.juif.Combo = $extends(js.juif.TextField,{
 	max: 255,
 	empty: true,
 	width: 150,
+	displayField:null,
+	valueField:null,
+	store: null,
+	listVisible: false,
 	getName: function(){
 		return this.input.name || this.name;
 	},
@@ -61,7 +65,8 @@ js.juif.Combo = $extends(js.juif.TextField,{
 	},
 	defaultElement: "div",
 	doRender: function(){
-		this.input = js.dom.Helper.createDom({
+		var dh = js.dom.Helper;
+		this.input = dh.createDom({
 			tag: "input",
 			value: this.value || this.emptyText,
 			type:"text",
@@ -69,13 +74,13 @@ js.juif.Combo = $extends(js.juif.TextField,{
 			maxlength: this.max
 		});
 		
-		this.trigger = js.dom.Helper.createDom({
+		this.trigger = dh.createDom({
 			tag: "img",
-			className: "juif-trigger juif-no-select",
+			className: "juif-trigger",
 			src:"images/s.gif"
 		});
 		
-		this.list = js.dom.Helper.createDom({
+		this.list = dh.createDom({
 			tag: "div",
 			className: "juif-combo-list",
 			style: {
@@ -83,10 +88,23 @@ js.juif.Combo = $extends(js.juif.TextField,{
 			}
 		});
 		
-		this.element.setClass("juif juif-field juif-text-field juif-wrapper");
+		this.element.setClass("juif juif-field juif-text-field juif-wrapper juif-no-select");
 		this.element.append(this.input);
 		this.element.append(this.trigger);
 		this.element.append(this.list);
+		
+		if(!this.store)return;
+		
+		var list = jsool.get(this.list);
+		var it = this.store.records.iterator();
+		
+		while(it.hasNext()){
+			var rec = it.next();
+			list.append(dh.createDom({
+				tag: "div",
+				html: rec.data[this.displayField]
+			}));
+		}
 	},
 	setWidth: function(w){
 		this.width = w;
@@ -97,15 +115,30 @@ js.juif.Combo = $extends(js.juif.TextField,{
 	 * just to set the input attribute
 	 */
 	onafterrender: function(){
+		var dh = js.dom.Helper; 
 		this.input = this.element.query("input")[0];
 		this.setWidth(this.width);
 		
 		var b = this.element.getBox();
 		
-		js.dom.Helper.applyStyle(this.list,{
+		dh.applyStyle(this.list,{
 			top: b.y + b.h + 1 + this.defaultUnit,
 			left: b.x+ this.defaultUnit,
 			width: b.w+ this.defaultUnit
 		});
+		
+		js.core.EventManager.on(this.trigger,"click",function(ev){
+			var vis;
+			if(this.listVisible){
+				vis = "hidden";
+				this.listVisible = false;
+			}else{
+				vis = "visible";
+				this.listVisible = true;
+			}
+			dh.applyStyle(this.list,{
+				visibility: vis
+			});
+		},this);
 	}
 },'js.juif.Combo');

@@ -54,9 +54,9 @@
 	<script type="text/javascript" src="js/juif/Combo.js"></script>
 	
 	<script type="text/javascript">
-	var b,c ;
+	var b,c,s,r;
 	var o;
-	jsool.onReady(function(){
+	jsool.onReady(function(){		
 		if(!jsool.isFF && !jsool.isIE){
 			jsool.queryNode("body").appendChild(
 				js.dom.Helper.createDom({
@@ -65,16 +65,38 @@
 					type:"text/javascript"
 				})
 			);
+		}		
+		
+		r = js.data.Record.create(
+			{
+				name:"nome",
+				dataType:"String"
+			},{
+				name:"n",
+				dataType: "integer"
+			}
+		);
+
+		s = new js.data.Store();
+
+		for(var i = 20;i--;){
+			var cr = new r({nome:"Mikhas"+i,n:i});
+			s.add(cr);
 		}
 
 		b = new js.juif.Button({text:"Master"});
 		c = new js.juif.TextField({emptyText:"empty"});
-		e = new js.juif.Combo();
-		
+		e = new js.juif.Combo({
+			valueField: "n",
+			displayField: "nome",
+			store: s
+		});
+
 		
 		b.render("aki");
 		c.render("ake");
 		e.render("la");
+
 	});
 	
 	</script>
