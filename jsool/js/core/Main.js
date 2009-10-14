@@ -280,13 +280,26 @@ jsool.$extends = function(superclass, prototype, type){
 		cls.prototype[p] = prototype[p];
 	}
 	
+	var SUPER = (function(){
+		var sup = superclass;
+		return function Super(){
+			sup.apply(this, arguments);
+		};
+	})();
+	
+	for(var f in superclass.prototype){
+		if(typeof superclass.prototype[f] == "function"){
+			SUPER[f] = (function(){
+				var fn = superclass.prototype[f];
+				return function(){
+					return fn.apply(this, arguments);
+				};
+			})();
+		}
+	}
+	
 	cls.prototype.supercls = superclass;
-	cls.prototype.$super = (function(){
-			var sup = superclass;
-			return function Super(){
-				sup.apply(this, arguments);
-			};
-		})();
+	cls.prototype.$super = SUPER;
 	cls.prototype.type = type;
 	cls.prototype.cls = cls;
 	return cls;
