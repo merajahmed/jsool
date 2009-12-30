@@ -1,6 +1,6 @@
 jsool.namespace("js.dom");
 
-js.dom.Helper = (function(){
+js.dom.Helper = (function create_helper(){
 	var DOC = window.document;
 	var BODY;
 	var getTagRe = /^[<]([\w]+)/;
