@@ -29,15 +29,15 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-var jsool = (function(){
+var jsool = (function create_jsool(){
 	/**
 	 * Operations that will be fired after the page is ready but before the application start
 	 */
-	var systemOperations = new Array();
+	var systemOperations = [];
 	/**
 	 * Operations that will be fired after the system is ready
 	 */
-	var onReadyActions = new Array();
+	var onReadyActions = [];
 	/**
 	 * flags if the document is ready
 	 */
@@ -47,11 +47,11 @@ var jsool = (function(){
 	 */
 	var systemReady = false;
 	
-	var that = this;
+	var base = {};
 	
 	var idCount = 0;
 	
-	that.namespace = function(name){
+	base.namespace = function(name){
 		var names = name.split(/\./);
 		var cur, lst = window;
 		for(var i=0,n;n=names[i++];){
@@ -63,7 +63,7 @@ var jsool = (function(){
 		}
 	};
 	
-	that.doReady = function(){
+	base.doReady = function(){
 		for(var i = 0; i< onReadyActions.length; i++){
 			try{
 				onReadyActions[i]();
@@ -79,20 +79,20 @@ var jsool = (function(){
 		}
 	};
 	
-	that.prepareSystem = function(){
+	base.prepareSystem = function(){
 		for(var i = 0; i< systemOperations.length; i++){
 			systemOperations[i]();
 		}
 	};
 	
 	if(window.addEventListener){
-		window.addEventListener("load",function(){
+		window.addEventListener("load",function startup(){
 			jsool.start();
 			delete jsool.start;
 			window.removeEventListener("load",arguments.callee,false);
 		},false);
 	}else{
-		window.onload = function(){
+		window.onload = function startup(){
 			jsool.start();
 			delete jsool.start;
 			window.onload = null;
@@ -127,9 +127,9 @@ var jsool = (function(){
 		 */
 		start: function(){
 			documentReady = true;
-			that.prepareSystem();
+			base.prepareSystem();
 			systemReady = true;
-			that.doReady();
+			base.doReady();
 		},
 		/**
 		 * Checks if the page and framework is ready
@@ -218,7 +218,7 @@ var jsool = (function(){
 		isDate: function(o){
 			return o.constructor == Date;
 		},
-		namespace:that.namespace
+		namespace:base.namespace
 	};
 })();
 
@@ -233,13 +233,13 @@ jsool.$extends = function(superclass, prototype, type){
 	
 	//ImplicitySuperConstructor
 	if(prototype['cons'] && typeof prototype['cons'] == 'function'){
-		cls = (function(constructor, parent){
+		cls = (function implicity_constructor_class(constructor, parent){
 			
 			var constructor = prototype['cons'];
 			var parent = superclass;
 			
 			//Parent constructor executes just before the class constructor
-			return function ImplicitySuperConstructor(){
+			return function implicity_constructor(){
 				parent.apply(this, arguments);
 				constructor.apply(this, arguments);
 			};
@@ -248,22 +248,22 @@ jsool.$extends = function(superclass, prototype, type){
 		delete prototype['cons'];
 	//ClassConstructor	
 	}else if(prototype['ccons'] && typeof prototype['ccons'] == 'function'){
-		cls = (function(){
+		cls = (function self_constructor_class(){
 			var constructor = prototype['ccons'];
 			
 			//Executes only the class constructor
-			return function ClassConstructor(){
+			return function class_constructor(){
 				constructor.apply(this, arguments);
 			};
 		})();
 		
 		delete prototype['ccons'];
 	}else{
-		cls = (function(){
+		cls = (function no_constructor_class(){
 			var constructor = superclass;
 			
 			//Executes only the parent constructor
-			return function SuperConstructor(){
+			return function super_constructor(){
 				constructor.apply(this, arguments);
 			};
 		})();
@@ -280,7 +280,7 @@ jsool.$extends = function(superclass, prototype, type){
 		cls.prototype[p] = prototype[p];
 	}
 	
-	var SUPER = (function(){
+	var SUPER = (function super_class(){
 		var sup = superclass;
 		return function Super(){
 			sup.apply(this, arguments);
@@ -289,9 +289,9 @@ jsool.$extends = function(superclass, prototype, type){
 	
 	for(var f in superclass.prototype){
 		if(typeof superclass.prototype[f] == "function"){
-			SUPER[f] = (function(){
+			SUPER[f] = (function create_super_method(){
 				var fn = superclass.prototype[f];
-				return function(){
+				return function super_method(){
 					return fn.apply(this, arguments);
 				};
 			})();

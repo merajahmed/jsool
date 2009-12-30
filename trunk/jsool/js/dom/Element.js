@@ -359,7 +359,7 @@ js.dom.Element.attributes={
 	"class":"className"
 };
 
-jsool.onSystemReady(function(){
+jsool.onSystemReady(function init_element(){
 	var cache = new js.util.HashMap();
 	var El = js.dom.Element;
 	
