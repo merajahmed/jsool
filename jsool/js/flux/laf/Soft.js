@@ -22,25 +22,25 @@ js.flux.laf.Soft = (function(){
 	
 	return{
 		drawButton: function(ctx, x, y, w, h, text){
-			ctx.saveState();
+			ctx.save();
 			
-			ctx.setFillStyle(BODY_COLOR);
-			ctx.setStrokeStyle(BORDER_COLOR);
-			ctx.setLineWidth(BORDER_WIDTH);
+			ctx.fillStyle = BODY_COLOR;
+			ctx.strokeStyle = BORDER_COLOR;
+			ctx.lineWidth = BORDER_WIDTH;
 			ctx.fillRoundRect(x,y,w,h,BORDER_RADIUS);
 			ctx.strokeRoundRect(x,y,w,h,BORDER_RADIUS);
 			
-			var textW = ctx.measureText(text);
+			var textW = ctx.measureText(text).width;
 			
 			var xCenter = Math.max(0, (w-textW)/2);
 			var yCenter = Math.max(0, (h-FONT_SIZE)/2);
 			
-			ctx.setTextBaseline(js.canvas.TextBaseline.TOP);
-			ctx.setFont(FONT_SIZE+'px '+FONT_FACE);
-			ctx.setFillStyle(FONT_COLOR);
+			ctx.textBaseline = js.canvas.TextBaseline.TOP;
+			ctx.font = FONT_SIZE+'px '+FONT_FACE;
+			ctx.fillStyle = FONT_COLOR;
 			ctx.write(text,x+xCenter,y+yCenter,w);
 			
-			ctx.restoreState();
+			ctx.restore();
 		}
 	};
 })();
