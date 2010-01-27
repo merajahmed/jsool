@@ -37,7 +37,6 @@
 	<script type="text/javascript" src="js/dom/CompositeElement.js"></script>
 	
 	<script type="text/javascript" src="js/canvas/Canvas.js"></script>
-	<script type="text/javascript" src="js/canvas/CanvasRenderingContext.js"></script>
 
 	<script type="text/javascript" src="js/net/HttpRequest.js"></script>
 	<script type="text/javascript" src="js/net/HttpRequestDispatcher.js"></script>
@@ -53,50 +52,39 @@
 	<script type="text/javascript" src="js/juif/TextField.js"></script>
 	<script type="text/javascript" src="js/juif/Combo.js"></script>
 	
+	<script type="text/javascript" src="js/flux/Component.js"></script>
+	<script type="text/javascript" src="js/flux/Button.js"></script>
+	<script type="text/javascript" src="js/flux/UIManager.js"></script>
+	
+	<script type="text/javascript" src="js/flux/laf/Soft.js"></script>
+	
 	<script type="text/javascript">
-	var b,c,s,r;
-	var o;
-	jsool.onReady(function(){		
-		if(!jsool.isFF && !jsool.isIE){
-			jsool.queryNode("body").appendChild(
-				js.dom.Helper.createDom({
-					tag: "script",
-					src:"firebug.js",
-					type:"text/javascript"
-				})
-			);
-		}		
-		
-		r = js.data.Record.create(
-			{
-				name:"nome",
-				dataType:"String"
-			},{
-				name:"n",
-				dataType: "integer"
-			}
-		);
+	jsool.onReady(function(){
+		var b,bs=[];
 
-		s = new js.data.Store();
-
-		for(var i = 20;i--;){
-			var cr = new r({nome:"Mikhas"+i,n:i});
-			s.add(cr);
+		for(var a=150;a--;){
+			b = new js.flux.Button();
+			b.setX(30);
+			b.setY(30);
+			js.flux.UIManager.add(b);
+			bs.push(b);
 		}
 
-		b = new js.juif.Button({text:"Master"});
-		c = new js.juif.TextField({emptyText:"empty"});
-		e = new js.juif.Combo({
-			valueField: "n",
-			displayField: "nome",
-			store: s
-		});
-
+		b.setX(100);
+		window.b = b;
+		window.bs = bs;
+		var x = 0;
 		
-		b.render("aki");
-		c.render("ake");
-		e.render("la");
-
+		b.on("click",function(ev, comp){
+			var i;
+			i = window.setInterval(function(){
+				comp.setX(x++);
+				if(x==200){
+					window.clearInterval(i);
+				}
+			},30);
+		});
+		
 	});
 	
 	</script>

@@ -32,21 +32,25 @@
 jsool.namespace("js.flux");
 
 js.flux.UIManager = (function(){
-	var proxy; // The element that will be used do insert the element in the page
-	var context; //Graphical context where the elements will be rendered
-	var fluxWorker; //Pseudo thread that will update the UI
+	var proxy, // The element that will be used do insert the element in the page
+		context, //Graphical context where the elements will be rendered
+		fluxWorker, //Pseudo thread that will update the UI
+		laf, //The current Look and fell
 	
-	var initialized = false;
-	var idle = true;
-	var updateInterval = 33;
+		initialized = false, // flags if the UIManager is initialized
+		idle = true, //flags if the fluxWorker is running
+		updateInterval = 20, //The interval between screen updates
+		emptyRuns = 0, // number of times that the worker runned without updating any component
+		maxEmptyRuns = 30, // Max number of times that the worker may run without updating the UI.
 	
-	var queueUpdate = false; //Flags if a component requested UI to update
-	var components = []; // Components added to the root
+		queueUpdate = false; //Flags if a component requested UI to update
+		components = [], // Components added to the root
 	
-	var focused = null;
+		focused = null;	 // The current focused component
 	
-	var laf; // look and feel
-	
+	/**
+	 * Initializes the UIManager
+	 */
 	function init(){
 		if(!laf)laf = js.flux.laf.Soft;
 		
@@ -66,10 +70,11 @@ js.flux.UIManager = (function(){
 		initialized = true;
 	}
 	
-	var mouseover = null;
-	
+	/**
+	 * The default mouse listener function.
+	 * It runs every time an event is fired by the window and sends the event to a component on the screen.
+	 */
 	var mouseListener = function(event){
-		event = event || window.event;
 		var pos;
 		if(jsool.isIE){
 			pos = {x:event.clientX+document.body.scrollLeft,
@@ -80,74 +85,89 @@ js.flux.UIManager = (function(){
 		
 		for(var i=0,c;c=components[i++];){
 			if(c.contains(pos.x,pos.y)){
-				c.fireEvent(jsool.apply({},{x:pos.x,y:pos.y},event));
+				c.fireEvent(jsool.apply({},{x:pos.x,y:pos.y},event),c);
 				return false;
 			}
 		}
 	};
 	
+	/**
+	 * Sets the listeners of the window
+	 */
 	function prepareListeners(){
-		var w=window,f;
-		if(w.addEventListener){
-			f = function(ev, handler){
-				w.addEventListener(ev,handler,false);
-			};
-		}else{
-			f = function(ev, handler){
-				w.attachEvent('on'+ev,handler);
-			};
-		}
-		
-		f('click',mouseListener);
-		/*f('dblclick',mouseListener);
-		f('mouseover',mouseListener);
-		f('mouseup',mouseListener);
-		f('mousedown',mouseListener);
-		f('mousemove',mouseListener);*/
+		var EM = js.core.EventManager;
+		EM.on(window,'click',mouseListener);
+		//EM.on(window,'dblclick',mouseListener);
+		//EM.on(window,'mouseover',mouseListener);
+		//EM.on(window,'mouseup',mouseListener);
+		//EM.on(window,'mousedown',mouseListener);
+		//EM.on(window,'mouseout',mouseListener);
+		//EM.on(window,'mousemove',mouseListener);
 	}
 	
+	/**
+	 * Resizes the proxy everytime that the window is resized.
+	 */
 	function resize(){
-		proxy.setAttribute('width', window.innerWidth);
-		proxy.setAttribute('height', window.innerHeight);
+		proxy.set('width', window.innerWidth);
+		proxy.set('height', window.innerHeight);
 		updateUI();
 	}
 	
-	function queueUpdateUI(){
-		if(queueUpdate){
-			updateUI();
-			queueUpdate = false;
+	/**
+	 * Starts the flux worker
+	 */
+	function startWorker(){
+		if(idle){
+			idle = false;
+			fluxWorker = window.setInterval(updateUI, updateInterval);
 		}
 	}
 	
-	function startWorker(){
-		if(idle)
-			fluxWorker = window.setInterval(queueUpdateUI, updateInterval);
-	}
-	
+	/**
+	 * Stops the flux worker
+	 */
 	function stopWorker(){
-		if(!idle)
+		if(!idle){
+			idle = true;
 			window.clearInterval(fluxWorker);
+		}
 	}
 	
-	function updateUI(){		
-		if(components.length < 1)return;
-		if(components.length > 1) components.sort(function(a,b){return a.z - b.z;});
-		context.clear();
-		try{
-			var comp;
-			for(var i = 0; comp = components[i++];){
-				if(comp.isVisible()){
-					//window.setTimeout(function(){
+	/**
+	 * Updates all the visible components on the screen/proxy
+	 */
+	function updateUI(){
+		if(queueUpdate){
+			emptyRuns = 0;
+			queueUpdate = false;
+			if(components.length < 1)return;
+			if(components.length > 1) components.sort(function(a,b){return a.z - b.z;});
+			context.clear();
+			try{
+				for(var i=0,comp; comp = components[i++];){
+					if(comp.isVisible()){
 						comp.updateUI(context);
-					//},0);
+					}
 				}
+			}catch(e){
+				alert(e.toString());
 			}
-		}catch(e){
-			alert(e.toString());
+		}else{
+			emptyRuns++;
+			if(emptyRuns >= maxEmptyRuns){
+				if(!idle){
+					stopWorker();
+				}
+				emptyRuns = 0;
+			}
 		}
 	}
 	
 	return{
+		/**
+		 * Adds a component to the UIManager
+		 */
 		add: function(component){
 			if(!component.instanceOf(js.flux.Component))
 				throw new js.core.Exception('Illegal argument: '+component);
@@ -155,8 +175,14 @@ js.flux.UIManager = (function(){
 			if(!initialized)
 				init();
 		},
+		/**
+		 * Request the UIManager to update the UI.
+		 */
 		update: function(){
 			queueUpdate = true;
+			if(idle){
+				startWorker();
+			}
 		},
 		start: startWorker,
 		stop: stopWorker,
