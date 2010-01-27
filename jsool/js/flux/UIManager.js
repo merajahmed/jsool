@@ -111,6 +111,7 @@ js.flux.UIManager = (function(){
 	function resize(){
 		proxy.set('width', window.innerWidth);
 		proxy.set('height', window.innerHeight);
+		queueUpdate=true;
 		updateUI();
 	}
 	
@@ -172,6 +173,7 @@ js.flux.UIManager = (function(){
 			if(!component.instanceOf(js.flux.Component))
 				throw new js.core.Exception('Illegal argument: '+component);
 			components.push(component);
+			component.setParent(this);
 			if(!initialized)
 				init();
 		},

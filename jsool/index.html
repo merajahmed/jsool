@@ -53,6 +53,7 @@
 	<script type="text/javascript" src="js/juif/Combo.js"></script>
 	
 	<script type="text/javascript" src="js/flux/Component.js"></script>
+	<script type="text/javascript" src="js/flux/Container.js"></script>
 	<script type="text/javascript" src="js/flux/Button.js"></script>
 	<script type="text/javascript" src="js/flux/UIManager.js"></script>
 	
@@ -60,31 +61,19 @@
 	
 	<script type="text/javascript">
 	jsool.onReady(function(){
-		var b,bs=[];
+		var c = new js.flux.Container();
+		c.setX(10);
+		c.setY(10);
+		c.setWidth(800);
+		c.setHeight(400);
+		js.flux.UIManager.add(c);
 
-		for(var a=150;a--;){
-			b = new js.flux.Button();
-			b.setX(30);
-			b.setY(30);
-			js.flux.UIManager.add(b);
-			bs.push(b);
-		}
+		var b = new js.flux.Button("BUTTON 1");
+		c.add(b);
 
-		b.setX(100);
-		window.b = b;
-		window.bs = bs;
-		var x = 0;
-		
-		b.on("click",function(ev, comp){
-			var i;
-			i = window.setInterval(function(){
-				comp.setX(x++);
-				if(x==200){
-					window.clearInterval(i);
-				}
-			},30);
-		});
-		
+		b.setX(30);
+		b.setY(40);
+		b.setWidth(100);
 	});
 	
 	</script>

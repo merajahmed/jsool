@@ -106,5 +106,19 @@ js.flux.Component = $extends(js.util.Observable,{
 	updateUI: function(canvas){
 		this.paint(canvas);
 	},
+	setSize: function(width, height){
+		this.width = width;
+		this.height = height;
+	},
+	setBounds: function(x,y,width, height){
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+	},
+	setPosition: function(x,y){
+		this.x = x;
+		this.y = y;
+	},
 	paint: jsool.emptyFn
 },'js.flux.Component');
