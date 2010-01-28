@@ -31,23 +31,7 @@
 
 jsool.namespace("js.flux");
 
-js.flux.Button = $extends(js.flux.Component,{
-	cons: function(text){
-		if(String.isString(text)){
-			this.text = text;
-		}
-	},
-	width: 70,
-	height: 20,
-	text: 'button',
-	setText: function(text){
-		if(String.isString(text)){
-			this.text = text;
-			this.element.setText(text);
-		}
-	},
-	paint: function(ctx){
-		var laf = js.flux.UIManager.getLookAndFeel();
-		laf.drawButton(ctx, this.x, this.y, this.width, this.height,this.text);
-	}
-},'js.flux.Button');
+js.flux.Layout = $extends(js.core.Object,{
+	layoutContainer: jsool.emptyFn,
+	addLayoutComponent:jsool.emptyFn
+},'js.flux.Layout');

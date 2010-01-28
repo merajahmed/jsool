@@ -82,9 +82,11 @@ js.flux.UIManager = (function(){
 		}else{
 			pos = {x:event.pageX,y:event.pageY};
 		}
-		
+		var comp;
 		for(var i=0,c;c=components[i++];){
 			if(c.contains(pos.x,pos.y)){
+				c = c.getComponentAt(pos.x,pos.y) || c;
+				focused = c;
 				c.fireEvent(jsool.apply({},{x:pos.x,y:pos.y},event),c);
 				return false;
 			}
