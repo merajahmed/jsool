@@ -37,7 +37,7 @@ js.canvas.Canvas = $extends(js.dom.Element,{
 	},
 	getContext: function(){
 		var ctx = this.dom.getContext('2d');
-		
+		var deg = (Math.PI / 180);
 		jsool.apply(ctx,{
 			clear: function(){
 				var w = this.canvas.getAttribute('width'),
@@ -51,28 +51,26 @@ js.canvas.Canvas = $extends(js.dom.Element,{
 				return this.canvas.getAttribute('width');
 			},
 			fillRoundRect: function(x,y,w,h,r){
-				var deg = (Math.PI / 180);
 				this.beginPath();
 				this.arc(x+r,y+r,r, Math.PI, 3*Math.PI/2, false);
-				this.lineTo(w-r + x, y);
-				this.arc(x + w - r, y+r, r, deg*270, deg*360, false);
-				this.lineTo(x+w, y+h- r);
-				this.arc(x+w-r,y+h-r, r, deg*360, deg*90, false);
-				this.lineTo(x+r, y+h);
-				this.arc(x+r,y+h- r,r, deg*90, deg*180, false);
+				this.lineTo(w-r+x,y);
+				this.arc(x+w-r,y+r,r, deg*270, Math.PI*2, false);
+				this.lineTo(x+w, y+h-r);
+				this.arc(x+w-r,y+h-r,r, Math.PI*2, Math.PI/2, false);
+				this.lineTo(x+r,y+h);
+				this.arc(x+r,y+h-r,r, Math.PI/2, Math.PI, false);
 				this.lineTo(x,y+r);
 				this.fill();
 			},
 			strokeRoundRect: function(x,y,w,h,r){
-				var deg = (Math.PI / 180);
 				this.beginPath();
 				this.arc(x+r,y+r,r, Math.PI, 3*Math.PI/2, false);
-				this.lineTo(w-r + x, y);
-				this.arc(x + w - r, y+r, r, deg*270, deg*360, false);
-				this.lineTo(x+w, y+h- r);
-				this.arc(x+w-r,y+h-r, r, deg*360, deg*90, false);
-				this.lineTo(x+r, y+h);
-				this.arc(x+r,y+h- r,r, deg*90, deg*180, false);
+				this.lineTo(w-r+x,y);
+				this.arc(x+w-r,y+r,r, deg*270, Math.PI*2, false);
+				this.lineTo(x+w,y+h-r);
+				this.arc(x+w-r,y+h-r,r, Math.PI*2, Math.PI/2, false);
+				this.lineTo(x+r,y+h);
+				this.arc(x+r,y+h-r,r, Math.PI/2, Math.PI, false);
 				this.lineTo(x,y+r);
 				this.stroke();
 			},
@@ -85,10 +83,10 @@ js.canvas.Canvas = $extends(js.dom.Element,{
 				//The text is painted two times because of the default smoothness
 				if(maxWidth != null){
 					this.fillText(text, x, y, maxWidth);
-					this.fillText(text, x, y, maxWidth);
+					//this.fillText(text, x, y, maxWidth);
 				}else{
 					this.fillText(text, x, y);
-					this.fillText(text, x, y);
+					//this.fillText(text, x, y);
 				}
 			}
 		});
@@ -96,7 +94,6 @@ js.canvas.Canvas = $extends(js.dom.Element,{
 		ctx.textBaseline = js.canvas.TextBaseline.TOP;
 		
 		return ctx;
-		//return new js.canvas.CanvasRenderingContext(this.dom.getContext('2d'));
 	}
 },'js.canvas.Canvas');
 

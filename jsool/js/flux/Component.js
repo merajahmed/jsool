@@ -33,7 +33,7 @@ jsool.namespace("js.flux");
 
 js.flux.Component = $extends(js.util.Observable,{
 	cons: function(){
-		this.addEvent(['click','mouseup','mousedown','mousein','mouseout', 'keypress','mousemove']);
+		this.addEvent(['click','mouseup','mousedown','mouseouver','mouseout', 'keypress','mousemove']);
 		this.z = this.seed();
 	},
 	x: 0,
@@ -42,7 +42,6 @@ js.flux.Component = $extends(js.util.Observable,{
 	width: 0,
 	height: 0,
 	parent: null,
-	changed: false,
 	visible: true,
 	seed:(function(){var seed=0;return function(){seed++;};})(),
 	contains: function(x, y){
@@ -109,16 +108,27 @@ js.flux.Component = $extends(js.util.Observable,{
 	setSize: function(width, height){
 		this.width = width;
 		this.height = height;
+		js.flux.UIManager.update();
 	},
 	setBounds: function(x,y,width, height){
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		js.flux.UIManager.update();
 	},
 	setPosition: function(x,y){
 		this.x = x;
 		this.y = y;
+		js.flux.UIManager.update();
+	},
+	getBounds: function(){
+		return {
+			x: this.x,
+			y: this.y,
+			width: this.width,
+			height: this.height
+		};
 	},
 	paint: jsool.emptyFn
 },'js.flux.Component');

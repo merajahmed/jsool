@@ -57,23 +57,57 @@
 	<script type="text/javascript" src="js/flux/Button.js"></script>
 	<script type="text/javascript" src="js/flux/UIManager.js"></script>
 	
+	<script type="text/javascript" src="js/flux/Layout.js"></script>
+	<script type="text/javascript" src="js/flux/BorderLayout.js"></script>
+	
 	<script type="text/javascript" src="js/flux/laf/Soft.js"></script>
 	
 	<script type="text/javascript">
 	jsool.onReady(function(){
-		var c = new js.flux.Container();
-		c.setX(10);
-		c.setY(10);
-		c.setWidth(800);
-		c.setHeight(400);
-		js.flux.UIManager.add(c);
+		a = new js.flux.Container();
+		a.setX(10);
+		a.setY(10);
+		a.setWidth(800);
+		a.setHeight(400);
+		js.flux.UIManager.add(a);
 
-		var b = new js.flux.Button("BUTTON 1");
-		c.add(b);
+		a.setLayout(new js.flux.BorderLayout());
+		
+		b = new js.flux.Button("BUTTON 1");
+		a.add(b,"TOP");
 
 		b.setX(30);
 		b.setY(40);
 		b.setWidth(100);
+
+		c = new js.flux.Button("Button 2");
+		a.add(c,"BOTTOM");
+
+		c.setX(150);
+		c.setY(40);
+		c.setWidth(80);
+
+
+			d = new js.flux.Button("Button 3");
+		a.add(d,"LEFT");
+
+		d.setX(150);
+		d.setY(40);
+		d.setWidth(80);
+
+		e = new js.flux.Button("Button 4");
+		a.add(e,"RIGHT");
+
+		e.setX(150);
+		e.setY(40);
+		e.setWidth(80);
+
+		f = new js.flux.Button("Button 5");
+		a.add(f,"CENTER");
+
+		f.setX(150);
+		f.setY(40);
+		f.setWidth(80);
 	});
 	
 	</script>

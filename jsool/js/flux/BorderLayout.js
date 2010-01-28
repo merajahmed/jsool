@@ -31,23 +31,77 @@
 
 jsool.namespace("js.flux");
 
-js.flux.Button = $extends(js.flux.Component,{
-	cons: function(text){
-		if(String.isString(text)){
-			this.text = text;
+js.flux.BorderLayout = $extends(js.flux.Layout,{
+	hSpace:0,
+	vSpace:5,
+	layoutContainer: function(cont){
+		var bs = cont.getBounds();
+		var c;
+		
+		if((c = this.TOP)){
+			c.x = 0;
+			c.y = 0;
+			c.width = cont.width;
+		}
+		if((c = this.BOTTOM)){
+			c.x = 0;
+			c.y = bs.height-c.height;
+			c.width = cont.width;
+		}
+		
+		var h = cont.height - (this.TOP?this.TOP.height + this.vSpace:0) - (this.BOTTOM?this.BOTTOM.height + this.vSpace:0);
+		var y = this.TOP?this.TOP.height+this.vSpace:0;
+		if((c = this.LEFT)){
+			c.x = 0;
+			c.y = y;
+			c.height = h;
+		}
+		
+		if((c = this.RIGHT)){
+			c.x = cont.width-c.width;
+			c.y = y;
+			c.height = h;
+		}
+		
+		if((c = this.CENTER)){
+			var w = cont.width;
+			w -= (this.LEFT?this.LEFT.width:0);
+			w -= (this.RIGHT?this.RIGHT.width:0);
+			var x = 0 + (this.LEFT?this.LEFT.width:0);
+			
+			c.x = x;
+			c.y = y;
+			c.width = w;
+			c.height = h;
 		}
 	},
-	width: 70,
-	height: 20,
-	text: 'button',
-	setText: function(text){
-		if(String.isString(text)){
-			this.text = text;
-			this.element.setText(text);
+	addLayoutComponent: function(comp, cons){
+		if(cons === js.flux.BorderLayout.TOP){
+			this.TOP = comp;
+		}
+		if(cons === js.flux.BorderLayout.BOTTOM){
+			this.BOTTOM = comp;
+		}
+		if(cons === js.flux.BorderLayout.LEFT){
+			this.LEFT = comp;
+		}
+		if(cons === js.flux.BorderLayout.RIGHT){
+			this.RIGHT = comp;
+		}
+		if(cons === js.flux.BorderLayout.CENTER){
+			this.CENTER = comp;
 		}
 	},
-	paint: function(ctx){
-		var laf = js.flux.UIManager.getLookAndFeel();
-		laf.drawButton(ctx, this.x, this.y, this.width, this.height,this.text);
+	setVSpace: function(x){
+		this.vSpace = x;
+	},
+	setHSpace: function(x){
+		this.hSpace = x;
 	}
-},'js.flux.Button');
+},'js.flux.BorderLayout');
+
+js.flux.BorderLayout.TOP = "TOP";
+js.flux.BorderLayout.BOTTOM = "BOTTOM";
+js.flux.BorderLayout.LEFT = "LEFT";
+js.flux.BorderLayout.RIGHT = "RIGHT";
+js.flux.BorderLayout.CENTER = "CENTER";

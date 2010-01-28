@@ -9,26 +9,24 @@ js.flux.laf.Soft = (function(){
 	var FONT_FACE = 'Tahoma';
 	var FONT_SIZE = 12;
 	
-	var FONT_FOCUS_COLOR = 'rgb(68,90,189)';
+	var BUTTON_BODY_COLOR = 'rgb(241,241,237)';
+	var BUTTON_BORDER_COLOR = 'rgb(0,60,116)';
 	
-	var BODY_COLOR = 'rgb(223,234,248)';
+	var BODY_COLOR = 'rgb(236,233,216)';
 	
-	var BORDER_COLOR = 'rgb(163,174,188)';
+	var BORDER_COLOR = 'rgb(172,168,153)';
 	var BORDER_RADIUS = 2;
 	var BORDER_WIDTH = 1;
-	
-	var BORDER_FOCUS_COLOR = 'rgb(197,205,226)';
-	
 	
 	return{
 		drawButton: function(ctx, x, y, w, h, text){
 			ctx.save();
 			
-			ctx.fillStyle = BODY_COLOR;
-			ctx.strokeStyle = BORDER_COLOR;
+			ctx.fillStyle = BUTTON_BODY_COLOR;
+			ctx.strokeStyle = BUTTON_BORDER_COLOR;
 			ctx.lineWidth = BORDER_WIDTH;
-			ctx.fillRoundRect(x,y,w,h,BORDER_RADIUS);
 			ctx.strokeRoundRect(x,y,w,h,BORDER_RADIUS);
+			ctx.fillRoundRect(x,y,w,h,BORDER_RADIUS);
 			
 			var textW = ctx.measureText(text).width;
 			
@@ -48,8 +46,8 @@ js.flux.laf.Soft = (function(){
 			ctx.fillStyle = BODY_COLOR;
 			ctx.strokeStyle = BORDER_COLOR;
 			ctx.lineWidth = BORDER_WIDTH;
-			ctx.fillRoundRect(x,y,w,h,BORDER_RADIUS);
 			ctx.strokeRoundRect(x,y,w,h,BORDER_RADIUS);
+			ctx.fillRoundRect(x,y,w,h,BORDER_RADIUS);
 			
 			ctx.restore();
 		}
