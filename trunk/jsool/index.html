@@ -73,41 +73,21 @@
 
 		a.setLayout(new js.flux.BorderLayout());
 		
-		b = new js.flux.Button("BUTTON 1");
-		a.add(b,"TOP");
+		b = new js.flux.Button();
+		a.add(b,"TOP");		
 
-		b.setX(30);
-		b.setY(40);
-		b.setWidth(100);
+		c = new js.flux.Container();
+		a.add(c,"BOTTOM");		
+		c.add(new js.flux.Button("asd"));
 
-		c = new js.flux.Button("Button 2");
-		a.add(c,"BOTTOM");
-
-		c.setX(150);
-		c.setY(40);
-		c.setWidth(80);
-
-
-			d = new js.flux.Button("Button 3");
+		d = new js.flux.Container();
 		a.add(d,"LEFT");
 
-		d.setX(150);
-		d.setY(40);
-		d.setWidth(80);
-
-		e = new js.flux.Button("Button 4");
+		e = new js.flux.Button();
 		a.add(e,"RIGHT");
 
-		e.setX(150);
-		e.setY(40);
-		e.setWidth(80);
-
-		f = new js.flux.Button("Button 5");
+		f = new js.flux.Container();
 		a.add(f,"CENTER");
-
-		f.setX(150);
-		f.setY(40);
-		f.setWidth(80);
 	});
 	
 	</script>

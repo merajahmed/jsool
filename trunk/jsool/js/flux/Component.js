@@ -33,7 +33,7 @@ jsool.namespace("js.flux");
 
 js.flux.Component = $extends(js.util.Observable,{
 	cons: function(){
-		this.addEvent(['click','mouseup','mousedown','mouseouver','mouseout', 'keypress','mousemove']);
+		this.addEvent(['click','mouseup','mousedown','mouseover','mouseout', 'keypress','mousemove']);
 		this.z = this.seed();
 	},
 	x: 0,

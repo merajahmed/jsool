@@ -11,6 +11,8 @@ js.flux.laf.Soft = (function(){
 	
 	var BUTTON_BODY_COLOR = 'rgb(241,241,237)';
 	var BUTTON_BORDER_COLOR = 'rgb(0,60,116)';
+	var BUTTON_FOCUS = 'rgb(250,195,88)';
+	var BUTTON_PRESSED = 'rgb(153,204,0)';
 	
 	var BODY_COLOR = 'rgb(236,233,216)';
 	
@@ -25,8 +27,8 @@ js.flux.laf.Soft = (function(){
 			ctx.fillStyle = BUTTON_BODY_COLOR;
 			ctx.strokeStyle = BUTTON_BORDER_COLOR;
 			ctx.lineWidth = BORDER_WIDTH;
-			ctx.strokeRoundRect(x,y,w,h,BORDER_RADIUS);
-			ctx.fillRoundRect(x,y,w,h,BORDER_RADIUS);
+			ctx.strokeRoundRect(x+1,y+1,w-2,h-2,BORDER_RADIUS);
+			ctx.fillRoundRect(x+1,y+1,w-2,h-2,BORDER_RADIUS);
 			
 			var textW = ctx.measureText(text).width;
 			
@@ -36,7 +38,25 @@ js.flux.laf.Soft = (function(){
 			ctx.textBaseline = js.canvas.TextBaseline.TOP;
 			ctx.font = FONT_SIZE+'px '+FONT_FACE;
 			ctx.fillStyle = FONT_COLOR;
-			ctx.write(text,x+xCenter,y+yCenter,w);
+			ctx.write(text,x+xCenter+1,y+yCenter+1,w-2);
+			
+			ctx.restore();
+		},
+		drawButtonFocus: function(ctx, x, y, w, h){
+			ctx.save();
+			
+			ctx.strokeStyle = BUTTON_FOCUS;
+			ctx.lineWidth = BORDER_WIDTH;
+			ctx.strokeRoundRect(x+2,y+2,w-4,h-4,BORDER_RADIUS);
+			
+			ctx.restore();
+		},
+		drawButtonPressed: function(ctx, x, y, w, h){
+			ctx.save();
+			
+			ctx.strokeStyle = BUTTON_PRESSED;
+			ctx.lineWidth = BORDER_WIDTH;
+			ctx.strokeRoundRect(x+2,y+2,w-4,h-4,BORDER_RADIUS);
 			
 			ctx.restore();
 		},
@@ -46,8 +66,8 @@ js.flux.laf.Soft = (function(){
 			ctx.fillStyle = BODY_COLOR;
 			ctx.strokeStyle = BORDER_COLOR;
 			ctx.lineWidth = BORDER_WIDTH;
-			ctx.strokeRoundRect(x,y,w,h,BORDER_RADIUS);
-			ctx.fillRoundRect(x,y,w,h,BORDER_RADIUS);
+			ctx.strokeRoundRect(x+1,y+1,w-2,h-2,BORDER_RADIUS);
+			ctx.fillRoundRect(x+1,y+1,w-2,h-2,BORDER_RADIUS);
 			
 			ctx.restore();
 		}

@@ -34,7 +34,7 @@ jsool.namespace("js.core");
 js.core.EventManager = (function create_event_manager(){
 	var domEvents = [
 	                 "focus","blur",
-	                 "mouseover","mouseout","mouseup","mousedown",//"mousemove",	                 
+	                 "mouseover","mouseout","mouseup","mousedown","mousemove",	                 
 	                 "click","dblclick",
 	                 "keydown","keypress","keyup",
 	                 "change","error","load",
