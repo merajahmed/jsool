@@ -33,14 +33,11 @@ jsool.namespace("js.flux");
 
 js.flux.Container = $extends(js.flux.Component,{
 	cons: function(parent){
-		if(parent){
-			this.parent = parent;
-			this.width = parent.getWidth();
-			this.height = parent.getHeight();
-		}
 		this.childrenSet = new js.util.HashSet();
 		this.children = [];
 	},
+	width:200,
+	height:80,
 	children: null,
 	childrenSet: null,
 	layout: null,
@@ -49,10 +46,12 @@ js.flux.Container = $extends(js.flux.Component,{
 		laf.drawContainer(ctx, this.x, this.y, this.width, this.height);
 	},
 	add: function(component,prop){
+		if(component == this)return;
 		if(!this.childrenSet.contains(component)){
 			js.flux.UIManager.update();
 			this.children.push(component);
 			this.childrenSet.add(component);
+			component.setParent(this);
 		}
 		if(this.layout){
 			this.layout.addLayoutComponent(component, prop);
@@ -85,15 +84,19 @@ js.flux.Container = $extends(js.flux.Component,{
 		this.layout = layout;
 	},
 	getComponentAt: function(x , y){
-		x -= this.x;
-		y -= this.y;
-		var at;
-		for(var i=0,c;c=this.children[i++];){
-			at = c.getComponentAt(x,y);
-			if(at){
-				return at;
+		if(this.contains(x,y)){
+			x -= this.x;
+			y -= this.y;
+			var at;
+			for(var i=0,c;c=this.children[i++];){
+				at = c.getComponentAt(x,y);
+				if(at){
+					return at;
+				}
 			}
+			return this;
+		}else{
+			return null;
 		}
-		return this;
 	}
 },'js.flux.Container');

@@ -46,7 +46,8 @@ js.flux.UIManager = (function(){
 		queueUpdate = false; //Flags if a component requested UI to update
 		components = [], // Components added to the root
 	
-		focused = null;	 // The current focused component
+		focused = null,	 // The current focused component
+		currentOver = null;	 // The component wich tha mouse is over
 	
 	/**
 	 * Initializes the UIManager
@@ -84,10 +85,28 @@ js.flux.UIManager = (function(){
 		}
 		var comp;
 		for(var i=0,c;c=components[i++];){
-			if(c.contains(pos.x,pos.y)){
-				c = c.getComponentAt(pos.x,pos.y) || c;
+			if((c = c.getComponentAt(pos.x,pos.y))){
 				focused = c;
-				c.fireEvent(jsool.apply({},{x:pos.x,y:pos.y},event),c);
+				if(event.type === "mousemove"){
+					if(currentOver != c){
+						var ev = {
+							x: pos.x,
+							y: pos.y,
+							type: "mouseover",
+							source: c,
+							timestamp: event.timestamp
+						};
+						c.fireEvent(ev,c);
+						if(currentOver){
+							ev.type = "mouseout";
+							ev.source = currentOver;
+							currentOver.fireEvent(ev,currentOver);
+						}
+					}
+					currentOver = c;
+				}else{
+					c.fireEvent(jsool.apply({},{x:pos.x,y:pos.y},event),c);
+				}
 				return false;
 			}
 		}
@@ -99,12 +118,10 @@ js.flux.UIManager = (function(){
 	function prepareListeners(){
 		var EM = js.core.EventManager;
 		EM.on(window,'click',mouseListener);
-		//EM.on(window,'dblclick',mouseListener);
-		//EM.on(window,'mouseover',mouseListener);
-		//EM.on(window,'mouseup',mouseListener);
-		//EM.on(window,'mousedown',mouseListener);
-		//EM.on(window,'mouseout',mouseListener);
-		//EM.on(window,'mousemove',mouseListener);
+		EM.on(window,'dblclick',mouseListener);	
+		EM.on(window,'mouseup',mouseListener);
+		EM.on(window,'mousedown',mouseListener);
+		EM.on(window,'mousemove',mouseListener);
 	}
 	
 	/**

@@ -40,14 +40,47 @@ js.flux.Button = $extends(js.flux.Component,{
 	width: 70,
 	height: 20,
 	text: 'button',
+	mouseover: false,
+	pressed: false,
 	setText: function(text){
 		if(String.isString(text)){
 			this.text = text;
-			this.element.setText(text);
+			js.flux.UIManager.update();
 		}
 	},
 	paint: function(ctx){
 		var laf = js.flux.UIManager.getLookAndFeel();
 		laf.drawButton(ctx, this.x, this.y, this.width, this.height,this.text);
+		
+		if(this.pressed){
+			laf.drawButtonPressed(ctx, this.x, this.y, this.width, this.height);
+		}else if(this.mouseover){
+			laf.drawButtonFocus(ctx, this.x, this.y, this.width, this.height);
+		}
+	},
+	onmouseover: function(ev, comp){
+		if(comp == this && !this.mouseover){
+			this.mouseover = true;
+			js.flux.UIManager.update();
+		}
+	},
+	onmouseout: function(ev, comp){
+		if(comp == this && this.mouseover){
+			this.mouseover = false;
+			this.pressed = false;
+			js.flux.UIManager.update();
+		}
+	},
+	onmousedown: function(ev, comp){
+		if(comp == this && !this.pressed){
+			this.pressed = true;
+			js.flux.UIManager.update();
+		}
+	},
+	onmouseup: function(ev, comp){
+		if(comp == this && this.pressed){
+			this.pressed = false;
+			js.flux.UIManager.update();
+		}
 	}
 },'js.flux.Button');

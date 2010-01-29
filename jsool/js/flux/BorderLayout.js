@@ -32,10 +32,9 @@
 jsool.namespace("js.flux");
 
 js.flux.BorderLayout = $extends(js.flux.Layout,{
-	hSpace:0,
+	hSpace:5,
 	vSpace:5,
 	layoutContainer: function(cont){
-		var bs = cont.getBounds();
 		var c;
 		
 		if((c = this.TOP)){
@@ -45,12 +44,12 @@ js.flux.BorderLayout = $extends(js.flux.Layout,{
 		}
 		if((c = this.BOTTOM)){
 			c.x = 0;
-			c.y = bs.height-c.height;
+			c.y = cont.height-c.height;
 			c.width = cont.width;
 		}
 		
-		var h = cont.height - (this.TOP?this.TOP.height + this.vSpace:0) - (this.BOTTOM?this.BOTTOM.height + this.vSpace:0);
-		var y = this.TOP?this.TOP.height+this.vSpace:0;
+		var h = cont.height - (this.TOP?this.TOP.height:0) - (this.BOTTOM?this.BOTTOM.height:0);
+		var y = (this.TOP?this.TOP.height:0);
 		if((c = this.LEFT)){
 			c.x = 0;
 			c.y = y;
