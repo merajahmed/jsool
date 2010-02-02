@@ -59,6 +59,8 @@
 	
 	<script type="text/javascript" src="js/flux/Layout.js"></script>
 	<script type="text/javascript" src="js/flux/BorderLayout.js"></script>
+	<script type="text/javascript" src="js/flux/RowLayout.js"></script>
+	<script type="text/javascript" src="js/flux/ColLayout.js"></script>
 	
 	<script type="text/javascript" src="js/flux/laf/Soft.js"></script>
 	
@@ -77,10 +79,19 @@
 		a.add(b,"TOP");		
 
 		c = new js.flux.Container();
-		a.add(c,"BOTTOM");		
-		c.add(new js.flux.Button("asd"));
+		a.add(c,"BOTTOM");
+		c.add(new js.flux.Button("BT 1"));
+		c.add(new js.flux.Button("BT 2"));
+		c.add(new js.flux.Button("BT 3"));
+		c.setHeight(40);
+
+		c.setLayout(new js.flux.RowLayout());
 
 		d = new js.flux.Container();
+		d.add(new js.flux.Button("BT 4"));
+		d.add(new js.flux.Button("BT 5"));
+		d.add(new js.flux.Button("BT 6"));
+		d.setLayout(new js.flux.ColLayout());
 		a.add(d,"LEFT");
 
 		e = new js.flux.Button();

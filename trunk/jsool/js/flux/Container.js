@@ -98,5 +98,8 @@ js.flux.Container = $extends(js.flux.Component,{
 		}else{
 			return null;
 		}
+	},
+	getComponents: function(){
+		return this.children.clone();
 	}
 },'js.flux.Container');
