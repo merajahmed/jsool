@@ -31,68 +31,28 @@
 
 jsool.namespace("js.flux");
 
-js.flux.BorderLayout = $extends(js.flux.Layout,{
-	vSpace:3,
-	hSpace:3,
+js.flux.ColLayout = $extends(js.flux.Layout,{
+	hSpace:4,
+	vSpace:4,
 	layoutContainer: function(cont){
-		var c,
-			v2 = this.vSpace * 2,
-			h2 = this.hSpace * 2;
+		var prev = null,
+			curr = null,
+			width = cont.width - (2 * this.hSpace),
+			components = cont.children;
 		
-		if((c = this.TOP)){
-			c.x = this.vSpace;
-			c.y = this.hSpace;
-			c.width = cont.width - h2;
-		}
-		
-		if((c = this.BOTTOM)){
-			c.x = this.hSpace;
-			c.y = cont.height-c.height - this.vSpace;
-			c.width = cont.width - h2;
+		if(components.length > 0){
+			curr = components[0];
+			curr.x = this.hSpace;	
+			curr.y = this.vSpace;
+			curr.width = width;
+			prev = curr.y + curr.height;
 		}
 		
-		var h = cont.height - (this.TOP?this.TOP.height + v2:0) - (this.BOTTOM?this.BOTTOM.height+v2:0) - v2;
-		var y = (this.TOP?this.TOP.height+v2:0)+this.vSpace;
-		
-		if((c = this.LEFT)){
-			c.x = this.hSpace;
-			c.y = y;
-			c.height = h;
-		}
-		
-		if((c = this.RIGHT)){
-			c.x = cont.width-c.width-this.hSpace;
-			c.y = y;
-			c.height = h;
-		}
-		
-		if((c = this.CENTER)){
-			var w = cont.width-h2;
-			w -= (this.LEFT?this.LEFT.width+h2:0);
-			w -= (this.RIGHT?this.RIGHT.width+h2:0);
-			var x = 0 + (this.LEFT?this.LEFT.width+h2:0)+this.hSpace;
-			
-			c.x = x;
-			c.y = y;
-			c.width = w;
-			c.height = h;
-		}
-	},
-	addLayoutComponent: function(comp, cons){
-		if(cons === js.flux.BorderLayout.TOP){
-			this.TOP = comp;
-		}
-		if(cons === js.flux.BorderLayout.BOTTOM){
-			this.BOTTOM = comp;
-		}
-		if(cons === js.flux.BorderLayout.LEFT){
-			this.LEFT = comp;
-		}
-		if(cons === js.flux.BorderLayout.RIGHT){
-			this.RIGHT = comp;
-		}
-		if(cons === js.flux.BorderLayout.CENTER){
-			this.CENTER = comp;
+		for(var i=1;(curr=components[i++]);){
+			curr.y = prev + this.vSpace;
+			prev = curr.y + curr.height;
+			curr.x = this.hSpace;
+			curr.width = width;
 		}
 	},
 	setVSpace: function(x){
@@ -101,10 +61,4 @@ js.flux.BorderLayout = $extends(js.flux.Layout,{
 	setHSpace: function(x){
 		this.hSpace = x;
 	}
-},'js.flux.BorderLayout');
-
-js.flux.BorderLayout.TOP = "TOP";
-js.flux.BorderLayout.BOTTOM = "BOTTOM";
-js.flux.BorderLayout.LEFT = "LEFT";
-js.flux.BorderLayout.RIGHT = "RIGHT";
-js.flux.BorderLayout.CENTER = "CENTER";
+},'js.flux.ColLayout');
