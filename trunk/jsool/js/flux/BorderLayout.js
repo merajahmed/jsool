@@ -32,8 +32,8 @@
 jsool.namespace("js.flux");
 
 js.flux.BorderLayout = $extends(js.flux.Layout,{
-	vSpace:3,
-	hSpace:3,
+	vSpace:2,
+	hSpace:2,
 	layoutContainer: function(cont){
 		var c,
 			v2 = this.vSpace * 2,
