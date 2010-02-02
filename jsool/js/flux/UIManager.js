@@ -39,9 +39,9 @@ js.flux.UIManager = (function(){
 	
 		initialized = false, // flags if the UIManager is initialized
 		idle = true, //flags if the fluxWorker is running
-		updateInterval = 20, //The interval between screen updates
+		updateInterval = 40, //The interval between screen updates
 		emptyRuns = 0, // number of times that the worker runned without updating any component
-		maxEmptyRuns = 30, // Max number of times that the worker may run without updating the UI.
+		maxEmptyRuns = 20, // Max number of times that the worker may run without updating the UI.
 	
 		queueUpdate = false; //Flags if a component requested UI to update
 		components = [], // Components added to the root
@@ -104,11 +104,17 @@ js.flux.UIManager = (function(){
 						}
 					}
 					currentOver = c;
+					return true;
 				}else{
 					c.fireEvent(jsool.apply({},{x:pos.x,y:pos.y},event),c);
+					return true;
 				}
 				return false;
 			}
+		}
+		if(currentOver){
+			currentOver.fireEvent(jsool.apply({},{x:pos.x,y:pos.y,type:"mouseout"},event),currentOver);
+			currentOver = null;
 		}
 	};
 	
