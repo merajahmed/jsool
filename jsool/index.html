@@ -61,6 +61,7 @@
 	<script type="text/javascript" src="js/flux/BorderLayout.js"></script>
 	<script type="text/javascript" src="js/flux/RowLayout.js"></script>
 	<script type="text/javascript" src="js/flux/ColLayout.js"></script>
+	<script type="text/javascript" src="js/flux/SpringLayout.js"></script>
 	
 	<script type="text/javascript" src="js/flux/laf/Soft.js"></script>
 	
@@ -99,6 +100,26 @@
 
 		f = new js.flux.Container();
 		a.add(f,"CENTER");
+
+		var l = new js.flux.SpringLayout();
+		f.setLayout(l);
+
+		var b1,b2,b3,b4;
+
+		b1 = new js.flux.Button("b1");
+		b2 = new js.flux.Button("b2");
+		b3 = new js.flux.Button("b3");
+		b4 = new js.flux.Button("b4");
+
+		f.add(b1);
+		l.putConstraint(b1,"left",5,l,"left");
+		l.putConstraint(b1,"top",20,l,"top");
+		
+		f.add(b2);
+		l.putConstraint(b2,"left",0,b1,"left");
+		l.putConstraint(b2,"top",40,b1,"top");
+		//f.add(b3);
+		//f.add(b4);
 	});
 	
 	</script>
