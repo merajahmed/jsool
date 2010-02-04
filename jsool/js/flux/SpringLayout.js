@@ -37,44 +37,19 @@ js.flux.SpringLayout = $extends(js.flux.Layout,{
 	},
 	constraints: null,
 	layoutContainer: function(cont){
-		var cs = cont.children,
-			cons;
+		var cs = cont.children,cons;
 		
 		for(var i=0,c;c=cs[i++];){
 			cons = this.getConstraints(c);
-			c.x = cons.left.getValue();
-			c.y = cons.top.getValue();
-			//c.width = cons.RIGHT.getValue() - c.x;
-			//c.height = cons.BOTTOM.getValue() - c.y;
 		}
 	},
 	putConstraint: function(comp1, side1, pad, comp2, side2){
 		if(comp1 == comp2){
-			throw new js.core.Exception("Illegal operation",this,arguments);
+			throw new js.core.Exception("Allegal arguments",this, arguments);
 		}
-		
-		var cons1 = this.getConstraints(comp1),
-			cons2 = this.getConstraints(comp2);
-		
-		pad = new js.flux.Spring(pad);
-		delete cons1[side1];
-		cons1[side1] = this.sum(pad,cons2[side2]); 
 	},
 	getConstraints: function(component){
-		var cons = this.constraints.get(component);
-		if(!cons){
-			cons = {
-				left:new js.flux.Spring(0),
-				right:new js.flux.Spring(0),
-				top:new js.flux.Spring(0),
-				bottom:new js.flux.Spring(0)
-			};
-			this.constraints.put(component,cons);
-		}
-		return cons;
-	},
-	sum: function(s1, s2){
-		return new js.flux.SumSpring(s1,s2);
+		
 	}
 },'js.flux.SpringLayout');
 
@@ -82,28 +57,3 @@ js.flux.SpringLayout.LEFT = "left";
 js.flux.SpringLayout.RIGHT = "right";
 js.flux.SpringLayout.TOP = "top";
 js.flux.SpringLayout.BOTTOM = "bottom";
-
-js.flux.Spring = function(val){
-	var value = val | 0;
-	
-	this.getValue = function(){
-		return value;
-	};
-	
-	this.setValue = function(val){
-		value = typeof val === "number" ? val : 0 ;
-	};
-};
-
-js.flux.SumSpring = function(s1,s2){
-	var spring1 = s1,
-		spring2 = s2;
-	
-	this.getValue = function(){
-		return spring1.getValue() + spring2.getValue();
-	};
-	
-	this.setValue = function(val){
-		value = typeof val === "number" ? val : 0 ;
-	};
-};
