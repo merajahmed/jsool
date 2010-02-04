@@ -38,7 +38,6 @@ js.flux.Component = $extends(js.util.Observable,{
 	},
 	x: 0,
 	y: 0,
-	z: 0,
 	width: 0,
 	height: 0,
 	parent: null,
@@ -75,10 +74,6 @@ js.flux.Component = $extends(js.util.Observable,{
 	},
 	setY: function(y){
 		this.y = y;
-		js.flux.UIManager.update();
-	},
-	setZ: function(z){
-		this.z = z;
 		js.flux.UIManager.update();
 	},
 	setWidth: function(w){

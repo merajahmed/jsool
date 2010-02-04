@@ -168,7 +168,7 @@ js.flux.UIManager = (function(){
 			emptyRuns = 0;
 			queueUpdate = false;
 			if(components.length < 1)return;
-			if(components.length > 1) components.sort(function(a,b){return a.z - b.z;});
+			
 			context.clear();
 			try{
 				for(var i=0,comp; comp = components[i++];){
@@ -177,7 +177,7 @@ js.flux.UIManager = (function(){
 					}
 				}
 			}catch(e){
-				alert(e.toString());
+				throw new js.core.Exception(e.toString());
 			}
 		}else{
 			emptyRuns++;
