@@ -42,6 +42,8 @@ js.flux.Button = $extends(js.flux.Component,{
 	text: 'button',
 	mouseover: false,
 	pressed: false,
+	focused: false,
+	canFocus: true,
 	setText: function(text){
 		if(String.isString(text)){
 			this.text = text;
@@ -49,13 +51,46 @@ js.flux.Button = $extends(js.flux.Component,{
 		}
 	},
 	paint: function(ctx){
-		var laf = js.flux.UIManager.getLookAndFeel();
-		laf.drawButton(ctx, this.x, this.y, this.width, this.height,this.text);
+		var UIM = js.flux.UIManager,
+			laf = UIM.getLookAndFeel(),
+			font = laf.FONT_SIZE,
+			radius = laf.BUTTON_BORDER_RADIUS,
+			x = this.x,
+			y = this.y,
+			w = this.width,
+			h = this.height,
+			text = this.text;
 		
 		if(this.pressed){
-			laf.drawButtonPressed(ctx, this.x, this.y, this.width, this.height);
-		}else if(this.mouseover){
-			laf.drawButtonFocus(ctx, this.x, this.y, this.width, this.height);
+			ctx.fillStyle = laf.BUTTON_BODY_PRESSED;
+		}else{
+			ctx.fillStyle = laf.BUTTON_BODY_COLOR;
+		}
+		ctx.strokeStyle = laf.BUTTON_BORDER_COLOR;
+		ctx.lineWidth = laf.BUTTON_BORDER_WIDTH;
+		
+		//Button body
+		ctx.strokeRoundRect(x+1,y+1,w-2,h-2,radius);
+		ctx.fillRoundRect(x+1,y+1,w-2,h-2,radius);
+		
+		var textW = ctx.measureText(text).width;
+		
+		var xCenter = Math.max(0, (w-textW)/2);
+		var yCenter = Math.max(0, (h-font)/2);
+		
+		ctx.textBaseline = js.canvas.TextBaseline.TOP;
+		ctx.font = font+'px '+laf.FONT_FACE;
+		ctx.fillStyle = laf.FONT_COLOR;
+		ctx.write(text,x+xCenter+1,y+yCenter+1,w-2);
+		
+		if(!this.pressed){
+			if(this.mouseover){
+				ctx.strokeStyle = laf.BUTTON_BORDER_OVER;
+				ctx.strokeRoundRect(x+2,y+2,w-4,h-4,radius);
+			}else if(this.focused){
+				ctx.strokeStyle = laf.BUTTON_BORDER_FOCUS;
+				ctx.strokeRoundRect(x+2,y+2,w-4,h-4,radius);
+			}
 		}
 	},
 	onmouseover: function(ev, comp){
@@ -82,5 +117,11 @@ js.flux.Button = $extends(js.flux.Component,{
 			this.pressed = false;
 			js.flux.UIManager.update();
 		}
+	},
+	onfocus: function(ev, comp){
+		this.focused = true;
+	},
+	onlostfocus: function(ev, comp){
+		this.focused = false;
 	}
 },'js.flux.Button');

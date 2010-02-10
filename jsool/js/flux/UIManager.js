@@ -39,7 +39,8 @@ js.flux.UIManager = (function(){
 	
 		initialized = false, // flags if the UIManager is initialized
 		idle = true, //flags if the fluxWorker is running
-		updateInterval = 40, //The interval between screen updates
+		locked = false,
+		updateInterval = 20, //The interval between screen updates
 		emptyRuns = 0, // number of times that the worker runned without updating any component
 		maxEmptyRuns = 20, // Max number of times that the worker may run without updating the UI.
 	
@@ -66,9 +67,11 @@ js.flux.UIManager = (function(){
 			window.attachEvent('onresize',resize);
 		}
 		resize();
-		prepareListeners();
-		startWorker();
+		prepareListeners();		
 		initialized = true;
+		
+		if(!locked)
+			startWorker();
 	}
 	
 	/**
@@ -76,6 +79,7 @@ js.flux.UIManager = (function(){
 	 * It runs every time an event is fired by the window and sends the event to a component on the screen.
 	 */
 	var mouseListener = function(event){
+		if(locked)return false;
 		var pos;
 		if(jsool.isIE){
 			pos = {x:event.clientX+document.body.scrollLeft,
@@ -83,10 +87,12 @@ js.flux.UIManager = (function(){
 		}else{
 			pos = {x:event.pageX,y:event.pageY};
 		}
-		var comp;
+		var comp, ev;
 		for(var i=0,c;c=components[i++];){
+			
 			if((c = c.getComponentAt(pos.x,pos.y))){
-				focused = c;
+				
+				//Deals with mousemove, mouseover and mouseout events
 				if(event.type === "mousemove"){
 					if(currentOver != c){
 						var ev = {
@@ -106,9 +112,27 @@ js.flux.UIManager = (function(){
 					currentOver = c;
 					return true;
 				}else{
-					c.fireEvent(jsool.apply({},{x:pos.x,y:pos.y},event),c);
+					//Deals with most events events
+					ev = jsool.apply({},{x:pos.x,y:pos.y},event);
+					c.fireEvent(ev,c);
+					
+					//Deals with focus and lostfocus events
+					if(c.canFocus && (event.type === "click" || event.type === "dblclick")){
+						if(focused){
+							ev.type = "lostfocus";
+							focused.fireEvent(ev,c);
+						}
+						
+						ev.type = "focus";
+						focused = c;
+						c.fireEvent(ev,c);
+					}
+					
 					return true;
 				}
+				
+				
+				
 				return false;
 			}
 		}
@@ -122,12 +146,13 @@ js.flux.UIManager = (function(){
 	 * Sets the listeners of the window
 	 */
 	function prepareListeners(){
-		var EM = js.core.EventManager;
-		EM.on(window,'click',mouseListener);
-		EM.on(window,'dblclick',mouseListener);	
-		EM.on(window,'mouseup',mouseListener);
-		EM.on(window,'mousedown',mouseListener);
-		EM.on(window,'mousemove',mouseListener);
+		var EM = js.core.EventManager,
+			p = proxy.dom;
+		EM.on(p,'click',mouseListener);
+		EM.on(p,'dblclick',mouseListener);	
+		EM.on(p,'mouseup',mouseListener);
+		EM.on(p,'mousedown',mouseListener);
+		EM.on(p,'mousemove',mouseListener);
 	}
 	
 	/**
@@ -164,6 +189,7 @@ js.flux.UIManager = (function(){
 	 * Updates all the visible components on the screen/proxy
 	 */
 	function updateUI(){
+		if(locked)return;
 		if(queueUpdate){
 			emptyRuns = 0;
 			queueUpdate = false;
@@ -173,7 +199,9 @@ js.flux.UIManager = (function(){
 			try{
 				for(var i=0,comp; comp = components[i++];){
 					if(comp.isVisible()){
+						context.save();
 						comp.updateUI(context);
+						context.restore();
 					}
 				}
 			}catch(e){
@@ -207,7 +235,7 @@ js.flux.UIManager = (function(){
 		 */
 		update: function(){
 			queueUpdate = true;
-			if(idle){
+			if(idle && !locked){
 				startWorker();
 			}
 		},
@@ -221,6 +249,16 @@ js.flux.UIManager = (function(){
 		},
 		getFocused: function(){
 			return focused;
+		},
+		
+		lock: function(){
+			locked = true;
+			stopWorker();
+		},
+		unlock: function(){
+			locked = false;
+			if(queueUpdate)
+				startWorker();
 		}
 	};
 })();

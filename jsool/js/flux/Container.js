@@ -42,8 +42,21 @@ js.flux.Container = $extends(js.flux.Component,{
 	childrenSet: null,
 	layout: null,
 	paint: function(ctx){
-		var laf = js.flux.UIManager.getLookAndFeel();
-		laf.drawContainer(ctx, this.x, this.y, this.width, this.height);
+		var x = this.x,
+			y = this.y,
+			w = this.width,
+			h = this.height,
+			laf = js.flux.UIManager.getLookAndFeel();
+		
+		ctx.save();
+		
+		ctx.fillStyle = laf.CONTAINER_BODY_COLOR;
+		ctx.strokeStyle = laf.CONTAINER_BORDER_COLOR;
+		ctx.lineWidth = laf.CONTAINER_BORDER_WIDTH;
+		ctx.strokeRoundRect(x+1,y+1,w-2,h-2,laf.CONTAINER_BORDER_RADIUS);
+		ctx.fillRoundRect(x+1,y+1,w-2,h-2,laf.CONTAINER_BORDER_RADIUS);
+		
+		ctx.restore();
 	},
 	add: function(component,prop){
 		if(component == this)return;
@@ -63,8 +76,6 @@ js.flux.Container = $extends(js.flux.Component,{
 		if(this.children.length > 0){
 			if(this.layout)this.layout.layoutContainer(this);
 			
-			ctx.save();
-			
 			//CLIPS THE AREA THAT THE COMPONENTS WILL BE DRAWN
 			ctx.beginPath();
 			ctx.rect(this.x,this.y,this.width, this.height);
@@ -74,10 +85,10 @@ js.flux.Container = $extends(js.flux.Component,{
 			ctx.translate(this.x, this.y);
 			
 			for(var i=0,c;c=this.children[i++];){
+				ctx.save();
 				c.updateUI(ctx);
+				ctx.restore();
 			}
-			
-			ctx.restore();
 		}
 	},
 	setLayout: function(layout){
