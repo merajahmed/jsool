@@ -55,6 +55,8 @@
 	<script type="text/javascript" src="js/flux/Component.js"></script>
 	<script type="text/javascript" src="js/flux/Container.js"></script>
 	<script type="text/javascript" src="js/flux/Button.js"></script>
+	<script type="text/javascript" src="js/flux/ToggleButton.js"></script>
+	<script type="text/javascript" src="js/flux/CheckBox.js"></script>
 	<script type="text/javascript" src="js/flux/UIManager.js"></script>
 	
 	<script type="text/javascript" src="js/flux/Layout.js"></script>
@@ -67,6 +69,8 @@
 	
 	<script type="text/javascript">
 	jsool.onReady(function(){
+		js.flux.UIManager.lock();
+		
 		a = new js.flux.Container();
 		a.setX(10);
 		a.setY(10);
@@ -90,10 +94,11 @@
 
 		d = new js.flux.Container();
 		d.add(new js.flux.Button("BT 4"));
-		d.add(new js.flux.Button("BT 5"));
-		d.add(new js.flux.Button("lolly"));
+		d.add(new js.flux.ToggleButton("BT 5"));
+		d.add(new js.flux.CheckBox("lolly"));
 		d.setLayout(new js.flux.ColLayout());
 		a.add(d,"LEFT");
+		d.setWidth(120);
 
 		e = new js.flux.Button();
 		a.add(e,"RIGHT");
@@ -101,24 +106,22 @@
 		f = new js.flux.Container();
 		a.add(f,"CENTER");
 
-		var l = new js.flux.SpringLayout();
-		f.setLayout(l);
-
-		var b1,b2,b3,b4;
+		var b1;
 
 		b1 = new js.flux.Button("b1");
-		b2 = new js.flux.Button("b2");
-		b3 = new js.flux.Button("b3");
-		b4 = new js.flux.Button("b4");
 
 		f.add(b1);
-		l.putConstraint(b1,"left",5,l,"left");
-		l.putConstraint(b1,"top",5,l,"top");
+
+		b1.on("click", function(ev, comp){			
+			var timer = setInterval(function(){
+				if(comp.width >= comp.parent.width-1){
+					clearInterval(timer);
+				}
+				comp.setWidth(comp.width+1);
+			},5);
+		});
 		
-		f.add(b2);
-		l.putConstraint(b2,"left",0,b1,"left");
-		l.putConstraint(b2,"top",30,b1,"bottom");
-		
+		js.flux.UIManager.unlock();
 	});
 	
 	</script>

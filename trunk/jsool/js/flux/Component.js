@@ -42,6 +42,7 @@ js.flux.Component = $extends(js.util.Observable,{
 	height: 0,
 	parent: null,
 	visible: true,
+	canFocus: false,
 	seed:(function(){var seed=0;return function(){seed++;};})(),
 	contains: function(x, y){
 		var containsX = x > this.x && x < this.x + this.width;
