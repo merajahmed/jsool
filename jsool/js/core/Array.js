@@ -91,7 +91,7 @@ jsool.applyIf(Array.prototype,{
 	 */
 	filter: function(action){
 		var length = this.length;
-		var newArray = new Array();
+		var newArray = [];
 		for(var i = 0; i < length; i++){
 			if(action(this[i])){
 				newArray.push(this[i]);
@@ -104,7 +104,7 @@ jsool.applyIf(Array.prototype,{
 	 */
 	map: function(action){
 		var length = this.length;
-		var newArray = new Array();		
+		var newArray = [];		
 		for(var i = 0; i < length; i++){			
 			newArray.push(action(this[i]));
 		}
@@ -136,11 +136,11 @@ jsool.applyIf(Array.prototype,{
 	/**
 	 * Create a new array by concatenating the arguments
 	 */
-	concat: function(){
-		for(var a = 0, arr; arr = arguments[a++];){
-			this.push(arguments[a]);
-		}
-		return this;
+	concat: function(con){
+		var arr = [],i;
+		for(var j = 0;i=this[j++];)arr.push(i);
+		for(var a = 0; i = con[a++];)arr.push(i);
+		return arr;
 	},
 	/**
 	 * Removes an item from the array

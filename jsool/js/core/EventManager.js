@@ -57,9 +57,7 @@ js.core.EventManager = (function create_event_manager(){
 		
 		var handler = function(event){
 			event = event || window.event;
-			var res = fn.apply(scope, [event]);
-			if(typeof res != "undefined") return res;
-			else return true;
+			fn.call(scope, event);
 		};
 		
 		hs.push({
