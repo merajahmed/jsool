@@ -45,12 +45,10 @@ js.flux.Component = $extends(js.util.Observable,{
 	canFocus: false,
 	seed:(function(){var seed=0;return function(){seed++;};})(),
 	contains: function(x, y){
-		var containsX = x > this.x && x < this.x + this.width;
-		var containsY = y > this.y && y < this.y + this.height;
-		return containsX && containsY;
+		return (x > this.x && x < this.x + this.width) && (y > this.y && y < this.y + this.height);
 	},
 	getComponentAt: function(x,y){
-		if(this.contains(x,y))
+		if((x > this.x && x < this.x + this.width) && (y > this.y && y < this.y + this.height))
 			return this;
 		else
 			return null;

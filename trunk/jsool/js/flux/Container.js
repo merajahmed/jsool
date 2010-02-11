@@ -78,7 +78,7 @@ js.flux.Container = $extends(js.flux.Component,{
 			
 			//CLIPS THE AREA THAT THE COMPONENTS WILL BE DRAWN
 			ctx.beginPath();
-			ctx.rect(this.x,this.y,this.width, this.height);
+			ctx.rect(this.x,this.y,this.width,this.height);
 			ctx.clip();
 			
 			//CHANGES THE ORIGIN POSITION
@@ -95,7 +95,10 @@ js.flux.Container = $extends(js.flux.Component,{
 		this.layout = layout;
 	},
 	getComponentAt: function(x , y){
-		if(this.contains(x,y)){
+		/*
+		 * copied from js.flux.Component.contains(x,y) to better performance
+		 */
+		if((x > this.x && x < this.x + this.width) && (y > this.y && y < this.y + this.height)){
 			x -= this.x;
 			y -= this.y;
 			var at;

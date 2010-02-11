@@ -104,22 +104,11 @@
 		a.add(e,"RIGHT");
 
 		f = new js.flux.Container();
-		a.add(f,"CENTER");
-
-		var b1;
+		a.add(f,"CENTER");		
 
 		b1 = new js.flux.Button("b1");
 
 		f.add(b1);
-
-		b1.on("click", function(ev, comp){			
-			var timer = setInterval(function(){
-				if(comp.width >= comp.parent.width-1){
-					clearInterval(timer);
-				}
-				comp.setWidth(comp.width+1);
-			},5);
-		});
 		
 		js.flux.UIManager.unlock();
 	});

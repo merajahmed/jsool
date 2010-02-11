@@ -40,15 +40,17 @@ js.flux.UIManager = (function(){
 		initialized = false, // flags if the UIManager is initialized
 		idle = true, //flags if the fluxWorker is running
 		locked = false,
-		updateInterval = 20, //The interval between screen updates
+		updateInterval = 40, //The interval between screen updates
 		emptyRuns = 0, // number of times that the worker runned without updating any component
-		maxEmptyRuns = 20, // Max number of times that the worker may run without updating the UI.
+		maxEmptyRuns = 10, // Max number of times that the worker may run without updating the UI.
 	
 		queueUpdate = false; //Flags if a component requested UI to update
 		components = [], // Components added to the root
 	
 		focused = null,	 // The current focused component
-		currentOver = null;	 // The component wich tha mouse is over
+		currentOver = null,	 // The component wich tha mouse is over
+		
+		holdsMousemove = false;	//Used to minimize the number of "onmousemove" events
 	
 	/**
 	 * Initializes the UIManager
@@ -80,14 +82,16 @@ js.flux.UIManager = (function(){
 	 */
 	var mouseListener = function(event){
 		if(locked)return false;
-		var pos;
+		
+		
+		//ajust the position
+		var pos,comp,ev;
 		if(jsool.isIE){
 			pos = {x:event.clientX+document.body.scrollLeft,
 					y:event.clientY+document.body.scrollTop};
 		}else{
 			pos = {x:event.pageX,y:event.pageY};
 		}
-		var comp, ev;
 		for(var i=0,c;c=components[i++];){
 			
 			if((c = c.getComponentAt(pos.x,pos.y))){
@@ -113,7 +117,7 @@ js.flux.UIManager = (function(){
 					return true;
 				}else{
 					//Deals with most events events
-					ev = jsool.apply({},{x:pos.x,y:pos.y},event);
+					ev = jsool.apply({},pos,event);
 					c.fireEvent(ev,c);
 					
 					//Deals with focus and lostfocus events
@@ -131,15 +135,15 @@ js.flux.UIManager = (function(){
 					return true;
 				}
 				
-				
-				
 				return false;
 			}
 		}
 		if(currentOver){
 			currentOver.fireEvent(jsool.apply({},{x:pos.x,y:pos.y,type:"mouseout"},event),currentOver);
 			currentOver = null;
+			return true;
 		}
+		return false;
 	};
 	
 	/**

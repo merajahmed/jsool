@@ -106,7 +106,7 @@ js.util.Observable = $extends(js.core.Object, {
 		}
 		// Fire "on class" listener
 		type = "on" + type;
-		if(jsool.isDefined(this[type])){
+		if(typeof this[type] === "function"){
 			this[type].apply(this, args);
 		}
 	},
