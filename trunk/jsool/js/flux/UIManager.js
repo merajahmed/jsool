@@ -199,7 +199,7 @@ js.flux.UIManager = (function(){
 			queueUpdate = false;
 			if(components.length < 1)return;
 			
-			context.clear();
+			//context.clear();
 			try{
 				for(var i=0,comp; comp = components[i++];){
 					if(comp.isVisible()){
