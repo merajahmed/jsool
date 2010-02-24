@@ -6,7 +6,7 @@
 	var qTIR= /^(#|\.)?([\w-\*]+)/, //Query Type Identifier Regexp
 		byIdRe = /^#([\w-]+)/,//is an ID?
 		byClassRe = /^\.([\w-]+)/,//is a Class?
-		byAttributeRe = /^\[([\w]+)(.*[=])?(\w+)?]/,//is an Attribute? 
+		byAttributeRe = /^\[([\w]+)(.*[=])?(.+)?]/,//is an Attribute? 
 		digitRe = /\{(\d+)\}/g,// is it like {1} ??
 		pseudoRe = /^:(\w+(-child)?)(\((\w+)\))?/,//is it a Pseudo?
 		plainTagRe = /^([\w-]+)/,//is it a plain tag?
@@ -78,8 +78,21 @@
 						}else if((m=f.match(byAttributeRe))){
 							var attr = m[1] == "class" ? "className" : m[1];
 							fn.push("el[\""+attr+"\"]");
-							if(m[3]){								
-								fn.push(" && String(el[\""+attr+"\"])"+m[2].replace(/^[=]$/,"==")+"\""+m[3]+"\"");
+							if(m[2]&&m[3]){
+								switch(m[2]){
+								case"=":
+									fn.push(" && String(el[\""+attr+"\"])==\""+m[3]+"\"");
+									break;
+								case"^=":
+									fn.push(" && el[\""+attr+"\"].substr(0,"+m[3].length+") == \""+m[3]+"\"");
+									break;
+								case"$=":
+									fn.push(" && el[\""+attr+"\"].substr(0,el[\""+attr+"\"].length+"+m[3].length+") == \""+m[3]+"\"");
+									break;
+								case"*=":
+									fn.push(" && el[\""+attr+"\"].indexOf(\""+m[3]+"\")!==-1");
+									break;
+								}
 							}
 							f=f.replace(m[0],e);
 						}else if((m=f.match(pseudoRe))){
@@ -96,7 +109,7 @@
 				s.push(cache.filter[o]);
 			}
 		}
-		s.push("return ctx;};")
+		s.push("return ctx;};");
 		eval(s.join(e));
 		return q;
 	}

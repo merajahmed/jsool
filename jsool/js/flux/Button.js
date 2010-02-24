@@ -70,8 +70,8 @@ js.flux.Button = $extends(js.flux.Component,{
 		ctx.lineWidth = laf.BUTTON_BORDER_WIDTH;
 		
 		//Button body
-		ctx.strokeRoundRect(x+1,y+1,w-2,h-2,radius);
-		ctx.fillRoundRect(x+1,y+1,w-2,h-2,radius);
+		ctx.drawRoundRect(x+1,y+1,w-2,h-2,radius);
+		//ctx.fillRoundRect(x+1,y+1,w-2,h-2,radius);
 		
 		var textW = ctx.measureText(text).width;
 		

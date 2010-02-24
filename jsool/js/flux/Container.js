@@ -48,15 +48,11 @@ js.flux.Container = $extends(js.flux.Component,{
 			h = this.height,
 			laf = js.flux.UIManager.getLookAndFeel();
 		
-		ctx.save();
-		
 		ctx.fillStyle = laf.CONTAINER_BODY_COLOR;
 		ctx.strokeStyle = laf.CONTAINER_BORDER_COLOR;
 		ctx.lineWidth = laf.CONTAINER_BORDER_WIDTH;
-		ctx.strokeRoundRect(x+1,y+1,w-2,h-2,laf.CONTAINER_BORDER_RADIUS);
-		ctx.fillRoundRect(x+1,y+1,w-2,h-2,laf.CONTAINER_BORDER_RADIUS);
+		ctx.drawRoundRect(x+1,y+1,w-2,h-2,laf.CONTAINER_BORDER_RADIUS);
 		
-		ctx.restore();
 	},
 	add: function(component,prop){
 		if(component == this)return;

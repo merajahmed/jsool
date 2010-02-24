@@ -36,7 +36,11 @@ js.canvas.Canvas = $extends(js.dom.Element,{
 		this.$super('canvas');
 	},
 	getContext: function(){
-		var ctx = this.dom.getContext('2d');
+		var ctx = this.dom.getContext('2d'),
+			PI = Math.PI,
+			_2PI = Math.PI * 2,
+			PI2 = Math.PI / 2,
+			_3PI2 = 3 * (Math.PI/2);
 		var deg = (Math.PI / 180);
 		jsool.apply(ctx,{
 			clear: function(){
@@ -51,28 +55,53 @@ js.canvas.Canvas = $extends(js.dom.Element,{
 				return this.canvas.getAttribute('width');
 			},
 			fillRoundRect: function(x,y,w,h,r){
+				var xpr=x+r,
+					xpw=x+w,
+					ypr=y+r,
+					yph=y+h;
 				this.beginPath();
-				this.arc(x+r,y+r,r, Math.PI, 3*Math.PI/2, false);
+				this.arc(xpr,ypr,r, PI, _3PI2, false);
 				this.lineTo(w-r+x,y);
-				this.arc(x+w-r,y+r,r, deg*270, Math.PI*2, false);
-				this.lineTo(x+w, y+h-r);
-				this.arc(x+w-r,y+h-r,r, Math.PI*2, Math.PI/2, false);
-				this.lineTo(x+r,y+h);
-				this.arc(x+r,y+h-r,r, Math.PI/2, Math.PI, false);
-				this.lineTo(x,y+r);
+				this.arc(xpw-r,ypr,r, _3PI2, _2PI, false);
+				this.lineTo(xpw, yph-r);
+				this.arc(xpw-r,yph-r,r, _2PI, PI2, false);
+				this.lineTo(xpr,yph);
+				this.arc(xpr,yph-r,r, PI2, PI, false);
+				this.lineTo(x,ypr);
 				this.fill();
 			},
 			strokeRoundRect: function(x,y,w,h,r){
+				var xpr=x+r,
+					xpw=x+w,
+					ypr=y+r,
+					yph=y+h;
 				this.beginPath();
-				this.arc(x+r,y+r,r, Math.PI, 3*Math.PI/2, false);
+				this.arc(xpr,ypr,r, PI, _3PI2, false);
 				this.lineTo(w-r+x,y);
-				this.arc(x+w-r,y+r,r, deg*270, Math.PI*2, false);
-				this.lineTo(x+w,y+h-r);
-				this.arc(x+w-r,y+h-r,r, Math.PI*2, Math.PI/2, false);
-				this.lineTo(x+r,y+h);
-				this.arc(x+r,y+h-r,r, Math.PI/2, Math.PI, false);
-				this.lineTo(x,y+r);
+				this.arc(xpw-r,ypr,r, _3PI2, _2PI, false);
+				this.lineTo(xpw, yph-r);
+				this.arc(xpw-r,yph-r,r, _2PI, PI2, false);
+				this.lineTo(xpr,yph);
+				this.arc(xpr,yph-r,r, PI2, PI, false);
+				this.lineTo(x,ypr);
 				this.stroke();
+			},
+			drawRoundRect: function(x,y,w,h,r){
+				var xpr=x+r,
+					xpw=x+w,
+					ypr=y+r,
+					yph=y+h;
+				this.beginPath();
+				this.arc(xpr,ypr,r, PI, _3PI2, false);
+				this.lineTo(w-r+x,y);
+				this.arc(xpw-r,ypr,r, _3PI2, _2PI, false);
+				this.lineTo(xpw, yph-r);
+				this.arc(xpw-r,yph-r,r, _2PI, PI2, false);
+				this.lineTo(xpr,yph);
+				this.arc(xpr,yph-r,r, PI2, PI, false);
+				this.lineTo(x,ypr);
+				this.stroke();
+				this.fill();
 			},
 			fillCircle : function(x, y, radius) {
 				this.beginPath();
