@@ -6,7 +6,7 @@
 	<script type="text/javascript" src="yass.js"></script>
 	<script type="text/javascript" src="sizzle.js"></script>
 	<script type="text/javascript" src="Sly.js"></script>
-	<script type="text/javascript" src="raze.js"></script>
+	<script type="text/javascript" src="raze2.js"></script>
 	<script type="text/javascript" src="peppy.js"></script>
 	<script type="text/javascript" src="ext.js"></script>
 	
@@ -24,9 +24,7 @@
 		     			'table tr',
 		     			'table tr td',
 		     			'table.b tr.b td.c',
-		     			'.b',
-		     			'tr:first-child',
-		     			'tr:last-child'];
+		     			'.b'];
 		     		var results={};
 
 		     		var engines = [{
@@ -59,7 +57,7 @@
 		     			for(var e=0, engine;engine=engines[e++];){
 		     				start = +new Date;
 		     				//The real test
-		     				for(var i = 1000;i--;){
+		     				for(var i = 200;i--;){
 		     					res = engine.fn(selector);
 		     				}
 		     				results[selector][engine.name]={time:(+new Date)-start,results:res}; 

@@ -15,7 +15,7 @@
 	var isIE = /(?!.*?opera.*?)msie(?!.*?opera.*?)/i.test( navigator.userAgent );
 	var isWebKit = /webkit/i.test( navigator.userAgent );
 	var cache = {};
-	var cacheOn = !isIE && !isWebKit;
+	var cacheOn = !isIE && !isWebKit && false; // force disable cache
 	var persistCache = {};		
 	var _uid = 0;		
 	

@@ -40,7 +40,8 @@ js.flux.UIManager = (function(){
 		initialized = false, // flags if the UIManager is initialized
 		idle = true, //flags if the fluxWorker is running
 		locked = false,
-		updateInterval = 40, //The interval between screen updates
+		//about 20 fps
+		updateInterval = 50, //The interval between screen updates
 		emptyRuns = 0, // number of times that the worker runned without updating any component
 		maxEmptyRuns = 10, // Max number of times that the worker may run without updating the UI.
 	
@@ -102,19 +103,17 @@ js.flux.UIManager = (function(){
 						var ev = {
 							x: pos.x,
 							y: pos.y,
-							type: "mouseover",
+							type: "mouseout",
 							source: c,
 							timestamp: event.timestamp
 						};
-						c.fireEvent(ev,c);
 						if(currentOver){
-							ev.type = "mouseout";
-							ev.source = currentOver;
 							currentOver.fireEvent(ev,currentOver);
 						}
+						ev.type = "mouseover";
+						c.fireEvent(ev,c);
 					}
 					currentOver = c;
-					return true;
 				}else{
 					//Deals with most events events
 					ev = jsool.apply({},pos,event);
@@ -131,11 +130,13 @@ js.flux.UIManager = (function(){
 						focused = c;
 						c.fireEvent(ev,c);
 					}
-					
-					return true;
 				}
 				
-				return false;
+				queueUpdate = true;
+				if(idle && !locked){
+					startWorker();
+				}
+				return;
 			}
 		}
 		if(currentOver){

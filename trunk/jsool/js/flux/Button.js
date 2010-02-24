@@ -47,7 +47,6 @@ js.flux.Button = $extends(js.flux.Component,{
 	setText: function(text){
 		if(String.isString(text)){
 			this.text = text;
-			js.flux.UIManager.update();
 		}
 	},
 	paint: function(ctx){
@@ -96,26 +95,22 @@ js.flux.Button = $extends(js.flux.Component,{
 	onmouseover: function(ev, comp){
 		if(comp == this && !this.mouseover){
 			this.mouseover = true;
-			js.flux.UIManager.update();
 		}
 	},
 	onmouseout: function(ev, comp){
 		if(comp == this && this.mouseover){
 			this.mouseover = false;
 			this.pressed = false;
-			js.flux.UIManager.update();
 		}
 	},
 	onmousedown: function(ev, comp){
 		if(comp == this && !this.pressed){
 			this.pressed = true;
-			js.flux.UIManager.update();
 		}
 	},
 	onmouseup: function(ev, comp){
 		if(comp == this && this.pressed){
 			this.pressed = false;
-			js.flux.UIManager.update();
 		}
 	},
 	onfocus: function(ev, comp){
