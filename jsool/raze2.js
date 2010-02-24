@@ -6,8 +6,7 @@
 	var qTIR= /^(#|\.)?([\w-\*]+)/, //Query Type Identifier Regexp
 		byIdRe = /^#([\w-]+)/,//is an ID?
 		byClassRe = /^\.([\w-]+)/,//is a Class?
-		byAttributeRe = /^\[([\w]+)(.*[=])?(.+)?]/,//is an Attribute? 
-		digitRe = /\{(\d+)\}/g,// is it like {1} ??
+		byAttributeRe = /^\[([\w]+)(.*[=])?(.+)?]/,//is an Attribute?
 		pseudoRe = /^:(\w+(-child)?)(\((\w+)\))?/,//is it a Pseudo?
 		plainTagRe = /^([\w-]+)/,//is it a plain tag?
 		features = null,
@@ -37,7 +36,7 @@
 		o,
 		m,
 		fn,
-		s=["var q=function(ctx){"];
+		s=["var q=function(ctx){var cs,ns,filtered,i,n,j,ch,r;"];
 		
 		for(var i=0,f;f=filters[i++];){			
 			if(cache.filter[f]){
@@ -57,20 +56,20 @@
 					}
 					f = f.replace(m[0],e);
 				}else{
-					fn.push(fnGetNodes.replace(t,"*"))
+					fn.push(fnGetNodes.replace(t,"*"));
 				}
 				
 				//CREATE FILTERS
 				if(f.length>0){
 					var before;
-					fn.push("{var filtered=[];for(var a=0,el;el=ctx[a++];){if(");
+					fn.push("{filtered=[];for(var a=0,el;el=ctx[a++];){if(");
 					while(f.length>0){
 						before = f;
 						if((m=f.match(byIdRe))){
 							fn.push("el.id == \""+m[1]+"\"");
 							f=f.replace(m[0],e);
 						}else if((m=f.match(byClassRe))){
-							fn.push("typeof el.className===\"string\" && el.className.match(/\\b"+m[1]+"\\b/)");
+							fn.push("el.className.match(/\\b"+m[1]+"\\b/)");
 							f=f.replace(m[0],e);
 						}else if((m=f.match(plainTagRe))){
 							fn.push("el.tagName===\""+m[1].toUpperCase()+"\"");
@@ -92,11 +91,15 @@
 								case"*=":
 									fn.push(" && el[\""+attr+"\"].indexOf(\""+m[3]+"\")!==-1");
 									break;
+								default:
+									fn.push(" && el[\""+attr+"\"]"+m[2]+"\""+m[3]+"\"");
+									break;
 								}
 							}
 							f=f.replace(m[0],e);
 						}else if((m=f.match(pseudoRe))){
 							fn.push("true");//NO IMPLEMENTED BY NOW
+							f=f.replace(m[0],e);
 						}
 						fn.push(" && ");
 						if(before == f){
@@ -152,17 +155,17 @@
 		var features = detectFeatures();
 		
 		//GENERAL FUNCTIONS
-		fnGetNodes = "\nif(ctx.getElementsByTagName){ctx=ctx.getElementsByTagName(\"$\");}else{var ns=[];var cs;for(var i=0,n;n=ctx[i++];){"+
-		"cs = n.getElementsByTagName(\"$\");for(var j = 0, ch; ch = cs[j++];){ns.push(ch);}}ctx=ns;}\n";
+		fnGetNodes = "\nif(ctx.getElementsByTagName){ctx=ctx.getElementsByTagName(\"$\");}else{ns=[];cs;for(i=0,n;n=ctx[i++];){"+
+		"cs = n.getElementsByTagName(\"$\");for(j = 0, ch; ch = cs[j++];){ns.push(ch);}}ctx=ns;}\n";
 		
-		fnByClass = "\nvar r=[];for(var i=0,n;n=ctx[i++];){if(typeof n.className===\"string\" && n.className.match(\"\\\\b\$\\\\b\")){r.push(n);}}ctx=r;\n";
+		fnByClass = "\nvar r=[];for(var i=0,n;n=ctx[i++];){if(n.className.match(\"\\\\b\$\\\\b\")){r.push(n);}}ctx=r;\n";
 		
-		fnById = "\nvar r=[];if(ctx.nodeType&&ctx.id==\"$\"){r=[ctx];}else if(ctx.join){for(var i=0,n;n=ctx[i++];){if(n.id==\"$\"){r=[n];}}}ctx=r;\n"
+		fnById = "\nvar r=[];if(ctx.nodeType&&ctx.id==\"$\"){r=[ctx];}else if(ctx.join){for(i=0,n;n=ctx[i++];){if(n.id==\"$\"){r=[n];}}}ctx=r;\n";
 		
 		fnGetId = "\nif(ctx.nodeType&&ctx.nodeType===9){ctx=[ctx.getElementById(\"$\")];}else{"+fnGetNodes.replace(/[$]/g,"*")+fnById+"}";
 		
 		if(features.getClassName){
-			fnGetClass="\nif(ctx.nodeType){ctx=ctx.getElementsByClassName(\"$\");}else if(ctx.join){var r=[];for(var i=0,n;n=ctx[i++];){var ns=n.getElementsByTagName(\"$\");for(var j=0,ch;ch=ns[j++];){r.push(ch);}}}ctx=r;\n"
+			fnGetClass="\nif(ctx.nodeType){ctx=ctx.getElementsByClassName(\"$\");}else if(ctx.join){r=[];for(i=0,n;n=ctx[i++];){ns=n.getElementsByTagName(\"$\");for(j=0,ch;ch=ns[j++];){r.push(ch);}}}ctx=r;\n"
 		}else{
 			fnGetClass= fnGetNodes + fnByClass;
 		}
@@ -177,30 +180,7 @@
 		var features = {};
 				
 		//Detects if browser implements element.getElementsByClassName
-		features.getClassName = span.getElementsByClassName && span.getElementsByClassName("_jsool_domquery_").length > 0;
-
-		/*
-		
-		//detects if browser gets comments when query for "universal tag"
-		features.getsComments = span.getElementsByTagName && span.getElementsByTagName('*').length > 1;
-		
-		//Detects if this browser implements querySelectorAll
-		features.querySelector = false && span.querySelectorAll && span.querySelectorAll('#_jsool_domquery_').length > 0;
-		
-		var ua = navigator.userAgent.toString().toUpperCase();
-		var isIE = ua.indexOf("MSIE") != -1;
-		var isWebKit = ua.indexOf("WEBKIT") != -1;
-		
-		features.useCache = !isIE && !isWebKit;
-		if(features.useCache){
-			var addEvent = document.addEventListener || document.attachEvent;
-			addEvent("DOMAttrModified", clearCache, false);
-			addEvent("DOMNodeInserted", clearCache, false);
-			addEvent("DOMNodeRemoved", clearCache, false);
-		}
-		
-		
-		*/
+		features.getClassName = span.getElementsByClassName && span.getElementsByClassName("_jsool_domquery_").length > 0;		
 		return features;
 	}
 	
@@ -214,10 +194,6 @@
 	
 	raze.queryNode = function(selector, context){
 		var res = query(selector, context);
-		if(res[0]){
-			return res[0];
-		}else{
-			return null;
-		}
+		return res[0] ? res[0] : null; 
 	};
 })();

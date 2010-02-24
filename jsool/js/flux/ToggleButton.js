@@ -37,13 +37,11 @@ js.flux.ToggleButton = $extends(js.flux.Button,{
 	onclick: function(ev, comp){
 		if(comp == this){
 			this.pressed = !this.pressed;
-			js.flux.UIManager.update();
 		}
 	},
 	onmouseout: function(ev, comp){
 		if(comp == this && this.mouseover){
 			this.mouseover = false;
-			js.flux.UIManager.update();
 		}
 	}
 },'js.flux.ToggleButton');

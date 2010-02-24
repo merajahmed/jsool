@@ -56,7 +56,6 @@ js.flux.Component = $extends(js.util.Observable,{
 	setParent: function(parent){
 		if(this.parent)this.parent.remove(this);
 		this.parent = parent;
-		js.flux.UIManager.update();
 	},
 	getParent: function(){
 		return this.parent;
@@ -69,19 +68,15 @@ js.flux.Component = $extends(js.util.Observable,{
 	},
 	setX: function(x){
 		this.x = x;
-		js.flux.UIManager.update();
 	},
 	setY: function(y){
 		this.y = y;
-		js.flux.UIManager.update();
 	},
 	setWidth: function(w){
 		this.width = w;
-		js.flux.UIManager.update();
 	},
 	setHeight: function(h){
 		this.height = h;
-		js.flux.UIManager.update();
 	},
 	getWidth: function(){
 		return this.width;
@@ -91,7 +86,6 @@ js.flux.Component = $extends(js.util.Observable,{
 	},
 	setVisible: function(vis){
 		this.visible = vis;
-		js.flux.UIManager.update();
 	},
 	isVisible: function(){
 		return this.visible;
@@ -102,19 +96,16 @@ js.flux.Component = $extends(js.util.Observable,{
 	setSize: function(width, height){
 		this.width = width;
 		this.height = height;
-		js.flux.UIManager.update();
 	},
 	setBounds: function(x,y,width, height){
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		js.flux.UIManager.update();
 	},
 	setPosition: function(x,y){
 		this.x = x;
 		this.y = y;
-		js.flux.UIManager.update();
 	},
 	getBounds: function(){
 		return {

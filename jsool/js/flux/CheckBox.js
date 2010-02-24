@@ -53,6 +53,5 @@ js.flux.CheckBox = $extends(js.flux.ToggleButton,{
 	},
 	check: function(){
 		this.pressed = true;
-		js.flux.UIManager.updateUI();
 	}
 },'js.flux.CheckBox');

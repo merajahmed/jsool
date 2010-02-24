@@ -23,11 +23,13 @@ Subtree added, second argument, thx to tenshi.
 Return cache if exists. Third argument.
 Return not cached result if root specified, thx to Skiv
 */
+	noCache = true;
 	if (_.c[selector] && !noCache && !root) {
 		return  _.c[selector];
 	}
 /* re-define noCache */
 	noCache = noCache || !!root;
+	noCache = true;
 /* clean root with document */
 	root = root || _.doc;
 /* sets of nodes, to handle comma-separated selectors */
