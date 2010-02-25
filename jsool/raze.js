@@ -322,7 +322,7 @@ var Raze = (function(){
 		var isIE = ua.indexOf("MSIE") != -1;
 		var isWebKit = ua.indexOf("WEBKIT") != -1;
 		
-		features.useCache = !isIE && !isWebKit;
+		features.useCache = !isIE && !isWebKit && false;
 		if(features.useCache){
 			var addEvent = document.addEventListener || document.attachEvent;
 			addEvent("DOMAttrModified", clearCache, false);

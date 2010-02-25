@@ -24,7 +24,15 @@
 		     			'table tr',
 		     			'table tr td',
 		     			'table.b tr.b td.c',
-		     			'.b'];
+		     			'.b',
+		     			'td:nth-child(2)',
+		     			'tr[align=left]',
+		     			'tr[align=right]',
+		     			'tr[align=left]',
+		     			'#trc',
+		     			'#trc td',
+		     			'#tableb tr td',
+		     			'#tableb #trc'];
 		     		var results={};
 
 		     		var engines = [{
@@ -57,7 +65,7 @@
 		     			for(var e=0, engine;engine=engines[e++];){
 		     				start = +new Date;
 		     				//The real test
-		     				for(var i = 200;i--;){
+		     				for(var i = 500;i--;){
 		     					res = engine.fn(selector);
 		     				}
 		     				results[selector][engine.name]={time:(+new Date)-start,results:res}; 
@@ -123,8 +131,8 @@
 			<td class="c">bla bla bla bla bla bla bla</td>
 		</tr>
 	</table>	
-	<table class="b">
-		<tr class="b">
+	<table class="b" width="100%">
+		<tr class="b" align="left">
 			<td>bla bla bla bla bla bla bla</td>
 		</tr>
 		<tr>
@@ -137,11 +145,11 @@
 			<td class="c">bla bla bla bla bla bla bla</td>
 		</tr>
 	</table>
-	<table>
+	<table id="tableb">
 		<tr class="b">
 			<td>bla bla bla bla bla bla bla</td>
 		</tr>
-		<tr>
+		<tr id="trc">
 			<td class="c">bla bla bla bla bla bla bla</td>
 		</tr>
 		<tr class="b">

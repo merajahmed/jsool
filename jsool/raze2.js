@@ -7,25 +7,52 @@
 		byIdRe = /^#([\w-]+)/,//is an ID?
 		byClassRe = /^\.([\w-]+)/,//is a Class?
 		byAttributeRe = /^\[([\w]+)(.*[=])?(.+)?]/,//is an Attribute?
-		pseudoRe = /^:(\w+(-child)?)(\((\w+)\))?/,//is it a Pseudo?
+		pseudoRe = /^:(\w+(-child)?)(\((.+)\))?/,//is it a Pseudo?
 		plainTagRe = /^([\w-]+)/,//is it a plain tag?
-		features = null,
 		e="",
-		ready = false,
 		cache = {
 			filter:{},
-			selector:{},
-			query:{}
+			selector:{}
 		};
 	//FUNCTIONS
-	var fnGetTag,
-		fnGetClass,
-		fnGetId,
-		fnByClass;
+	var
+	fnGetNodes = "\nif(ctx.getElementsByTagName){ctx=ctx.getElementsByTagName(\"$\");}else{ns=[];cs;for(i=0,n;n=ctx[i++];){"+
+	"cs = n.getElementsByTagName(\"$\");for(j = 0, ch; ch = cs[j++];){ns.push(ch);}}ctx=ns;}\n",
 	
-	function clearCache(){
-		queryCache = {};
+	fnByClass = "\nr=[];for(var i=0,n;n=ctx[i++];){if(n.className.match(\"\\\\b\$\\\\b\")){r.push(n);}}ctx=r;\n",
+	
+	fnById = "\nr=[];if(ctx.nodeType&&ctx.id==\"$\"){r=[ctx];}else if(ctx.join){for(i=0,n;n=ctx[i++];){if(n.id==\"$\"){r=[n];}}}ctx=r;\n",
+	
+	fnGetId = "\nif(ctx.getElementById){ctx=[ctx.getElementById(\"$\")];}else{"+fnGetNodes.replace(/[$]/g,"*")+fnById+"}",
+	
+	fnGetClass;
+	
+	if(document.getElementsByClassName){
+		fnGetClass="\nif(ctx.getElementsByClassName){ctx=ctx.getElementsByClassName(\"$\");}else if(ctx.join){r=[];for(i=0,n;n=ctx[i++];){ns=n.getElementsByTagName(\"$\");for(j=0,ch;ch=ns[j++];){r.push(ch);}}}ctx=r;\n";
+	}else{
+		fnGetClass= fnGetNodes + fnByClass;
 	}
+	
+	function contains(arr,el){
+		if(!arr)return false;
+		
+		for(var i=0,e;e=arr[i++];){
+			if(e == el)
+				return true;
+		}
+		return false;
+	}
+	
+	var pseudos = {
+		"root" : "!el.tagName.toUpperCase()===\"HTML\"",
+		"nth-child": "el.parentNode.childNodes[$arg]===el",
+		"first-child": "el.parentNode.childNodes[0]===el",
+		"empty": "el.childNodes.length===0",
+		"enabled": "el.enabled",
+		"disabled": "!el.enabled",
+		"checked": "el.checked",
+		"not": "!contains(query(\"$arg\"),el)"
+	};
 	
 	function compile(sel){
 		sel = sel.replace(/\[class=(\w*)]/g,'.$1');
@@ -80,10 +107,10 @@
 							if(m[2]&&m[3]){
 								switch(m[2]){
 								case"=":
-									fn.push(" && String(el[\""+attr+"\"])==\""+m[3]+"\"");
+									fn.push(" && String(el[\""+attr+"\"])===\""+m[3]+"\"");
 									break;
 								case"^=":
-									fn.push(" && el[\""+attr+"\"].substr(0,"+m[3].length+") == \""+m[3]+"\"");
+									fn.push(" && el[\""+attr+"\"].substr(0,"+m[3].length+")===\""+m[3]+"\"");
 									break;
 								case"$=":
 									fn.push(" && el[\""+attr+"\"].substr(0,el[\""+attr+"\"].length+"+m[3].length+") == \""+m[3]+"\"");
@@ -98,7 +125,7 @@
 							}
 							f=f.replace(m[0],e);
 						}else if((m=f.match(pseudoRe))){
-							fn.push("true");//NO IMPLEMENTED BY NOW
+							fn.push(pseudos[m[1]].replace("$arg",m[4]));
 							f=f.replace(m[0],e);
 						}
 						fn.push(" && ");
@@ -119,10 +146,6 @@
 	
 	function query(selector, context){
 		context = context || window.document;
-		if(!ready){
-			createFunctions();
-			ready=true;
-		}
 		
 		if(typeof selector == "string"){
 			var result, results = [],
@@ -149,39 +172,6 @@
 					return [selector];
 			}
 		}
-	}
-	
-	function createFunctions(){
-		var features = detectFeatures();
-		
-		//GENERAL FUNCTIONS
-		fnGetNodes = "\nif(ctx.getElementsByTagName){ctx=ctx.getElementsByTagName(\"$\");}else{ns=[];cs;for(i=0,n;n=ctx[i++];){"+
-		"cs = n.getElementsByTagName(\"$\");for(j = 0, ch; ch = cs[j++];){ns.push(ch);}}ctx=ns;}\n";
-		
-		fnByClass = "\nvar r=[];for(var i=0,n;n=ctx[i++];){if(n.className.match(\"\\\\b\$\\\\b\")){r.push(n);}}ctx=r;\n";
-		
-		fnById = "\nvar r=[];if(ctx.nodeType&&ctx.id==\"$\"){r=[ctx];}else if(ctx.join){for(i=0,n;n=ctx[i++];){if(n.id==\"$\"){r=[n];}}}ctx=r;\n";
-		
-		fnGetId = "\nif(ctx.nodeType&&ctx.nodeType===9){ctx=[ctx.getElementById(\"$\")];}else{"+fnGetNodes.replace(/[$]/g,"*")+fnById+"}";
-		
-		if(features.getClassName){
-			fnGetClass="\nif(ctx.nodeType){ctx=ctx.getElementsByClassName(\"$\");}else if(ctx.join){r=[];for(i=0,n;n=ctx[i++];){ns=n.getElementsByTagName(\"$\");for(j=0,ch;ch=ns[j++];){r.push(ch);}}}ctx=r;\n"
-		}else{
-			fnGetClass= fnGetNodes + fnByClass;
-		}
-	}
-	
-	function detectFeatures(){
-		var doc = window.document;
-		var span = doc.createElement('span');
-		span.innerHTML = "<span class=\"_jsool_domquery_\" id=\"_jsool_domquery_\">&#160;</span>";
-		span.appendChild(doc.createComment('test'));
-		
-		var features = {};
-				
-		//Detects if browser implements element.getElementsByClassName
-		features.getClassName = span.getElementsByClassName && span.getElementsByClassName("_jsool_domquery_").length > 0;		
-		return features;
 	}
 	
 	raze.query = query;
