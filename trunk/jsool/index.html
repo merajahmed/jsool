@@ -112,6 +112,13 @@
 		
 		js.flux.UIManager.unlock();
 	});
+
+	function testRaze(){
+		var t = jsool.time();
+		for(var i = 500;i--;)
+			Raze.compile("#cool table:empty td tr:first-child.daslol");
+		return jsool.time()-t;
+	}
 	
 	</script>
 
