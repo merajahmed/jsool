@@ -54,6 +54,7 @@
 	
 	<script type="text/javascript" src="js/flux/Component.js"></script>
 	<script type="text/javascript" src="js/flux/Container.js"></script>
+	<script type="text/javascript" src="js/flux/RootContainer.js"></script>
 	<script type="text/javascript" src="js/flux/Button.js"></script>
 	<script type="text/javascript" src="js/flux/ToggleButton.js"></script>
 	<script type="text/javascript" src="js/flux/CheckBox.js"></script>
@@ -74,8 +75,8 @@
 		a = new js.flux.Container();
 		a.setX(10);
 		a.setY(10);
-		a.setWidth(400);
-		a.setHeight(250);
+		a.setWidth(800);
+		a.setHeight(500);
 		js.flux.UIManager.add(a);
 
 		a.setLayout(new js.flux.BorderLayout());
@@ -88,6 +89,16 @@
 		c.add(new js.flux.Button("BT 1"));
 		c.add(new js.flux.Button("BT 2"));
 		c.add(new js.flux.Button("BT 3"));
+		c.add(new js.flux.Button("BT 4"));
+		c.add(new js.flux.Button("BT 5"));
+		c.add(new js.flux.Button("BT 6"));
+		c.add(new js.flux.Button("BT 7"));
+		c.add(new js.flux.Button("BT 8"));
+		c.add(new js.flux.Button("BT 9"));
+
+        bt10 = new js.flux.Button("BT 10");
+		
+		c.add(bt10);
 		c.setHeight(40);
 
 		c.setLayout(new js.flux.RowLayout());
@@ -95,6 +106,21 @@
 		d = new js.flux.Container();
 		d.add(new js.flux.Button("BT 4"));
 		d.add(new js.flux.ToggleButton("BT 5"));
+		d.add(new js.flux.Button("BT 6"));
+		d.add(new js.flux.Button("BT 7"));
+		d.add(new js.flux.Button("BT 8"));
+		d.add(new js.flux.Button("BT 9"));
+		d.add(new js.flux.Button("BT 10"));
+		d.add(new js.flux.Button("BT 11"));
+		d.add(new js.flux.Button("BT 12"));
+		d.add(new js.flux.Button("BT 13"));
+		d.add(new js.flux.Button("BT 14"));
+		d.add(new js.flux.Button("BT 15"));
+		d.add(new js.flux.Button("BT 16"));
+		d.add(new js.flux.Button("BT 17"));
+		d.add(new js.flux.Button("BT 18"));
+		d.add(new js.flux.Button("BT 19"));
+		d.add(new js.flux.Button("BT 20"));
 		d.add(new js.flux.CheckBox("lolly"));
 		d.setLayout(new js.flux.ColLayout());
 		a.add(d,"LEFT");
