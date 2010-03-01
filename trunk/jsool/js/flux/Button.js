@@ -44,6 +44,7 @@ js.flux.Button = $extends(js.flux.Component,{
 	pressed: false,
 	focused: false,
 	canFocus: true,
+	paintOver: false,//Just for visual effect
 	setText: function(text){
 		if(String.isString(text)){
 			this.text = text;
@@ -69,8 +70,8 @@ js.flux.Button = $extends(js.flux.Component,{
 		ctx.lineWidth = laf.BUTTON_BORDER_WIDTH;
 		
 		//Button body
-		ctx.drawRoundRect(x+1,y+1,w-2,h-2,radius);
-		//ctx.fillRoundRect(x+1,y+1,w-2,h-2,radius);
+		//ctx.drawRoundRect(x+1,y+1,w-2,h-2,radius);
+		ctx.drawRect(x+1,y+1,w-2,h-2,radius);
 		
 		var textW = ctx.measureText(text).width;
 		
@@ -80,21 +81,29 @@ js.flux.Button = $extends(js.flux.Component,{
 		ctx.textBaseline = js.canvas.TextBaseline.TOP;
 		ctx.font = font+'px '+laf.FONT_FACE;
 		ctx.fillStyle = laf.FONT_COLOR;
-		ctx.write(text,x+xCenter+1,y+yCenter+1,w-2);
+		ctx.fillText(text,x+xCenter+1,y+yCenter+1,w-2);
 		
 		if(!this.pressed){
-			if(this.mouseover){
+			if(this.mouseover||this.paintOver){
+				ctx.lineCap = js.canvas.Canvas.SQUARE;
 				ctx.strokeStyle = laf.BUTTON_BORDER_OVER;
-				ctx.strokeRoundRect(x+2,y+2,w-4,h-4,radius);
-			}else if(this.focused){
+				ctx.beginPath();
+				ctx.rect(x+2,y+2,w-4,h-4);
+				ctx.stroke();
+				this.paintOver = false;
+			}else if(this.focused || this.paintFocus){
+				ctx.lineCap = js.canvas.Canvas.SQUARE;
 				ctx.strokeStyle = laf.BUTTON_BORDER_FOCUS;
-				ctx.strokeRoundRect(x+2,y+2,w-4,h-4,radius);
+				ctx.beginPath();
+				ctx.rect(x+2,y+2,w-4,h-4);
+				ctx.stroke();
 			}
 		}
 	},
 	onmouseover: function(ev, comp){
 		if(comp == this && !this.mouseover){
 			this.mouseover = true;
+			this.paintOver = true;
 		}
 	},
 	onmouseout: function(ev, comp){

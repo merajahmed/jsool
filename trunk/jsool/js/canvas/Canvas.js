@@ -103,6 +103,12 @@ js.canvas.Canvas = $extends(js.dom.Element,{
 				this.stroke();
 				this.fill();
 			},
+			drawRect: function(x,y,w,h){
+				this.beginPath();
+				this.rect(x,y,w,h);
+				this.stroke();
+				this.fill();
+			},
 			fillCircle : function(x, y, radius) {
 				this.beginPath();
 				this.arc(x, y, radius, 0, Math.PI * 2, false);

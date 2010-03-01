@@ -31,79 +31,17 @@
 
 jsool.namespace("js.flux");
 
-js.flux.Container = $extends(js.flux.Component,{
-	cons: function(parent){
-		this.childrenSet = new js.util.HashSet();
-		this.children = [];
-	},
-	width:200,
-	height:80,
-	children: null,
-	childrenSet: null,
-	layout: null,
-	paint: function(ctx){
-		var x = this.x,
-			y = this.y,
-			w = this.width,
-			h = this.height,
-			laf = js.flux.UIManager.getLookAndFeel();
-		
-		ctx.fillStyle = laf.CONTAINER_BODY_COLOR;
-		ctx.strokeStyle = laf.CONTAINER_BORDER_COLOR;
-		ctx.lineWidth = laf.CONTAINER_BORDER_WIDTH;
-		ctx.drawRect(x+1,y+1,w-2,h-2,laf.CONTAINER_BORDER_RADIUS);
-		
-	},
-	add: function(component,prop){
-		if(component == this)return;
-		if(!this.childrenSet.contains(component)){
-			
-			this.children.push(component);
-			this.childrenSet.add(component);
-			component.setParent(this);
-			
-			js.flux.UIManager.update();
-		}
-		if(this.layout){
-			this.layout.addLayoutComponent(component, prop);
-		}
-	},
+js.flux.RootContainer = $extends(js.flux.Container,{
+	paint: function(ctx){},
 	updateUI: function(ctx){
-		this.paint(ctx);
-		
 		if(this.children.length > 0){
-			if(this.layout)this.layout.layoutContainer(this);
-			
-			//CHANGES THE ORIGIN POSITION
-			ctx.translate(this.x, this.y);
-			
 			for(var i=0,c;c=this.children[i++];){
-				ctx.save();
-				c.updateUI(ctx);
-				ctx.restore();
-			}
-		}
-	},
-	setLayout: function(layout){
-		this.layout = layout;
-	},
-	getComponentAt: function(x , y){
-		if((x > this.x && x < this.x + this.width) && (y > this.y && y < this.y + this.height)){
-			x -= this.x;
-			y -= this.y;
-			var at;
-			for(var i=0,c;c=this.children[i++];){
-				at = c.getComponentAt(x,y);
-				if(at){
-					return at;
+				if(c.isVisible()){
+					ctx.save();
+					c.updateUI(ctx);
+					ctx.restore();
 				}
 			}
-			return this;
-		}else{
-			return null;
 		}
-	},
-	getComponents: function(){
-		return this.children.clone();
 	}
-},'js.flux.Container');
+},'js.flux.RootContainer');

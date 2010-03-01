@@ -34,7 +34,6 @@ jsool.namespace("js.flux");
 js.flux.Component = $extends(js.util.Observable,{
 	cons: function(){
 		this.addEvent(['click','mouseup','mousedown','mouseover','mouseout', 'keypress','mousemove']);
-		this.z = this.seed();
 	},
 	x: 0,
 	y: 0,
@@ -43,7 +42,6 @@ js.flux.Component = $extends(js.util.Observable,{
 	parent: null,
 	visible: true,
 	canFocus: false,
-	seed:(function(){var seed=0;return function(){seed++;};})(),
 	contains: function(x, y){
 		return (x > this.x && x < this.x + this.width) && (y > this.y && y < this.y + this.height);
 	},
@@ -91,7 +89,7 @@ js.flux.Component = $extends(js.util.Observable,{
 		return this.visible;
 	},
 	updateUI: function(canvas){
-		this.paint(canvas);
+		if(this.visible)this.paint(canvas);
 	},
 	setSize: function(width, height){
 		this.width = width;
@@ -115,5 +113,19 @@ js.flux.Component = $extends(js.util.Observable,{
 			height: this.height
 		};
 	},
-	paint: jsool.emptyFn
+	paint: jsool.emptyFn,
+	getRealPosition: function(){
+		if(this.parent){
+			var pos = this.parent.getRealPosition();
+			return {
+				x: parseInt(this.x) + pos.x,
+				y: parseInt(this.y) + pos.y
+			};
+		}else{
+			return {
+				x: parseInt(this.x),
+				y: parseInt(this.y)
+			};
+		}
+	}
 },'js.flux.Component');

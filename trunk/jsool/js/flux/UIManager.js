@@ -41,17 +41,18 @@ js.flux.UIManager = (function(){
 		idle = true, //flags if the fluxWorker is running
 		locked = false,
 		//about 20 fps
-		updateInterval = 50, //The interval between screen updates
+		updateInterval = 40, //The interval between screen updates
 		emptyRuns = 0, // number of times that the worker runned without updating any component
 		maxEmptyRuns = 10, // Max number of times that the worker may run without updating the UI.
 	
-		queueUpdate = false; //Flags if a component requested UI to update
-		components = [], // Components added to the root
+		queueUpdate = false, //Flags if a component requested UI to update
 	
 		focused = null,	 // The current focused component
 		currentOver = null,	 // The component wich tha mouse is over
 		
-		holdsMousemove = false;	//Used to minimize the number of "onmousemove" events
+		holdsMousemove = false,	//Used to minimize the number of "onmousemove" events
+		
+		root = null;
 	
 	/**
 	 * Initializes the UIManager
@@ -69,6 +70,9 @@ js.flux.UIManager = (function(){
 		}else{
 			window.attachEvent('onresize',resize);
 		}
+		
+		root = new js.flux.RootContainer();
+		
 		resize();
 		prepareListeners();		
 		initialized = true;
@@ -84,7 +88,6 @@ js.flux.UIManager = (function(){
 	var mouseListener = function(event){
 		if(locked)return false;
 		
-		
 		//ajust the position
 		var pos,comp,ev;
 		if(jsool.isIE){
@@ -93,44 +96,44 @@ js.flux.UIManager = (function(){
 		}else{
 			pos = {x:event.pageX,y:event.pageY};
 		}
-		for(var i=0,c;c=components[i++];){
+		var components = root.children;
 			
-			if((c = c.getComponentAt(pos.x,pos.y))){
-				
-				//Deals with mousemove, mouseover and mouseout events
-				if(event.type === "mousemove"){
-					if(currentOver != c){
-						var ev = {
-							x: pos.x,
-							y: pos.y,
-							type: "mouseout",
-							source: c,
-							timestamp: event.timestamp
-						};
-						if(currentOver){
-							currentOver.fireEvent(ev,currentOver);
-						}
-						ev.type = "mouseover";
-						c.fireEvent(ev,c);
+		if((c = root.getComponentAt(pos.x,pos.y))){
+			
+			//Deals with mousemove, mouseover and mouseout events
+			if(event.type === "mousemove"){
+				if(currentOver != c){
+					var ev = {
+						x: pos.x,
+						y: pos.y,
+						type: "mouseout",
+						source: c,
+						timestamp: event.timestamp
+					};
+					if(currentOver){
+						currentOver.fireEvent(ev,currentOver);
 					}
-					currentOver = c;
-				}else{
-					//Deals with most events events
-					ev = jsool.apply({},pos,event);
+					ev.type = "mouseover";
 					c.fireEvent(ev,c);
-					
-					//Deals with focus and lostfocus events
-					if(c.canFocus && (event.type === "click" || event.type === "dblclick")){
-						if(focused){
-							ev.type = "lostfocus";
-							focused.fireEvent(ev,c);
-						}
-						
-						ev.type = "focus";
-						focused = c;
-						c.fireEvent(ev,c);
-					}
 				}
+				currentOver = c;
+			}else{
+				//Deals with most events events
+				ev = jsool.apply({},pos,event);
+				c.fireEvent(ev,c);
+				
+				//Deals with focus and lostfocus events
+				if(c.canFocus && (event.type === "click" || event.type === "dblclick")){
+					if(focused){
+						ev.type = "lostfocus";
+						focused.fireEvent(ev,c);
+					}
+					
+					ev.type = "focus";
+					focused = c;
+					c.fireEvent(ev,c);
+				}
+			}
 				
 				queueUpdate = true;
 				if(idle && !locked){
@@ -138,7 +141,7 @@ js.flux.UIManager = (function(){
 				}
 				return;
 			}
-		}
+		
 		if(currentOver){
 			currentOver.fireEvent(jsool.apply({},{x:pos.x,y:pos.y,type:"mouseout"},event),currentOver);
 			currentOver = null;
@@ -166,6 +169,12 @@ js.flux.UIManager = (function(){
 	function resize(){
 		proxy.set('width', window.innerWidth);
 		proxy.set('height', window.innerHeight);
+		
+		root.height = window.innerHeight;
+		root.width = window.innerWidth;
+		root.x = 0;
+		root.y = 0;
+		
 		queueUpdate=true;
 		updateUI();
 	}
@@ -176,7 +185,7 @@ js.flux.UIManager = (function(){
 	function startWorker(){
 		if(idle){
 			idle = false;
-			fluxWorker = window.setInterval(updateUI, updateInterval);
+			fluxWorker = window.setInterval(requestUpdate, updateInterval);
 		}
 	}
 	
@@ -190,28 +199,13 @@ js.flux.UIManager = (function(){
 		}
 	}
 	
-	/**
-	 * Updates all the visible components on the screen/proxy
-	 */
-	function updateUI(){
+	function requestUpdate(){
 		if(locked)return;
+		
 		if(queueUpdate){
 			emptyRuns = 0;
 			queueUpdate = false;
-			if(components.length < 1)return;
-			
-			//context.clear();
-			try{
-				for(var i=0,comp; comp = components[i++];){
-					if(comp.isVisible()){
-						context.save();
-						comp.updateUI(context);
-						context.restore();
-					}
-				}
-			}catch(e){
-				throw new js.core.Exception(e.toString());
-			}
+			updateUI();
 		}else{
 			emptyRuns++;
 			if(emptyRuns >= maxEmptyRuns){
@@ -223,6 +217,17 @@ js.flux.UIManager = (function(){
 		}
 	}
 	
+	/**
+	 * Updates all the visible components on the screen/proxy
+	 */
+	function updateUI(){
+		try{
+			root.updateUI(context);
+		}catch(e){
+			throw new js.core.Exception(e.toString());
+		}
+	}
+	
 	return{
 		/**
 		 * Adds a component to the UIManager
@@ -230,10 +235,11 @@ js.flux.UIManager = (function(){
 		add: function(component){
 			if(!component.instanceOf(js.flux.Component))
 				throw new js.core.Exception('Illegal argument: '+component);
-			components.push(component);
-			component.setParent(this);
+			
 			if(!initialized)
 				init();
+			
+			root.add(component);
 		},
 		/**
 		 * Request the UIManager to update the UI.
@@ -246,7 +252,9 @@ js.flux.UIManager = (function(){
 		},
 		start: startWorker,
 		stop: stopWorker,
-		getLookAndFeel: function(){return laf;},
+		getLookAndFeel: function(){
+			return laf;
+		},
 		requestFocus: function(comp){
 			if(comp.instanceOf(js.flux.Component)){
 				focused = comp;
