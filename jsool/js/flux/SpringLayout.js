@@ -32,28 +32,66 @@
 jsool.namespace("js.flux");
 
 js.flux.SpringLayout = $extends(js.flux.Layout,{
+	constraints: null,
+	cyclicReference: null,
+	cyclicSprings: null,
+	acyclicSprings: null,
 	cons: function(){
 		this.constraints = new js.util.HashMap();
+		this.cyclicReference = js.flux.Spring.constant(Number.MIN_VALUE);
+		this.cyclicSprings = {};
+		this.acyclicSprings = {};
 	},
-	constraints: null,
-	layoutContainer: function(cont){
-		var cs = cont.children,cons;
+	resetCyclicStatuses: function(){
+		this.cyclicSprings = {};
+		this.acyclicSprings = {};
+	},
+	setParent: function(container){
+		this.resetCyclicStatuses();
 		
-		for(var i=0,c;c=cs[i++];){
-			cons = this.getConstraints(c);
+		var constraints = this.getConstraints(container);
+		
+		constraints.setX(js.flux.Spring.constant(0));
+		constraints.setY(js.flux.Spring.constant(0));
+		
+		var width = constraints.getWidth();
+		
+		if(width && width.instanceOf(js.flux.WidthSpring) && width.component == container){
+			constraints.setWidth(js.flux.Spring.constant(0,0,Number.MAX_VALUE));
+		}
+		
+		var height = constraints.getHeight();
+		if(height && height.instanceOf(js.flux.HeightSpring) && height.component == container){
+			constraints.setHeight(js.flux.Spring.constant(0,0,Number.MAX_VALUE));
 		}
 	},
-	putConstraint: function(comp1, side1, pad, comp2, side2){
-		if(comp1 == comp2){
-			throw new js.core.Exception("Allegal arguments",this, arguments);
+	isCyclic: function(spring){
+		if(spring){
+			if(this.cyclicSprings[spring.hashCode()]){
+				return true;
+			}
+			
+			if(this.acyclicSprings[spring.hashCode()]){
+				return false;
+			}
+			
+			this.cyclicSprings[spring.hashCode()] = spring;
+			var result = spring.isCyclic(this);
+			
+			if(!result){
+				this.acyclicSprings[spring.hashCode()] = spring;
+				delete this.cyclicSprings[spring.hashCode()];
+			}
+			
+			return result;
+		}else{
+			return null;
 		}
 	},
-	getConstraints: function(component){
-		
+	abandonCycles: function(spring){this.cyclicReference
+		return this.isCyclic(spring) ? this.cyclicReference : s;
+	},
+	removeLayoutComponent: function(component){
+		this.constraints.remove(component);
 	}
 },'js.flux.SpringLayout');
-
-js.flux.SpringLayout.LEFT = "left";
-js.flux.SpringLayout.RIGHT = "right";
-js.flux.SpringLayout.TOP = "top";
-js.flux.SpringLayout.BOTTOM = "bottom";

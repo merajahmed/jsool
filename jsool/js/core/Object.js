@@ -29,12 +29,13 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-var global_objects_count = 0;
+var global_objects_count = 0, global_object_handler = [];
 
 jsool.namespace("js.core");
 
 js.core.Object = function(){
 	global_objects_count++;
+	global_object_handler.push(this);
 };
 
 js.core.Object.prototype = {

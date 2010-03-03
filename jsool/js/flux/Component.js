@@ -34,6 +34,7 @@ jsool.namespace("js.flux");
 js.flux.Component = $extends(js.util.Observable,{
 	cons: function(){
 		this.addEvent(['click','mouseup','mousedown','mouseover','mouseout', 'keypress','mousemove']);
+		this.name = this.type;
 	},
 	x: 0,
 	y: 0,
@@ -42,6 +43,10 @@ js.flux.Component = $extends(js.util.Observable,{
 	parent: null,
 	visible: true,
 	canFocus: false,
+	name: "",
+	getName: function(){
+		return this.name;
+	},
 	contains: function(x, y){
 		return (x > this.x && x < this.x + this.width) && (y > this.y && y < this.y + this.height);
 	},

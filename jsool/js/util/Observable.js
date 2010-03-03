@@ -83,19 +83,20 @@ js.util.Observable = $extends(js.core.Object, {
 		}
 	},
 	fireEvent: function(){
-		var args = arguments;
-		var type;
+		if(!this.events) return;
+		var args = arguments,
+			type,
+			listeners,
+			listener;
 		if(typeof args[0] === "string"){
 			type = args[0];
 			args = Array.prototype.slice.apply(args,[1]);
 		}else{
 			type = args[0].type;
 		}
-		if(!this.events) return;
 		
-		var listeners = this.events.get(type);
+		listeners = this.events.get(type);
 		if(listeners != null){
-			var listener;
 			for(var i = 0; i < listeners.length;i++){
 				listener = listeners[i];
 				//Using timeout, so the handlers may be execute simultaneously
