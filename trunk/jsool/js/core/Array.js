@@ -149,6 +149,10 @@ jsool.applyIf(Array.prototype,{
 		for (var i=0; i < this.length; i++){
 			if (s == this[i]) this.slice(i, 1);
 		}
+	},
+	
+	contains: function(obj){
+		return this.indexOf(obj) >= 0;
 	}
 	
 });
