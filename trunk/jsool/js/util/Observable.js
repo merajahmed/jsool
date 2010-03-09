@@ -28,29 +28,29 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
+//LAST NICE WORKING VERSION 110
 jsool.namespace("js.util");
 
 js.util.Observable = $extends(js.core.Object, {
 	events: null,
 	addEvent: function(){
 		var args = arguments;
-		if(!this.events)this.events = new js.util.HashMap();
+		if(!this.events)this.events = {};
 		
 		if(Array.isArray(args[0])){
 			var ev = args[0];
 			for(var i=0,h; h = ev[i++];){
-				this.events.put(h, null);
+				this.events[h] = true;
 			}
 		}else if(args.length > 1){
 			var that = this;
 			Array.iterate(args,function(i,o){
-				if(!that.events.containsKey(o)){
-					that.events.put(o,null);
+				if(!(o in that.events)){
+					that.events[o] = true;
 				}
 			});
-		}else if(args.length == 1 && !this.events.containsKey(args[0])){
-			this.events.put(args[0], null);
+		}else if(args.length == 1 && !this.events[args[0]]){
+			this.events[args[0]] = true;
 		}
 	},
 	on: function(listener,fn,scope){
@@ -69,11 +69,11 @@ js.util.Observable = $extends(js.core.Object, {
 		else
 			scope = this;
 		for(var i in listener){
-			if(this.events.containsKey(i)){
-				listeners = this.events.get(i);
+			if(this.events[i]){
+				listeners = this.events[i];
 				if(!listeners){
 					listeners = [];
-					this.events.put(i,listeners);
+					this.events[i] = listeners;
 				}
 				listeners.push({
 					scope:scope,
@@ -95,7 +95,7 @@ js.util.Observable = $extends(js.core.Object, {
 			type = args[0].type;
 		}
 		
-		listeners = this.events.get(type);
+		listeners = this.events[type];
 		if(listeners != null){
 			for(var i = 0; i < listeners.length;i++){
 				listener = listeners[i];

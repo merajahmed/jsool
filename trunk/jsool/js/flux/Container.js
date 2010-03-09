@@ -86,6 +86,7 @@ js.flux.Container = $extends(js.flux.Component,{
 	},
 	setLayout: function(layout){
 		this.layout = layout;
+		this.dirty = true;
 	},
 	getComponentAt: function(x , y){
 		if((x > this.x && x < this.x + this.width) && (y > this.y && y < this.y + this.height)){
@@ -105,5 +106,8 @@ js.flux.Container = $extends(js.flux.Component,{
 	},
 	getComponents: function(){
 		return this.children.clone();
+	},
+	isDirty: function(){
+		
 	}
 },'js.flux.Container');

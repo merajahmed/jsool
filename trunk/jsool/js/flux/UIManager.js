@@ -41,18 +41,20 @@ js.flux.UIManager = (function(){
 		idle = true, //flags if the fluxWorker is running
 		locked = false,
 		//about 20 fps
-		updateInterval = 40, //The interval between screen updates
+		updateInterval = 50, //The interval between screen updates
 		emptyRuns = 0, // number of times that the worker runned without updating any component
-		maxEmptyRuns = 10, // Max number of times that the worker may run without updating the UI.
+		maxEmptyRuns = 5, // Max number of times that the worker may run without updating the UI.
 	
 		queueUpdate = false, //Flags if a component requested UI to update
 	
 		focused = null,	 // The current focused component
 		currentOver = null,	 // The component wich tha mouse is over
 		
-		holdsMousemove = false,	//Used to minimize the number of "onmousemove" events
+		root = null,
 		
-		root = null;
+		HOLD_MOUSE_MOVE = 3,
+		
+		mouseMoveHolded = 0;
 	
 	/**
 	 * Initializes the UIManager
@@ -98,10 +100,18 @@ js.flux.UIManager = (function(){
 		}
 		var components = root.children;
 			
-		if((c = root.getComponentAt(pos.x,pos.y))){
+		if((c = root.getComponentAt(pos.x,pos.y)) && c != root){
 			
 			//Deals with mousemove, mouseover and mouseout events
 			if(event.type === "mousemove"){
+				mouseMoveHolded--;
+				
+				if(mouseMoveHolded >= 0){
+					return;
+				}
+				
+				mouseMoveHolded = HOLD_MOUSE_MOVE;
+				
 				if(currentOver != c){
 					var ev = {
 						x: pos.x,
@@ -135,12 +145,13 @@ js.flux.UIManager = (function(){
 				}
 			}
 				
-				queueUpdate = true;
-				if(idle && !locked){
-					startWorker();
-				}
-				return;
+			queueUpdate = true;
+			
+			if(idle && !locked){
+				startWorker();
 			}
+			return;
+		}
 		
 		if(currentOver){
 			currentOver.fireEvent(jsool.apply({},{x:pos.x,y:pos.y,type:"mouseout"},event),currentOver);

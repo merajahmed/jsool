@@ -44,6 +44,7 @@ js.flux.Component = $extends(js.util.Observable,{
 	visible: true,
 	canFocus: false,
 	name: "",
+	dirty: false,
 	getName: function(){
 		return this.name;
 	},
@@ -59,6 +60,7 @@ js.flux.Component = $extends(js.util.Observable,{
 	setParent: function(parent){
 		if(this.parent)this.parent.remove(this);
 		this.parent = parent;
+		this.dirty = true;
 	},
 	getParent: function(){
 		return this.parent;
@@ -71,15 +73,19 @@ js.flux.Component = $extends(js.util.Observable,{
 	},
 	setX: function(x){
 		this.x = x;
+		this.dirty = true;
 	},
 	setY: function(y){
 		this.y = y;
+		this.dirty = true;
 	},
 	setWidth: function(w){
 		this.width = w;
+		this.dirty = true;
 	},
 	setHeight: function(h){
 		this.height = h;
+		this.dirty = true;
 	},
 	getWidth: function(){
 		return this.width;
@@ -89,12 +95,16 @@ js.flux.Component = $extends(js.util.Observable,{
 	},
 	setVisible: function(vis){
 		this.visible = vis;
+		this.dirty = true;
 	},
 	isVisible: function(){
 		return this.visible;
 	},
 	updateUI: function(canvas){
-		if(this.visible)this.paint(canvas);
+		if(this.visible){
+			this.paint(canvas);
+			this.dirty = true;
+		}
 	},
 	setSize: function(width, height){
 		this.width = width;
@@ -105,10 +115,12 @@ js.flux.Component = $extends(js.util.Observable,{
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.dirty = true;
 	},
 	setPosition: function(x,y){
 		this.x = x;
 		this.y = y;
+		this.dirty = true;
 	},
 	getBounds: function(){
 		return {
@@ -132,5 +144,8 @@ js.flux.Component = $extends(js.util.Observable,{
 				y: parseInt(this.y)
 			};
 		}
+	},
+	isDirty: function(){
+		return this.dirty;
 	}
 },'js.flux.Component');

@@ -46,7 +46,7 @@ js.flux.CheckBox = $extends(js.flux.ToggleButton,{
 		
 		if(this.pressed){
 			ctx.beginPath();
-			ctx.fillStyle = "#99CC00";
+			ctx.fillStyle = laf.CHECKBOX_CHECK;
 			ctx.rect(this.x+1, this.y+1, 8,8);
 			ctx.fill();
 		}
