@@ -62,13 +62,12 @@ js.flux.Container = $extends(js.flux.Component,{
 			this.childrenSet.add(component);
 			component.setParent(this);
 			
-			js.flux.UIManager.update();
 		}
 		if(this.layout){
 			this.layout.addLayoutComponent(component, prop);
 		}
 	},
-	updateUI: function(ctx){
+	updateUI: function(ctx,force){
 		this.paint(ctx);
 		
 		if(this.children.length > 0){
@@ -86,7 +85,6 @@ js.flux.Container = $extends(js.flux.Component,{
 	},
 	setLayout: function(layout){
 		this.layout = layout;
-		this.dirty = true;
 	},
 	getComponentAt: function(x , y){
 		if((x > this.x && x < this.x + this.width) && (y > this.y && y < this.y + this.height)){
@@ -106,8 +104,5 @@ js.flux.Container = $extends(js.flux.Component,{
 	},
 	getComponents: function(){
 		return this.children.clone();
-	},
-	isDirty: function(){
-		
 	}
 },'js.flux.Container');
