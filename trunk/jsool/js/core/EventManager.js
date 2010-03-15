@@ -49,9 +49,10 @@ js.core.EventManager = (function create_event_manager(){
 	// Adds an event listener to a DOM element
 	function addListener(el, ev, fn, scope){
 		if(!ev.match(domEventsRe))return false;
-		var id = jsool.id(el);//The id of the element
-		var elEvs = elsMap[id] = elsMap[id] || {};//All the registered events of the element
-		var hs = elEvs[ev] = elEvs[ev] || [];//All handlers registered for the event
+		
+		var id = jsool.id(el),//The id of the element
+			elEvs = elsMap[id] = elsMap[id] || {},//All the registered events of the element
+			hs = elEvs[ev] = elEvs[ev] || [];//All handlers registered for the event
 		
 		scope = scope || el;
 		
@@ -88,8 +89,8 @@ js.core.EventManager = (function create_event_manager(){
 	
 	// Find and request a event listener to be removed from a DOM element
 	function removeListener(el,ev, fn){
-		var id = jsool.id(el);
-		var evs = elsMap[id][ev];
+		var id = jsool.id(el),
+			evs = elsMap[id][ev];
 		
 		//REMOVE SPECIFC HANDLER
 		if(fn){
