@@ -21,14 +21,14 @@
 	
 	fnByClass = "\nr=[];for(var i=0,n;n=ctx[i++];){if(n.className.match(\"\\\\b\$\\\\b\")){r.push(n);}}ctx=r;\n",
 	
-	fnById = "\nr=[];if(ctx.nodeType&&ctx.id==\"$\"){r=[ctx];}else if(ctx.join){for(i=0,n;n=ctx[i++];){if(n.id==\"$\"){r=[n];}}}ctx=r;\n",
+	fnById = "\nr=[];if(ctx.nodeType&&ctx.id==\"$\"){r=[ctx];}else if(ctx){for(i=0,n;n=ctx[i++];){if(n.id==\"$\"){r=[n];}}}ctx=r;\n",
 	
 	fnGetId = "\nif(ctx.getElementById){ctx=[ctx.getElementById(\"$\")];}else{"+fnGetNodes.replace(/[$]/g,"*")+fnById+"}",
 	
 	fnGetClass;
 	
 	if(document.getElementsByClassName){
-		fnGetClass="\nif(ctx.getElementsByClassName){ctx=ctx.getElementsByClassName(\"$\");}else if(ctx.join){r=[];for(i=0,n;n=ctx[i++];){ns=n.getElementsByTagName(\"$\");for(j=0,ch;ch=ns[j++];){r.push(ch);}}}ctx=r;\n";
+		fnGetClass="\nif(ctx.getElementsByClassName){ctx=ctx.getElementsByClassName(\"$\");}else{r=[];for(i=0,n;n=ctx[i++];){ns=n.getElementsByClassName(\"$\");for(j=0,ch;ch=ns[j++];){r.push(ch);}}ctx=r};\n";
 	}else{
 		fnGetClass= fnGetNodes + fnByClass;
 	}

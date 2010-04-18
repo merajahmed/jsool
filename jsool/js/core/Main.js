@@ -218,6 +218,9 @@ var jsool = (function create_jsool(){
 		isDate: function(o){
 			return o.constructor == Date;
 		},
+		isFunction: function(o){
+			return typeof o === "function";
+		},
 		namespace:base.namespace
 	};
 })();
