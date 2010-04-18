@@ -190,8 +190,8 @@ js.dom.Element = $extends(js.core.Object,{
 	/**
 	 * Adds an event listener to element
 	 */
-	on: function(event, handler){
-		js.core.EventManager.on(this.dom, event, handler,this);
+	on: function(event, handler, scope){
+		js.core.EventManager.on(this.dom, event, handler,scope || this);
 	},
 	un: function(event, handler){
 		if(event){

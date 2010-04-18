@@ -136,6 +136,24 @@ js.dom.CompositeElement = $extends(js.core.Object,{
 			e.innerHTML = "";
 			e.appendChild(tn.cloneNode());
 		});
+	},
+	applyStyle: function(arg1,arg2){
+		if(typeof arg1 == 'string'){
+			Array.iterate(this.elements,function(i,e){
+				var style = e.dom.style;
+				style[arg1] = arg2;
+			});
+		}else if(typeof arg1 == 'object'){
+			for(var prop in arg1)
+				style[prop] = arg1[prop];
+			
+			Array.iterate(this.elements,function(i,e){
+				var style = e.dom.style;
+				jsool.iterate(arg1, function(att, val){
+					style[att] = val;
+				});
+			});
+		}
 	}
 },"js.dom.CompositeElement");
 
