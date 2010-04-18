@@ -33,8 +33,7 @@ jsool.namespace("js.dom");
 
 js.dom.CompositeElement = $extends(js.core.Object,{
 	cons: function(els){
-		this.elements = new js.util.ArrayList();
-		this.elements.addAll(els);
+		this.elements = els;
 	},
 	elements: [],
 	/**
