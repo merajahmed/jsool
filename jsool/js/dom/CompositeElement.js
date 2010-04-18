@@ -139,7 +139,7 @@ js.dom.CompositeElement = $extends(js.core.Object,{
 	applyStyle: function(arg1,arg2){
 		if(typeof arg1 == 'string'){
 			Array.iterate(this.elements,function(i,e){
-				var style = e.dom.style;
+				var style = e.style;
 				style[arg1] = arg2;
 			});
 		}else if(typeof arg1 == 'object'){
@@ -147,7 +147,7 @@ js.dom.CompositeElement = $extends(js.core.Object,{
 				style[prop] = arg1[prop];
 			
 			Array.iterate(this.elements,function(i,e){
-				var style = e.dom.style;
+				var style = e.style;
 				jsool.iterate(arg1, function(att, val){
 					style[att] = val;
 				});
