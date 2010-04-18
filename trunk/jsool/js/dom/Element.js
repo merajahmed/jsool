@@ -51,9 +51,8 @@ js.dom.Element = $extends(js.core.Object,{
 	 */
 	cons: function(obj){
 		var type = typeof obj;
-		var tags = /\b(a|button|div|object|label|option|p|script|select|span|td|tr|th|tbody|thead|tfoot|svg|iframe|canvas|table)\b/;
 		
-		if(type == 'string' && tags.test(obj)){
+		if(type == 'string'){
 			this.dom = document.createElement(obj);
 		}else if(type == 'object' && obj.tagName){
 			this.dom = obj;
