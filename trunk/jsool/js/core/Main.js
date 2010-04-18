@@ -188,9 +188,7 @@ var jsool = (function create_jsool(){
 		 */
 		iterate: function(it,fn){
 			for(var at in it){
-				if(typeof it[at] !== 'function'){
-					fn(at,it[at]);
-				}
+				typeof it[at] !== 'function' && fn(at,it[at]);
 			}
 		},
 		id: function(el){
