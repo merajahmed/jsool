@@ -30,7 +30,7 @@
 	if(document.getElementsByClassName){
 		fnGetClass="\nif(ctx.getElementsByClassName){ctx=ctx.getElementsByClassName(\"$\");}else{r=[];for(i=0,n;n=ctx[i++];){ns=n.getElementsByClassName(\"$\");for(j=0,ch;ch=ns[j++];){r.push(ch);}}ctx=r};\n";
 	}else{
-		fnGetClass= fnGetNodes + fnByClass;
+		fnGetClass= fnGetNodes.replace(/[$]/g, "*") + fnByClass;
 	}
 	
 	function contains(arr,el){
