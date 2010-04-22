@@ -89,15 +89,12 @@ js.dom.Element = $extends(js.core.Object,{
 	 * @param {object} attributes
 	 * a map of attributes
 	 */
-	set: function(){
-		if(arguments.length == 2 && typeof arguments[0] == 'string'){
-			var name = arguments[0];
-			var value = arguments[1];
-			this.dom[name] = value;
-		}else if(arguments.length == 1 && typeof arguments[0] == 'object'){
-			var options = arguments[0];
-			for(var p in options){
-				this.dom[p] = options[p];
+	set: function(attr, value){
+		if(typeof attr == 'string'){
+			this.dom[attr] = value;
+		}else if(typeof attr == 'object'){
+			for(var p in attr){
+				this.dom[p] = attr[p];
 			}
 		}
 	},
@@ -130,19 +127,15 @@ js.dom.Element = $extends(js.core.Object,{
 	 */
 	append: function(child){
 		var type = typeof child;
-		if(type == 'string'){
-			if(jsool.isIE){
-				var d = js.dom.Helper.createDom(child);
-				this.dom.appendChild(d.cloneNode(true));
-			}else{
-				this.dom.innerHTML = this.dom.innerHTML + child;
-			}
-		}else if(type == 'object'){
+		if(type === "string"){
+			this.dom.innerHTML += child;
+		}else if(type === "object"){
 			if(child.nodeType){
 				this.dom.appendChild(child);
 			}else if(child.instanceOf(js.dom.Element)){
-				if(child.parent){child.parent.remove(child);}
-				
+				if(child.parent){
+					child.parent.remove(child);
+				}
 				this.dom.appendChild(child.getDom());
 				child.parent = this;
 			}
@@ -158,13 +151,16 @@ js.dom.Element = $extends(js.core.Object,{
 	 */
 	setText: function(value){
 		this.dom.innerHTML = '';
-		this.dom.appendChild(document.createTextNode(new String(value)));
+		this.dom.appendChild(document.createTextNode(String.isString(value) ? value : new String(value)));
 	},
 	getText: function(){
-		return this.getDom().innerHTML;
+		return this.dom.innerHTML;
 	},
 	setHtml: function(html){
-		this.dom.innerHTML = new String(html);
+		this.dom.innerHTML = String.isString(html) ? html : new String(html);
+	},
+	getHtml: function(){
+		return this.dom.innerHTML;
 	},
 	/**
 	 * @function
@@ -222,9 +218,7 @@ js.dom.Element = $extends(js.core.Object,{
 	 * @param {string} name The name of the CSS class
 	 */
 	addClass: function(name){
-		var current = this.dom.className.split('/\s+/');
-		current.push(name.trim());
-		this.dom.className = current.join(' ').trim();
+		if(name)this.dom.className += (" " + name.trim());
 	},
 	/**
 	 * @function
@@ -233,17 +227,7 @@ js.dom.Element = $extends(js.core.Object,{
 	 * @param {string} name The name of the CSS class
 	 */
 	removeClass: function(name){
-		name = name.trim();
-		var classes = this.dom.className.split(/\s+/);
-		if(classes.length > 0){
-			var clsarr = [];
-			for(var i = 0, cls;cls = classes[i++];){
-				if(cls != name){
-					clsarr.push(cls);
-				}
-			}
-			this.dom.className = clsarr.join(' ').trim();
-		}
+		this.dom.className = this.dom.className.replace(new RegExp("\\b"+name.trim()+"\\b","g"),"");
 	},
 	/**
 	 * @function
@@ -266,14 +250,6 @@ js.dom.Element = $extends(js.core.Object,{
 	/**
 	 * @function
 	 * Returns the child elements
-	 * 
-	 * @param {boolean} dom
-	 * if <code>true</code> to the returned values be the dom elements
-	 * or <code>false|null</code> to returns a <code>js.util.List</code> of Elements 
-	 * 
-	 * @param {object} collection of attributes and its values
-	 * 
-	 * @return {collection} the element's children
 	 */
 	children: function(el){
 		return Raze.query("*",this.dom);

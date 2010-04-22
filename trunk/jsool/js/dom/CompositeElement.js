@@ -58,10 +58,9 @@ js.dom.CompositeElement = $extends(js.core.Object,{
 	 * Runs a function on every element
 	 */
 	each: function(fn,scope){
-		var it = this.elements.iterator(), el;
+		var el,i=0;
 		
-		while(it.hasNext()){
-			el = it.next(); 
+		while((el=this.elements[i++])){
 			fn.apply(scope||el,[el]);
 		}
 	},
@@ -69,13 +68,13 @@ js.dom.CompositeElement = $extends(js.core.Object,{
 	 * Returns the first element
 	 */
 	first: function(){
-		return this.elements.get(0);
+		return this.elements[0];
 	},
 	/**
 	 * Get the indexed element
 	 */
 	item: function(index){
-		return this.elements.get(index);
+		return this.elements[index];
 	},
 	set: function(attr, value){
 		var that = this;
@@ -86,7 +85,7 @@ js.dom.CompositeElement = $extends(js.core.Object,{
 				});
 			});
 		}else{
-			Array.iterate(that.elements.data, function set(index, el){
+			Array.iterate(that.elements, function set(index, el){
 				el[attr] = value;
 			});
 		}
@@ -94,21 +93,21 @@ js.dom.CompositeElement = $extends(js.core.Object,{
 	on: function(event, handler){
 		var that = this;
 		var EM = js.core.EventManager;
-		Array.iterate(that.elements.data, function on(index, el){
+		Array.iterate(that.elements, function on(index, el){
 			EM.on(el,event,handler,el);
 		});
 	},
 	un: function(event, handler){
 		var that = this;
 		var EM = js.core.EventManager;
-		Array.iterate(that.elements.data, function un(index, el){
+		Array.iterate(that.elements, function un(index, el){
 			EM.un(el,event,handler,el);
 		});
 	},
 	addClass: function(cls){
 		var that = this;
 		var cur;
-		Array.iterate(that.elements.data, function addClass(index, el){
+		Array.iterate(that.elements, function addClass(index, el){
 			cur = el.className.split(/\s+/g);
 			cur.push(cls);
 			el.className = cur.join("").trim();
@@ -116,14 +115,13 @@ js.dom.CompositeElement = $extends(js.core.Object,{
 	},
 	setClass: function(cls){
 		var that = this;
-		Array.iterate(that.elements.data, function setClass(index, el){			
+		Array.iterate(that.elements, function setClass(index, el){			
 			el.className = cls.trim();
 		});
 	},
 	removeClass: function(cls){
-		var that = this;
-		var cur;
-		Array.iterate(that.elements.data, function removeClass(index, el){
+		var that = this,cur;
+		Array.iterate(that.elements, function removeClass(index, el){
 			cur = el.className.split(/\s+/g);
 			cur.remove(cls);
 			el.className = cur.join("").trim();
