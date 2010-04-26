@@ -58,11 +58,13 @@ js.dom.CompositeElement = $extends(js.core.Object,{
 	 * Runs a function on every element
 	 */
 	each: function(fn,scope){
-		var el,i=0;
+		var el,i=0,res=[];
 		
 		while((el=this.elements[i++])){
-			fn.apply(scope||el,[el]);
+			res.push(fn.apply(scope||el,[el]));
 		}
+		
+		return res;
 	},
 	/**
 	 * Returns the first element
@@ -89,6 +91,8 @@ js.dom.CompositeElement = $extends(js.core.Object,{
 				el[attr] = value;
 			});
 		}
+		
+		return this;
 	},
 	on: function(event, handler){
 		var that = this;
@@ -96,6 +100,7 @@ js.dom.CompositeElement = $extends(js.core.Object,{
 		Array.iterate(that.elements, function on(index, el){
 			EM.on(el,event,handler,el);
 		});
+		return this;
 	},
 	un: function(event, handler){
 		var that = this;
@@ -103,29 +108,30 @@ js.dom.CompositeElement = $extends(js.core.Object,{
 		Array.iterate(that.elements, function un(index, el){
 			EM.un(el,event,handler,el);
 		});
+		return this;
 	},
 	addClass: function(cls){
-		var that = this;
-		var cur;
+		var that = this, reg = new RegExp("\\b"+cls+"\\b",g);
 		Array.iterate(that.elements, function addClass(index, el){
-			cur = el.className.split(/\s+/g);
-			cur.push(cls);
-			el.className = cur.join("").trim();
+			if(!el.className.match(reg)){
+				el.className+=cls.trim();
+			}
 		});
+		return this;
 	},
 	setClass: function(cls){
 		var that = this;
 		Array.iterate(that.elements, function setClass(index, el){			
 			el.className = cls.trim();
 		});
+		return this;
 	},
 	removeClass: function(cls){
-		var that = this,cur;
+		var that = this,cur,reg = new RegExp("\\b"+cls.trim()+"\\b");
 		Array.iterate(that.elements, function removeClass(index, el){
-			cur = el.className.split(/\s+/g);
-			cur.remove(cls);
-			el.className = cur.join("").trim();
+			el.className = el.className.replace(reg,"");
 		});
+		return this;
 	},
 	setText: function(text){
 		var tn = document.createTextNode(text);
@@ -133,17 +139,14 @@ js.dom.CompositeElement = $extends(js.core.Object,{
 			e.innerHTML = "";
 			e.appendChild(tn.cloneNode());
 		});
+		return this;
 	},
 	applyStyle: function(arg1,arg2){
 		if(typeof arg1 == 'string'){
 			Array.iterate(this.elements,function(i,e){
-				var style = e.style;
-				style[arg1] = arg2;
+				e.style[arg1] = arg2;
 			});
-		}else if(typeof arg1 == 'object'){
-			for(var prop in arg1)
-				style[prop] = arg1[prop];
-			
+		}else if(typeof arg1 == 'object'){			
 			Array.iterate(this.elements,function(i,e){
 				var style = e.style;
 				jsool.iterate(arg1, function(att, val){
@@ -151,6 +154,7 @@ js.dom.CompositeElement = $extends(js.core.Object,{
 				});
 			});
 		}
+		return this;
 	}
 },"js.dom.CompositeElement");
 

@@ -69,22 +69,14 @@ js.core.EventManager = (function create_event_manager(){
 			SCOPE: scope
 		});
 		
-		if(jsool.isIE){
-			el.attachEvent('on'+ev, handler);
-		}else{
-			el.addEventListener(ev, handler, false);
-		}
+		jsool.isIE ? el.attachEvent('on'+ev, handler) : el.addEventListener(ev, handler, false);
 		
 		return true;
 	}
 	
 	// Do removes an event listener to a DOM element
 	function doRemoveListener(el, ev, handler){
-		if(jsool.isIE){
-			el.detachEvent('on'+ev, handler);
-		}else{
-			el.removeEventListener(ev, handler, false);
-		}
+		jsool.isIE ? el.detachEvent('on'+ev, handler) : el.removeEventListener(ev, handler, false);
 	}
 	
 	// Find and request a event listener to be removed from a DOM element
