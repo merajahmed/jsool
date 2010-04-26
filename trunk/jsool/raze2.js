@@ -103,7 +103,7 @@
 							f=f.replace(m[0],e);
 						}else if((m=f.match(byAttributeRe))){
 							var attr = m[1] == "class" ? "className" : m[1];
-							fn.push("el[\""+attr+"\"]");
+							fn.push("(el[\""+attr+"\"]||el.getAttribute(\""+attr+"\"))");
 							if(m[2]&&m[3]){
 								switch(m[2]){
 								case"=":
