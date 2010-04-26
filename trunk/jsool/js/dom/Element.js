@@ -317,8 +317,8 @@ js.dom.Element = $extends(js.core.Object,{
 		//Delete DOM
 		delete this.dom;
 	},
-	query: function(selector){
-		return Raze.query(selector, this.dom);
+	query: function(selector,dom){
+		return dom ? Raze.query(selector, this.dom) : js.dom.Element.select(selector);
 	},
 	setOpacity: function(op){
 		var s = this.dom.style;
