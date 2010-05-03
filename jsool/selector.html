@@ -12,9 +12,9 @@
 	
 	
 	<script type="text/javascript">
-	window.onload = function(){
+	function runTest(){
 		var selectors = [
-		     			'table',
+		         		'table',
 		     			'table.a',
 		     			'.a',
 		     			'table[class]',
@@ -33,90 +33,93 @@
 		     			'#trc td',
 		     			'#tableb tr td',
 		     			'#tableb #trc'];
-		     		var results={};
+   		var results={};
+   		
+   		var engines = [{
+	   			name:'raze',
+	   			fn:function(selector){return Raze.query(selector,document);}
+	   		},{
+	    		name:'Ext',
+	    		fn:function(selector){return Ext.select(selector,document);}
+	    	},{
+	   			name:'Sizzle',
+	   			fn:function(selector){return Sizzle(selector,document);}
+	   		},{
+	   			name:'yass',
+	   			fn:function(selector){return _(selector,document,false);}
+	   		},{
+	    		name:'Sly',
+	    		fn:function(selector){return Sly.search(selector);}
+		    },{
+			    name:'Peppy',
+			    fn: function(selector){return peppy.query(selector,document);}
+			}];
 
-		     		var engines = [{
-		     			name:'raze',
-		     			fn:function(selector){return Raze.query(selector,document);}
-		     		},{
-			     		name:'Ext',
-			     		fn:function(selector){return Ext.select(selector,document);}
-			     	},{
-		     			name:'Sizzle',
-		     			fn:function(selector){return Sizzle(selector,document);}
-		     		},{
-		     			name:'yass',
-		     			fn:function(selector){return _(selector,document,false);}
-		     		},{
-			     		name:'Sly',
-			     		fn:function(selector){return Sly.search(selector);}
-				    },{
-					    name:'Peppy',
-					    fn: function(selector){return peppy.query(selector,document);}
-					}];
+   		//For each selector
+   		var res,start,i;
 
-		     		//For each selector
-		     		var res,start;
-		     		for(var s = 0, selector; selector = selectors[s++];){
+   		for(var s = 0, selector; selector = selectors[s++];){
 
-		     			if(!results[selector])results[selector]={};
-		     			
-		     			//For each engine
-		     			for(var e=0, engine;engine=engines[e++];){
-		     				start = +new Date;
-		     				//The real test
-		     				for(var i = 500;i--;){
-		     					res = engine.fn(selector);
-		     				}
-		     				results[selector][engine.name]={time:(+new Date)-start,results:res}; 
-		     			}
-		     		}
+   			if(!results[selector])results[selector]={};
+   			
+   			//For each engine
+   			for(var e=0, engine;engine=engines[e++];){
+   				start = +new Date;
+   				//The real test
+   				i=500;
+   				while(i--){
+   					res = engine.fn(selector);
+   				}
+   				results[selector][engine.name]={time:(+new Date)-start,results:res}; 
+   			}
+   		}
 
-		     		var totals = {};
-		     		var table = ['<table>'];
-		     		var out;
-		     		var selec;
-		     		var eng;		     		
-		     		for(var sel in results){
-			     		table.push('<tr>');
+   		var totals = {};
+   		var table = ['<table>'];
+   		var out;
+   		var selec;
+   		var eng;		     		
+   		for(var sel in results){
+    		table.push('<tr>');
 
-			     		table.push('<td>');
-			     		table.push(sel);
-			     		table.push('</td>');
-			     		selec = results[sel];
+    		table.push('<td>');
+    		table.push(sel);
+    		table.push('</td>');
+    		selec = results[sel];
 
-			     		for(var en in selec){
-				     		if(!totals[en])totals[en] = 0;
-			     			eng = selec[en];
-			     			//totals[en] += eng.results.length;
-			     			totals[en] += eng.time;
-				     		table.push('<td>');
-				     		table.push(eng.time)
-				     		table.push('</td>');
-				     	}
-			     		table.push('</tr>');
-			     	}
+    		for(var en in selec){
+     		if(!totals[en])totals[en] = 0;
+    			eng = selec[en];
+    			//totals[en] += eng.results.length;
+    			totals[en] += eng.time;
+     		table.push('<td>');
+     		table.push(eng.time)
+     		table.push('</td>');
+     	}
+    		table.push('</tr>');
+    	}
 
-		     		table.push('<tr><td>TOTALS</td>');
+   		table.push('<tr><td>TOTALS</td>');
 
-		     		for(var e in  totals){
-		     			table.push('<td>');
-		     			table.push(e);
-		     			table.push(': ');
-		     			table.push(totals[e]);
-		     			table.push('</td>');
-			     	}
-		     		
-		     		table.push('</tr>');
-			     	
-		     		table.push('</table>');
+   		for(var e in  totals){
+   			table.push('<td>');
+   			table.push(e);
+   			table.push(': ');
+   			table.push(totals[e]);
+   			table.push('</td>');
+    	}
+   		
+   		table.push('</tr>');
+    	
+   		table.push('</table>');
 
-		     		document.getElementsByTagName('body')[0].innerHTML = table.join('');
+   		document.getElementsByTagName('body')[0].innerHTML = table.join('');
 	};
 	</script>
 
 </head>
 <body>
+	<button onclick="runTest();">Roda</button><br/>
 	<table class="a">
 		<tr class="b">
 			<td>bla bla bla bla bla bla bla</td>
