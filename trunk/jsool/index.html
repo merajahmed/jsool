@@ -28,6 +28,7 @@
 	<script type="text/javascript" src="js/util/Observable.js"></script>
 	<script type="text/javascript" src="js/util/DateFormat.js"></script>
 	<script type="text/javascript" src="js/util/JSON.js"></script>
+	<script type="text/javascript" src="js/util/Encoder.js"></script>
 	
 	<script type="text/javascript" src="raze2.js"></script>
 	
@@ -40,17 +41,12 @@
 
 	<script type="text/javascript" src="js/net/HttpRequest.js"></script>
 	<script type="text/javascript" src="js/net/HttpRequestDispatcher.js"></script>
+	<script type="text/javascript" src="js/net/RequestDispatcher.js"></script>
 	
 	<script type="text/javascript" src="js/data/Field.js"></script>
 	<script type="text/javascript" src="js/data/Record.js"></script>
 	<script type="text/javascript" src="js/data/Type.js"></script>
 	<script type="text/javascript" src="js/data/Store.js"></script>
-	
-	<script type="text/javascript" src="js/juif/Component.js"></script>
-	<script type="text/javascript" src="js/juif/ViewPort.js"></script>
-	<script type="text/javascript" src="js/juif/Button.js"></script>
-	<script type="text/javascript" src="js/juif/TextField.js"></script>
-	<script type="text/javascript" src="js/juif/Combo.js"></script>
 	
 	<script type="text/javascript" src="js/flux/Component.js"></script>
 	<script type="text/javascript" src="js/flux/Container.js"></script>
@@ -73,73 +69,75 @@
 	
 	<script type="text/javascript">
 	jsool.onReady(function(){
-		var a,b,c,d,e,f,b1;
+		var raiz,b,c,d,e,f,b1;
+
+		/*
+		* Para a atualização da tela e do lançamento de eventos
+		*/
 		js.flux.UIManager.lock();
 		
-		a = new js.flux.Container();
-		a.setX(10);
-		a.setY(10);
-		a.setWidth(800);
-		a.setHeight(500);
-		js.flux.UIManager.add(a);
+		//Container Principal
+		raiz = new js.flux.Container();
+		raiz.setX(10);
+		raiz.setY(10);
+		raiz.setWidth(650);
+		raiz.setHeight(300);
 
-		a.setLayout(new js.flux.BorderLayout());
+		//Adiciona container a raiz da interface
+		js.flux.UIManager.add(raiz);
+
+		//Define layout
+		raiz.setLayout(new js.flux.BorderLayout());		
 		
-		b = new js.flux.Button();
-		a.add(b,"TOP");		
+		//Adiciona o botão ao container principal
+		b = new js.flux.Button("Largo");
+		raiz.add(b,"TOP");
 
+
+		//CONTAINER DA BASE
 		c = new js.flux.Container();
-		a.add(c,"BOTTOM");
-		c.add(new js.flux.Button("BT 1"));
-		c.add(new js.flux.Button("BT 2"));
-		c.add(new js.flux.Button("BT 3"));
-		c.add(new js.flux.Button("BT 4"));
-		c.add(new js.flux.Button("BT 5"));
-		c.add(new js.flux.Button("BT 6"));
-		c.add(new js.flux.Button("BT 7"));
-		c.add(new js.flux.Button("BT 8"));
-		c.add(new js.flux.Button("BT 9"));
-
-        bt10 = new js.flux.Button("BT 10");
+		raiz.add(c,"BOTTOM");
 		
-		c.add(bt10);
+		c.add(new js.flux.Button("Btm 1"));
+		c.add(new js.flux.Button("Btm 2"));
+		c.add(new js.flux.Button("Btm 3"));
+		c.add(new js.flux.Button("Btm 4"));
+		
+		b = new js.flux.Button("Botao Grande 5");
+		b.setWidth(200);				
+		c.add(b);
+				
+		c.add(new js.flux.Button("Btm 6"));
 		c.setHeight(40);
-
+		
+		//Define um layout diferente para este container
 		c.setLayout(new js.flux.RowLayout());
 
+		//CONTAINER DA ESQUERDA
 		d = new js.flux.Container();
+		raiz.add(d,"LEFT");
+		
 		d.add(new js.flux.Button("BT 4"));
 		d.add(new js.flux.ToggleButton("BT 5"));
-		d.add(new js.flux.Button("BT 6"));
-		d.add(new js.flux.Button("BT 7"));
-		d.add(new js.flux.Button("BT 8"));
-		d.add(new js.flux.Button("BT 9"));
-		d.add(new js.flux.Button("BT 10"));
-		d.add(new js.flux.Button("BT 11"));
-		d.add(new js.flux.Button("BT 12"));
-		d.add(new js.flux.Button("BT 13"));
-		d.add(new js.flux.Button("BT 14"));
-		d.add(new js.flux.Button("BT 15"));
-		d.add(new js.flux.Button("BT 16"));
-		d.add(new js.flux.Button("BT 17"));
-		d.add(new js.flux.Button("BT 18"));
-		d.add(new js.flux.Button("BT 19"));
-		d.add(new js.flux.Button("BT 20"));
 		d.add(new js.flux.CheckBox("lolly"));
+
+		//Mais um layout
 		d.setLayout(new js.flux.ColLayout());
-		a.add(d,"LEFT");
 		d.setWidth(120);
 
-		e = new js.flux.Button();
-		a.add(e,"RIGHT");
+		//Adiciona botao a direita do container principal
+		e = new js.flux.Button("Alto");
+		raiz.add(e,"RIGHT");
 
+		//CONTAINER DO CENTRO
 		f = new js.flux.Container();
-		a.add(f,"CENTER");		
+		raiz.add(f,"CENTER");		
 
 		b1 = new js.flux.Button("b1");
 
 		f.add(b1);
-		
+
+		//Destrava interface para atualizar a tela e lançar eventos
 		js.flux.UIManager.unlock();
 	});
 

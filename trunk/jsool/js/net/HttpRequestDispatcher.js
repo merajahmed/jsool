@@ -77,7 +77,7 @@ js.net.HttpRequestDispatcher = $extends(js.util.Observable,{
 			try{
 				this.dispatcher = new XMLHttpRequest();
 			}catch(e){
-				throw new js.core.Exception(e.toString(),this, arguments, e);
+				throw new js.core.Exception(e.toString());
 			}
 		}else{
 			try{
@@ -86,7 +86,7 @@ js.net.HttpRequestDispatcher = $extends(js.util.Observable,{
                 try{
                 	this.dispatcher = new ActiveXObject("Microsoft.XMLHTTP");
                 }catch(E){
-                    throw new js.core.Exception("Could not create XMLHTTP ActiveXObject object", this, arguments, E);
+                    throw new js.core.Exception("Could not create XMLHTTP ActiveXObject object");
                 }
             }
 
