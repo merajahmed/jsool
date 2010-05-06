@@ -22,7 +22,7 @@
 	
 	fnByClass = "\nr=[];for(var i=0,n;n=ctx[i++];){if(n.className.match(\"\\\\b\$\\\\b\")){r.push(n);}}ctx=r;\n",
 	
-	fnById = "\nr=[];if(ctx.nodeType&&ctx.id==\"$\"){r=[ctx];}else if(ctx){for(i=0,n;n=ctx[i++];){if(n.id==\"$\"){r=[n];}}}ctx=r;\n",
+	fnById = "\nr=[];if(ctx.nodeType&&ctx.id==\"$\"){r=[ctx];}else{for(i=0,n;n=ctx[i++];){if(n.id==\"$\"){r=[n];}}}ctx=r;\n",
 	
 	fnGetId = "\nif(ctx.getElementById){ctx=[ctx.getElementById(\"$\")];}else{"+fnGetNodes.replace(/[$]/g,"*")+fnById+"}",
 	
