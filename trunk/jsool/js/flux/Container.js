@@ -42,16 +42,12 @@ js.flux.Container = $extends(js.flux.Component,{
 	childrenSet: null,
 	layout: null,
 	paint: function(ctx){
-		var x = this.x,
-			y = this.y,
-			w = this.width,
-			h = this.height,
-			laf = js.flux.UIManager.getLookAndFeel();
+		var laf = js.flux.UIManager.laf;
 		
 		ctx.fillStyle = laf.CONTAINER_BODY_COLOR;
 		ctx.strokeStyle = laf.CONTAINER_BORDER_COLOR;
 		ctx.lineWidth = laf.CONTAINER_BORDER_WIDTH;
-		ctx.drawRect(x+1,y+1,w-2,h-2,laf.CONTAINER_BORDER_RADIUS);
+		ctx.drawRect(this.x+1,this.y+1,this.width-2,this.height-2,laf.CONTAINER_BORDER_RADIUS);
 		
 	},
 	add: function(component,prop){
@@ -92,8 +88,7 @@ js.flux.Container = $extends(js.flux.Component,{
 			y -= this.y;
 			var at;
 			for(var i=0,c;c=this.children[i++];){
-				at = c.getComponentAt(x,y);
-				if(at){
+				if((at = c.getComponentAt(x,y))){
 					return at;
 				}
 			}

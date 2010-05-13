@@ -60,8 +60,6 @@ js.flux.UIManager = (function(){
 	 * Initializes the UIManager
 	 */
 	function init(){
-		if(!laf)laf = js.flux.laf.Soft;
-		
 		proxy = new js.canvas.Canvas();
 		context = proxy.getContext();
 		proxy.setClass('flux-proxy');
@@ -283,6 +281,7 @@ js.flux.UIManager = (function(){
 			locked = false;
 			if(queueUpdate)
 				startWorker();
-		}
+		},
+		laf: jsool.laf || js.flux.laf.Soft
 	};
 })();

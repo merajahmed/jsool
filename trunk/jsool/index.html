@@ -48,6 +48,8 @@
 	<script type="text/javascript" src="js/data/Type.js"></script>
 	<script type="text/javascript" src="js/data/Store.js"></script>
 	
+	<script type="text/javascript" src="js/flux/laf/Soft.js"></script>
+	
 	<script type="text/javascript" src="js/flux/Component.js"></script>
 	<script type="text/javascript" src="js/flux/Container.js"></script>
 	<script type="text/javascript" src="js/flux/RootContainer.js"></script>
@@ -65,9 +67,8 @@
 	<script type="text/javascript" src="js/flux/layout/SpringConstraint.js"></script>
 	<script type="text/javascript" src="js/flux/layout/SpringProxy.js"></script>
 	
-	<script type="text/javascript" src="js/flux/laf/Soft.js"></script>
-	
 	<script type="text/javascript">
+	
 	jsool.onReady(function(){
 		var raiz,b,c,d,e,f,b1;
 
@@ -143,8 +144,7 @@
 
 	function testRaze(){
 		var t = jsool.time();
-		for(var i = 500;i--;)
-			Raze.compile("#cool table:empty td tr:first-child.daslol");
+		for(var i = 500;i--;Raze.compile("#cool table:empty td tr:first-child.daslol"));
 		return jsool.time()-t;
 	}
 	
