@@ -1,0 +1,10 @@
+/*
+* UNDO HTML DEFAULT STYLES
+*/
+
+canvas.flux-proxy{
+	margin: 0px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
