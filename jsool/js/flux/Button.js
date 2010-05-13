@@ -52,7 +52,7 @@ js.flux.Button = $extends(js.flux.Component,{
 	},
 	paint: function(ctx){
 		var UIM = js.flux.UIManager,
-			laf = UIM.getLookAndFeel(),
+			laf = UIM.laf,
 			font = laf.FONT_SIZE,
 			radius = laf.BUTTON_BORDER_RADIUS,
 			x = this.x,

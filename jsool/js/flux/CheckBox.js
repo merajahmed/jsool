@@ -33,7 +33,7 @@ jsool.namespace("js.flux");
 
 js.flux.CheckBox = $extends(js.flux.ToggleButton,{
 	paint: function(ctx){
-		var laf = js.flux.UIManager.getLookAndFeel();
+		var laf = js.flux.UIManager.laf;
 		
 		ctx.lineWidth = laf.BUTTON_BORDER_WIDTH;
 		ctx.lineStyle = laf.BUTTON_BORDER_COLOR;

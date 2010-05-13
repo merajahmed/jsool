@@ -51,10 +51,7 @@ js.flux.Component = $extends(js.util.Observable,{
 		return (x > this.x && x < this.x + this.width) && (y > this.y && y < this.y + this.height);
 	},
 	getComponentAt: function(x,y){
-		if((x > this.x && x < this.x + this.width) && (y > this.y && y < this.y + this.height))
-			return this;
-		else
-			return null;
+		return (x > this.x && x < this.x + this.width) && (y > this.y && y < this.y + this.height) ? this : null;
 	},
 	setParent: function(parent){
 		if(this.parent)this.parent.remove(this);
