@@ -40,7 +40,8 @@ js.core.EventManager = (function create_event_manager(){
 	                 "change","error","load",
 	                 "contextmenu",
 	                 "resize","reset",
-	                 "scroll","select","submit"];
+	                 "scroll","select","submit",
+	                 "load","unload"];
 	
 	var domEventsRe = new RegExp("("+domEvents.join("|")+")");
 	
