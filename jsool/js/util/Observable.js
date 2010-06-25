@@ -63,11 +63,11 @@ js.util.Observable = $extends(js.core.Object, {
 		}
 		
 		var listeners;
-		var scope;
+		var sc;
 		if(listener.scope)
-			scope = listener.scope;
+			sc = listener.scope;
 		else
-			scope = this;
+			sc = this;
 		for(var i in listener){
 			if(this.events[i]){
 				listeners = this.events[i];
@@ -76,7 +76,7 @@ js.util.Observable = $extends(js.core.Object, {
 					this.events[i] = listeners;
 				}
 				listeners.push({
-					scope:scope,
+					scope:sc,
 					func:listener[i]
 				});
 			}

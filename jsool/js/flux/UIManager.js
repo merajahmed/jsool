@@ -89,14 +89,13 @@ js.flux.UIManager = (function(){
 		if(locked)return false;
 		
 		//ajust the position
-		var pos,comp,ev;
+		var pos,comp,ev,c;
 		if(jsool.isIE){
 			pos = {x:event.clientX+document.body.scrollLeft,
 					y:event.clientY+document.body.scrollTop};
 		}else{
 			pos = {x:event.pageX,y:event.pageY};
 		}
-		var components = root.children;
 			
 		if((c = root.getComponentAt(pos.x,pos.y)) && c != root){
 			
@@ -105,7 +104,7 @@ js.flux.UIManager = (function(){
 				mouseMoveHolded--;
 				
 				if(mouseMoveHolded >= 0){
-					return;
+					return false;
 				}
 				
 				mouseMoveHolded = HOLD_MOUSE_MOVE;
@@ -148,7 +147,7 @@ js.flux.UIManager = (function(){
 			if(idle && !locked){
 				startWorker();
 			}
-			return;
+			return true;
 		}
 		
 		if(currentOver){

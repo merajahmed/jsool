@@ -5,8 +5,8 @@ js.util.Encoder = (function create_Encoder(){
 	//Very simple URL Encoding and Decoding
 	var url = {
 		encode: function(string){
-			return string.replace(/./g,function(char, index){
-				return char.match(/[\w\d]/) ? char : "%"+char.charCodeAt(0).toString(16).toUpperCase() ;
+			return string.replace(/./g,function(chr, index){
+				return chr.match(/[\w\d]/) ? chr : "%"+chr.charCodeAt(0).toString(16).toUpperCase() ;
 			});
 		},
 		decode: function(string){
@@ -19,8 +19,8 @@ js.util.Encoder = (function create_Encoder(){
 	//Simple HTML Encoding and Decoding
 	var html = {
 		encode: function(string){
-			return string.replace(/./g,function(char, index){
-				return char.match(/[\w\d]/) ? char : "&#"+char.charCodeAt(0)+";" ;
+			return string.replace(/./g,function(chr, index){
+				return chr.match(/[\w\d]/) ? chr : "&#"+chr.charCodeAt(0)+";" ;
 			});
 		},
 		decode: function(string){
