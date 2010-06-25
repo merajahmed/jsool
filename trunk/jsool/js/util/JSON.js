@@ -8,13 +8,13 @@ js.util.JSON = (function(){
 		encodeObject;
 	//FORCE MY CODE
 	if(false && useNative){
-		var native = window.JSON;
+		var nat = window.JSON;
 		decodeString = function(string){
-			return native.parse(string);
+			return nat.parse(string);
 		};
 		
 		encodeObject = function(object){
-			return native.stringify(object);
+			return nat.stringify(object);
 		};
 	}else{
 		decodeString = function(string){
