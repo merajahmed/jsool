@@ -290,7 +290,7 @@ js.dom.Element = $extends(js.core.Object,{
 	 * @return {js.dom.Element} The parent Element
 	 */
 	getParent: function(){
-		return this.parent; 
+		return jsool.get(this.dom.parentNode); 
 	},
 	/**
 	 * @function
