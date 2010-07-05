@@ -1,0 +1,61 @@
+#summary js.dom.Element
+#labels API
+
+=js.dom.Element=
+*pacote:* js.dom<br/>
+*arquivo:* [http://code.google.com/p/jsool/source/browse/trunk/jsool/js/dom/Element.js Element.js]<br/>
+*extende:* js.core.Object<br/>
+----
+Representa um elemento HTML e encapsula metodos e funções utilitarias para facilitar a manipulação do elemento
+----
+
+===Atributos estáticos===
+
+|| *Atributo* || *Descrição* ||
+||[JsDomElement js.dom.Element] BODY||_Element_ que contem o `body` do documento.||
+
+----
+
+===Métodos estáticos===
+
+|| *Função* || *Descrição* ||
+||[JsDomElement js.dom.Element] get(String id)||Procura no documento atual por um elemento de ID = _id_ e retorna um _Element_ que o representa||
+||[JsDomElement js.dom.Element] get(HTMLElement element)||Encapsulao elemento _element_ em um objeto _Element_||
+||boolean cache([JsDomElement js.dom.Element] element)||Adiciona um _Element_ ao cache. Retorna `true` se o elemento foi adicionado com sucesso||
+||boolean unCache([JsDomElement js.dom.Element] element)||Retira o elemento do cache||
+||Array`<HTMLElement>` query(String selector)||Executa a query CSS e retorna um array dos elementos resultantes||
+||HTMLElement queryNode(String selector)||Executa a query CSS e retorna um elemento resultante||
+
+----
+
+===Métodos===
+
+|| *Função* || *Descrição* ||
+||HTMLElement getDom()||Retorna o elemento HTML encapsulado pelo objeto||
+||_void_ set(String attribute, Object value)||Altera o valor do atributo _attribute_ para _value_||
+||Object get(String attribute)||Retorna o valor do atributo _attribute_||
+||String getId()||Retorna o Id do elemento||
+||_void_ append(String html)||Adiciona o codigo html ao existente dentro do elemento||
+||_void_ append(HTMLElement element)||Adiciona o elemento HTML ao elemento atual||
+||_void_ append([JsDomElement js.dom.Element] element)||Adiciona o Element ao elemento atual||
+||_void_ setText(String)||Define o texto dentro do elemento||
+||String getText()||Retorna o texto dentro do element||
+||_void_ setHtml(String HTML)||Define o codigo HTML dentro do elemento||
+||String getHtml()||Retorna o conteudo html do elemento||
+||String tag()||Retorna o nome da tag HTML||
+||_void_ remove([JsDomElement js.dom.Element] element)||Remove o filho _element_ do elemento atual||
+||_void_ on(String event, Function handler, Object scope(Optional))||Adiciona a função _handler_ como event listener para o evento _event_.||
+||_void_ un(String event, Function handler(Optional))||Remove a função _handler_ como event listener para o evento _event_.||
+||_void_ destroyListeners()||Destroi todos os event listeners do elemento||
+||_void_ setClass(String className)||Altera a classe do elemento para _className_||
+||_void_ addClass(String className)||Adiciona a classe _className_ a lista de classes do elemento atual||
+||_void_ removeClass(String className)||Remove a classe _className_ do elemento||
+||_void_ applyStyle(Object cssDefinition)||Aplica as propiedades CSS do objeto _cssDefinition_ ao objeto||
+||Array`<HTMLElement>` children()||Retona todos os elementos dentro do elemento atual||
+||Object getPosition()||Retorna um objeto que possui os attributos *x* e *y* como posição do elemento atual na tela||
+||Object getBox()||Retorna um objeto que contem *x* e *y* como posição do elemento e *w* e *h* como largura e altura do elemento||
+||Number getWidth()||Retorna a largura do objeto||
+||Number getHeight()||Retorna a altura do objeto||
+||[JsDomElement js.dom.Element] getParent()||Retorna o elemento pai do objeto||
+||_void_ destroy()||Executa uma seria de ações para "matar" o elemento da memoria||
+||_void_ setOpacity(Number opacity)||Define _opacity_ como a opacidade do elemento. O valor de _opacity_ deve ser entre 0 e 1.||
