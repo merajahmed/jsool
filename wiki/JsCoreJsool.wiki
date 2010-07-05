@@ -42,8 +42,8 @@
 ||boolean isDate(Object object)||Verifica se o objeto _object_ é uma data||
 ||boolean isFunction(Object object)||Verifica se o objeto _object_ é uma função||
 ||Function $extends(Class parent, Object prototype, String className)||Cria uma nova classe||
-||js.dom.Element get(String id)||Procura no documento atual por um elemento de ID = _id_ e retorna um _Element_ que o representa||
-||js.dom.Element get(HTMLElement element)||Encapsulao elemento _element_ em um objeto _Element_||
+||[JsDomElement js.dom.Element] get(String id)||Procura no documento atual por um elemento de ID = _id_ e retorna um _Element_ que o representa||
+||[JsDomElement js.dom.Element] get(HTMLElement element)||Encapsulao elemento _element_ em um objeto _Element_||
 ||Array`<HTMLElement>` query(String selector)||Executa a query CSS e retorna um array dos elementos resultantes||
 ||HTMLElement queryNode(String selector)||Executa a query CSS e retorna um elemento resultante||
 ||js.dom.CompositeElement select(String selector)||Executa a query CSS e retorna um _CompositeElement_||
