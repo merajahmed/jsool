@@ -12,16 +12,16 @@ Representa um elemento HTML e encapsula metodos e funções utilitarias para fac
 ===Atributos estáticos===
 
 || *Atributo* || *Descrição* ||
-||[JsDomElement js.dom.Element] BODY||_Element_ que contem o `body` do documento.||
+||[JsDomElement js.dom.Element] BODY||[JsDomElement js.dom.Element] que contem o `body` do documento.||
 
 ----
 
 ===Métodos estáticos===
 
 || *Função* || *Descrição* ||
-||[JsDomElement js.dom.Element] get(String id)||Procura no documento atual por um elemento de ID = _id_ e retorna um _Element_ que o representa||
-||[JsDomElement js.dom.Element] get(HTMLElement element)||Encapsulao elemento _element_ em um objeto _Element_||
-||boolean cache([JsDomElement js.dom.Element] element)||Adiciona um _Element_ ao cache. Retorna `true` se o elemento foi adicionado com sucesso||
+||[JsDomElement js.dom.Element] get(String id)||Procura no documento atual por um elemento de ID = _id_ e retorna um [JsDomElement js.dom.Element] que o representa||
+||[JsDomElement js.dom.Element] get(HTMLElement element)||Encapsulao elemento [JsDomElement js.dom.Element] em um objeto [JsDomElement js.dom.Element]||
+||boolean cache([JsDomElement js.dom.Element] element)||Adiciona um [JsDomElement js.dom.Element] ao cache. Retorna `true` se o elemento foi adicionado com sucesso||
 ||boolean unCache([JsDomElement js.dom.Element] element)||Retira o elemento do cache||
 ||Array`<HTMLElement>` query(String selector)||Executa a query CSS e retorna um array dos elementos resultantes||
 ||HTMLElement queryNode(String selector)||Executa a query CSS e retorna um elemento resultante||
@@ -43,7 +43,7 @@ Representa um elemento HTML e encapsula metodos e funções utilitarias para fac
 ||_void_ setHtml(String HTML)||Define o codigo HTML dentro do elemento||
 ||String getHtml()||Retorna o conteudo html do elemento||
 ||String tag()||Retorna o nome da tag HTML||
-||_void_ remove([JsDomElement js.dom.Element] element)||Remove o filho _element_ do elemento atual||
+||_void_ remove([JsDomElement js.dom.Element] element)||Remove o filho [JsDomElement js.dom.Element] do elemento atual||
 ||_void_ on(String event, Function handler, Object scope(Optional))||Adiciona a função _handler_ como event listener para o evento _event_.||
 ||_void_ un(String event, Function handler(Optional))||Remove a função _handler_ como event listener para o evento _event_.||
 ||_void_ destroyListeners()||Destroi todos os event listeners do elemento||
