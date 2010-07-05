@@ -1,16 +1,29 @@
-#summary Defines the global library object
+#summary Objeto jsool
 #labels API
 
-=Object jsool=
-*Package:*<br/>
-*File:* [http://code.google.com/p/jsool/source/browse/trunk/jsool/js/core/Main.js Main.js]<br/>
-*Extends:* Object<br/>
+=jsool=
+*pacote:*<br/>
+*arquivo:* [http://code.google.com/p/jsool/source/browse/trunk/jsool/js/core/Main.js Main.js]<br/>
+*extende:* Object<br/>
 ----
-`jsool` is an utilitary object that have some useful core methods and is the base of class iheritancement of the library.
+"jsool" é um objeto que possui funções utilitarias e é a base da biblioteca.
 ===Static Methods===
-|| *Name* || *Parameters* || * Description * ||
-||onReady||Function action||Adds _action_ to the list of functions that needs to run only after the page is ready||
-||onSystemReady||Function action||Adds _action_ to a list of functions that prepares the library to run. `onSystemReady` runs before `onReady`.||
-||time||_void_||Returns the current system time in milliseconds||
-||apply||Object object, Object source, Object default(Optional)||Copy all properties from _source_ to _object_||
-||$extends||Class parent, Object prototype, String className||Creates a new class extending _parrent_ and using _prototype_ attributes and methods||
+|| *Função* || *Descrição* ||
+||_void_ onReady(Function action)||Adiciona a função _action_ à lista de funções que devem ser executadas quando a pagina e o framework estiverem prontos||
+||_void_ onSystemReady(Function action)||Adiciona a função _action_ à lista de funções que devem ser executadas quando a pagina estiver pronta. _onSystemReady_ é executado antes de _onReady_ .||
+||Number time()||Retorna o tempo do sistema em milissegundos.||
+||Object apply(Object object, Object source, Object default(Optional))||copia as propriedades do objeto _source_ para o objeto _object_.||
+||Object applyIf(Object object, Object source)||Copia do objeto _source_ apenas as propriedades que o objeto _object_ não possui.||
+||boolean isReady()||Verifica se a aplicação esta carregada e pronta.||
+||Function emptyFn()||Uma função vazia||
+||Object copy(Object object)||Cria uma cópia do objeto _object_||
+||_void_ iterate(Object object, Function fn)||Executa a função _fn_ em cada atributo do objeto _object_. A função _fn_ receberá como parametros o nome e o valor do atributo||
+||Number id(HTMLElement el)||Retorna um id unico para o elemento HTML||
+||boolean isDefine(Object object)||Verifica se o objeto _object_ existe/é definido||
+||boolean isArray(Object object)||Verifica se o objeto _object_ é um array||
+||boolean isObject(Object object)||Verifica se o objeto _object_ é um Objeto||
+||boolean isNumber(Object object)||Verifica se o objeto _object_ é um numero||
+||boolean isBoolean(Object object)||Verifica se o objeto _object_ é um booleano||
+||boolean isDate(Object object)||Verifica se o objeto _object_ é uma data||
+||boolean isFunction(Object object)||Verifica se o objeto _object_ é uma função||
+||Function $extends(Class parent, Object prototype, String className)||Cria uma nova classe||
