@@ -14,7 +14,11 @@
 			filter:{},
 			selector:{}
 		},
-		counter=0;
+		counter=0,
+		IE = String(navigator.userAgent).toUpperCase().indexOf("MSIE") >= 0;
+	
+	
+	
 	//FUNCTIONS
 	var
 	fnGetNodes = "\nif(ctx.getElementsByTagName){ctx=ctx.getElementsByTagName(\"$\");}else{ns=[];cs;for(i=0,n;n=ctx[i++];){"+
@@ -52,7 +56,8 @@
 		"enabled": "el.enabled",
 		"disabled": "!el.enabled",
 		"checked": "el.checked",
-		"not": "!contains(query(\"$arg\"),el)"
+		"not": "!contains(query(\"$arg\"),el)",
+		"selected":"el.selected"
 	};
 	
 	function compile(sel){
@@ -91,6 +96,9 @@
 				if(f.length>0){
 					var before;
 					fn.push("{f=[];for(var a=0,el;el=ctx[a++];){if(");
+					
+					if(IE)fn.push("el.nodeType==1 &&");
+					
 					while(f.length>0){
 						before = f;
 						if((m=f.match(byIdRe))){

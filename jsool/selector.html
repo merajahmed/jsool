@@ -13,6 +13,10 @@
 	
 	<script type="text/javascript">
 	function runTest(){
+		document.querySelector = null;
+		
+		document.querySelectorAll = null;
+		
 		var selectors = [
 		         		'table',
 		     			'table.a',
@@ -25,7 +29,7 @@
 		     			'table tr td',
 		     			'table.b tr.b td.c',
 		     			'.b',
-		     			'td:nth-child(2)',
+		     			'td:nth-child(1)',
 		     			'tr[align=left]',
 		     			'tr[align=right]',
 		     			'tr[align=left]',
@@ -44,9 +48,9 @@
 	    	},{
 	   			name:'Sizzle',
 	   			fn:function(selector){return Sizzle(selector,document);}
-	   		},{
-	   			name:'yass',
-	   			fn:function(selector){return _(selector,document,false);}
+	   		//},{
+	   			//name:'yass',
+	   			//fn:function(selector){return _(selector,document,false);}
 	   		},{
 	    		name:'Sly',
 	    		fn:function(selector){return Sly.search(selector);}
@@ -66,7 +70,7 @@
    			for(var e=0, engine;engine=engines[e++];){
    				start = +new Date;
    				//The real test
-   				i=500;
+   				i=100;
    				while(i--){
    					res = engine.fn(selector);
    				}
@@ -78,7 +82,7 @@
    		var table = ['<table>'];
    		var out;
    		var selec;
-   		var eng;		     		
+   		var eng;
    		for(var sel in results){
     		table.push('<tr>');
 
@@ -90,10 +94,12 @@
     		for(var en in selec){
      		if(!totals[en])totals[en] = 0;
     			eng = selec[en];
-    			//totals[en] += eng.results.length;
+    			//totals[en].length = eng.results.length;
     			totals[en] += eng.time;
-     		table.push('<td>');
+    		table.push("<td>");
      		table.push(eng.time)
+     		table.push('</td><td style=\"background-color:#EEEEEE;\">');     		
+    		table.push(eng.results.length);	
      		table.push('</td>');
      	}
     		table.push('</tr>');
@@ -102,7 +108,8 @@
    		table.push('<tr><td>TOTALS</td>');
 
    		for(var e in  totals){
-   			table.push('<td>');
+   	   		//console.info(e);
+   	   		table.push('<td>&#160;&#160;&#160;&#160;&#160;</td><td>');   			
    			table.push(e);
    			table.push(': ');
    			table.push(totals[e]);
@@ -119,7 +126,7 @@
 
 </head>
 <body>
-	<button onclick="runTest();">Roda</button><br/>
+	<button onclick="window.setTimeout(runTest,0);">Roda</button><br/>
 	<table class="a">
 		<tr class="b">
 			<td>bla bla bla bla bla bla bla</td>
@@ -149,7 +156,7 @@
 		</tr>
 	</table>
 	<table id="tableb">
-		<tr class="b">
+		<tr class="b" align="right">
 			<td>bla bla bla bla bla bla bla</td>
 		</tr>
 		<tr id="trc">

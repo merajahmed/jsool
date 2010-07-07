@@ -32,25 +32,11 @@
 jsool.namespace("js.core");
 
 js.core.EventManager = (function create_event_manager(){
-	var domEvents = [
-	                 "focus","blur",
-	                 "mouseover","mouseout","mouseup","mousedown","mousemove",	                 
-	                 "click","dblclick",
-	                 "keydown","keypress","keyup",
-	                 "change","error","load",
-	                 "contextmenu",
-	                 "resize","reset",
-	                 "scroll","select","submit",
-	                 "load","unload"];
-	
-	var domEventsRe = new RegExp("("+domEvents.join("|")+")");
-	
+		
 	var elsMap = {};
 	
 	// Adds an event listener to a DOM element
 	function addListener(el, ev, fn, scope){
-		if(!ev.match(domEventsRe))return false;
-		
 		var id = jsool.id(el),//The id of the element
 			elEvs = elsMap[id] = elsMap[id] || {},//All the registered events of the element
 			hs = elEvs[ev] = elEvs[ev] || [];//All handlers registered for the event
