@@ -1,0 +1,5 @@
+#summary sidebar
+
+= Documentation =
+  * Teste
+      * lol
