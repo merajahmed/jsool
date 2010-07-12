@@ -3,5 +3,13 @@
 ===API===
   * js.core
       * [JsCoreJsool jsool]
+      * [JsCoreArray Array]
+      * [JsCoreBrowser Browser]
+      * [JsCoreException Exception]
+      * [JsCoreObject Object]
+      * [JsCoreString String]
   * js.dom
       * [JsDomElement Element]
+  * js.util
+      * [JsUtilCollection Collection]
+      * [JsUtilList List]
