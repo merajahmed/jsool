@@ -1,19 +1,20 @@
 #summary Collection class API
 #labels API
 
-=Class Object=
-*Package:* js.util<br/>
-*File:* [http://code.google.com/p/jsool/source/browse/trunk/jsool/js/util/Collection.js Collection.js]<br/>
-*Extends:* [JsCoreObject js.core.Object]<br/>
+=js.util.Collection=
+*pacote:* js.util<br/>
+*arquivo:* [http://code.google.com/p/jsool/source/browse/trunk/jsool/js/util/Collection.js Collection.js]<br/>
+*extende:* [JsCoreObject js.core.Object]<br/>
 ----
-Defines methods to control groups of Object ( or elemements) inside a collection;
-===Public Methods===
-|| *Name* || *Parameters* || *Description* ||
-||add||Object object||A object to be stored on the collection||
-||addAll||Array/Collection collection||A group of elements to be added on the collection||
-||contains||Object object||Checks if _object_ is econtained inside of the collection||
-||isEmpty||_void_||Returns `true` if there's no element on the collection||
-||size||_void_||Returns the amount of elements on the collection||
-||iterator||_void_||Returns an object to helps iterating with the collection||
-||remove||Number index||Removes the element on the _index_||
-||toArray||_void_||Returns an Array with all the elements on the colection||
+Interface que define métodos para lidar com coleções de objetos.
+----
+===Métodos===
+|| *Função* || *Descrição* ||
+||void add(Object object)||Adiciona o objeto _object_ a coleção||
+||void addAll([JsUtilCollection Collection] collection)||Adiciona todos os elementos da coleção _collection_ a coleção atual||
+||boolean contains(Object object)||Verifica se a coleção atual possui o objeto _object_||
+||boolean isEmpty()||Retorna `true` se a coleção estiver vazia||
+||Number size()||Retorna a quantidade de elementos na coleção atual||
+||js.util.Iterator iterator()||Retorna um objeto que auxilia a iterar com a coleção atual||
+||void remove(Number index)||Remove o elemento que reside na posição _index_ da coleção.||
+||[JsCoreArray Array] toArray()||Retorna um array com todos os elementos da coleção.||
