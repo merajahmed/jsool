@@ -1,5 +1,7 @@
 #summary sidebar
 
-= Documentation =
-  * Teste
-      * lol
+===API===
+  * js.core
+      * [JsCoreJsool jsool]
+  * js.dom
+      * [JsDomElement Element]
