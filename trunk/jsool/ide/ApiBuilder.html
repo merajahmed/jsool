@@ -4,11 +4,80 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>Jsool Api Builder</title>
 		
-		<script src="ApiBuilder.js" type="text/javascript"></script>
 		<script src="../raze2.js" type="text/javascript"></script>
 		<script src="../jsool-core.js" type="text/javascript"></script>
+		<script src="ApiBuilder.js" type="text/javascript"></script>
 	</head>
 	<body>
+		<fieldset>
+			<legend>Detalhes da classe</legend>
+			
+			<table>
+				<tbody>
+					<tr>
+						<td>
+							<label>Pacote: </label>
+						</td>
+						<td>
+							<input type="text" id="pacote"/>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label>Pai: </label>
+						</td>
+						<td>
+							<input type="text" id="pai"/>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label>Classe: </label>
+						</td>
+						<td>
+							<input type="text" id="classe"/>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label>Arquivo: </label>
+						</td>
+						<td>
+							<input type="text" id="arquivo"/>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label>Descrição: </label>
+						</td>
+						<td>
+							<textarea rows="10" cols="60" id="descricao"></textarea>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
 		
+		<fieldset>
+			<legend>Atributos Estáticos</legend>
+			<button id="adicionaAtributoEstatico">Adiciona</button>
+			
+			<table>
+				<thead>
+					<tr>
+						<th>Tipo</th>
+						<th>Nome</th>
+						<th>Argumentos</th>
+						<th>Descrição</th>
+						<th>Exemplo</th>
+					</tr>
+				</thead>
+				<tbody id="atributosEstaticos"></tbody>
+			</table>
+		</fieldset>
 	</body>
 </html>
