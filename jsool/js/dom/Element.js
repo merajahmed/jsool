@@ -388,11 +388,11 @@ jsool.onSystemReady(function init_element(){
 	
 	var brw = js.core.Browser;
 	
-	if(brw.isIE){
+	if(jsool.isIE){
 		El.BODY.addClass('ie');
-	}else if(brw.isFF){
+	}else if(jsool.isFF){
 		El.BODY.addClass('ff');
-	}else if(brw.isOpera){
+	}else if(jsool.isOpera){
 		El.BODY.addClass('opera');
 	}
 });
