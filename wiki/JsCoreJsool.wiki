@@ -6,41 +6,41 @@
 *arquivo:* [http://code.google.com/p/jsool/source/browse/trunk/jsool/js/core/Main.js Main.js]<br/>
 *extende:* Object<br/>
 ----
-"jsool" e um objeto que possui funÁıes utilitarias e È a base da biblioteca.
+"jsool" √© um objeto que possui fun√ß√µes utilitarias e √© a base da biblioteca.
 ----
 
-===Atributos estaticos===
+===Atributos est√°ticos===
 
-|| *Atributo* || *Descricao* ||
-||<b><font color="#7F0055">`boolean`</font></b> isIE||<b><font color="#7F0055">`true`</font></b> se o browser do cliente È o Microsoft Internet Explorer||
-||<b><font color="#7F0055">`boolean`</font></b> isFF||<b><font color="#7F0055">`true`</font></b> se o browser do cliente È o Mozilla Firefox||
-||<b><font color="#7F0055">`boolean`</font></b> isOpera||<b><font color="#7F0055">`true`</font></b> se o browser do cliente È o Opera||
-||<b><font color="#7F0055">`boolean`</font></b> isSafari||<b><font color="#7F0055">`true`</font></b> se o browser do cliente È o Apple Safari||
-||<b><font color="#7F0055">`boolean`</font></b> isChrome||<b><font color="#7F0055">`true`</font></b> se o browser do cliente È o Google Chrome||
-||<b><font color="#7F0055">`boolean`</font></b> isWebKit||<b><font color="#7F0055">`true`</font></b> se o browser do cliente È baseado no WebKit||
+|| *Atributo* || *Descri√ß√£o* ||
+||boolean isIE||`true` se o browser do cliente √© o Microsoft Internet Explorer||
+||boolean isFF||`true` se o browser do cliente √© o Mozilla Firefox||
+||boolean isOpera||`true` se o browser do cliente √© o Opera||
+||boolean isSafari||`true` se o browser do cliente √© o Apple Safari||
+||boolean isChrome||`true` se o browser do cliente √© o Google Chrome||
+||boolean isWebKit||`true` se o browser do cliente √© baseado no WebKit||
 
 ----
 
-===Metodos est·ticos===
+===Metodos est√°ticos===
 
-|| *FunÁ„o* || *DescriÁ„o* ||
-||_void_ onReady(Function action)||Adiciona a funÁ„o _action_ ‡† lista de funÁıes que devem ser executadas quando a pagina e o framework estiverem prontos||
-||_void_ onSystemReady(Function action)||Adiciona a funÁ„o _action_ ‡† lista de funÁıes que devem ser executadas quando a pagina estiver pronta. _onSystemReady_ È executado antes de _onReady_ .||
+|| *Fun√ß√£o* || *Descri√ß√£o* ||
+||_void_ onReady(Function action)||Adiciona a fun√ß√£o _action_ √† lista de fun√ß√µes que devem ser executadas quando a pagina e o framework estiverem prontos||
+||_void_ onSystemReady(Function action)||Adiciona a fun√ß√£o _action_ √† lista de fun√ß√µes que devem ser executadas quando a pagina estiver pronta. _onSystemReady_ √© executado antes de _onReady_ .||
 ||Number time()||Retorna o tempo do sistema em milissegundos.||
 ||Object apply(Object object, Object source, Object default(Optional))||copia as propriedades do objeto _source_ para o objeto _object_.||
 ||Object applyIf(Object object, Object source)||Copia do objeto _source_ apenas as propriedades que o objeto _object_ n√£o possui.||
-||<b><font color="#7F0055">`boolean`</font></b> isReady()||Verifica se a aplicaÁ„o esta carregada e pronta.||
-||Function emptyFn()||Uma funÁ„o vazia||
-||Object copy(Object object)||Cria uma cÛpia do objeto _object_||
-||_void_ iterate(Object object, Function fn)||Executa a funÁ„o _fn_ em cada atributo do objeto _object_. A funÁ„o _fn_ receber√° como parametros o nome e o valor do atributo||
+||boolean isReady()||Verifica se a aplica√ß√£o esta carregada e pronta.||
+||Function emptyFn()||Uma fun√ß√£o vazia||
+||Object copy(Object object)||Cria uma c√≥pia do objeto _object_||
+||_void_ iterate(Object object, Function fn)||Executa a fun√ß√£o _fn_ em cada atributo do objeto _object_. A fun√ß√£o _fn_ receber√° como parametros o nome e o valor do atributo||
 ||Number id(HTMLElement el)||Retorna um id unico para o elemento HTML||
-||<b><font color="#7F0055">`boolean`</font></b> isDefine(Object object)||Verifica se o objeto _object_ existe/È definido||
-||<b><font color="#7F0055">`boolean`</font></b> isArray(Object object)||Verifica se o objeto _object_ È um array||
-||<b><font color="#7F0055">`boolean`</font></b> isObject(Object object)||Verifica se o objeto _object_ È um Objeto||
-||<b><font color="#7F0055">`boolean`</font></b> isNumber(Object object)||Verifica se o objeto _object_ È um numero||
-||<b><font color="#7F0055">`boolean`</font></b> isBoolean(Object object)||Verifica se o objeto _object_ È um <b><font color="#7F0055">`boolean`</font></b>o||
-||<b><font color="#7F0055">`boolean`</font></b> isDate(Object object)||Verifica se o objeto _object_ È uma data||
-||<b><font color="#7F0055">`boolean`</font></b> isFunction(Object object)||Verifica se o objeto _object_ È uma funÁ„o||
+||boolean isDefine(Object object)||Verifica se o objeto _object_ existe/√© definido||
+||boolean isArray(Object object)||Verifica se o objeto _object_ √© um array||
+||boolean isObject(Object object)||Verifica se o objeto _object_ √© um Objeto||
+||boolean isNumber(Object object)||Verifica se o objeto _object_ √© um numero||
+||boolean isBoolean(Object object)||Verifica se o objeto _object_ √© um booleano||
+||boolean isDate(Object object)||Verifica se o objeto _object_ √© uma data||
+||boolean isFunction(Object object)||Verifica se o objeto _object_ √© uma fun√ß√£o||
 ||Function $extends(Class parent, Object prototype, String className)||Cria uma nova classe||
 ||[JsDomElement js.dom.Element] get(String id)||Procura no documento atual por um elemento de ID = _id_ e retorna um [JsDomElement js.dom.Element] que o representa||
 ||[JsDomElement js.dom.Element] get(HTMLElement element)||Encapsula o elemento _element_ em um objeto [JsDomElement js.dom.Element]||
