@@ -2,7 +2,7 @@ var api,builder;
 
 jsool.onReady(function(){
 	var g = jsool.get,
-		chaves = /(void|boolean|function|var)/g,
+		chaves = /(void|boolean|true|false|function|var)/g,
 		classe;
 	
 	//Contadores
@@ -88,6 +88,16 @@ jsool.onReady(function(){
 		return args;
 	}
 	
+	function sortNome(a,b){
+		if(a.nome > b.nome){
+			return 1;
+		}else if(a.nome < b.nome){
+			return -1;
+		}else{
+			return 0;
+		}
+	}
+	
 	api = {
 		pacote: function(){return pacote.get("value");},
 		pai: function(){return pai.get("value");},
@@ -107,6 +117,8 @@ jsool.onReady(function(){
 				});
 			});
 			
+			atrs.sort(sortNome);
+			
 			return atrs;
 		},
 		metodosEstaticos: function(){
@@ -124,6 +136,8 @@ jsool.onReady(function(){
 				});
 			});
 			
+			me.sort(sortNome);
+			
 			return me;
 		},
 		metodos: function(){
@@ -140,6 +154,8 @@ jsool.onReady(function(){
 					exem: ins[4].value.trim()
 				});
 			});
+			
+			m.sort(sortNome);
 			
 			return m;
 		}
@@ -167,6 +183,46 @@ jsool.onReady(function(){
 			
 			buildHeader(api,builder);
 			
+			buildAttributes(api,builder);
+			
+			build.append("\n<h2>Métodos Estáticos</h2>");
+			
+			buildMethods(api.metodosEstaticos(),builder);
+			
+			build.append("\n<h2>Métodos</h2>");
+			
+			buildMethods(api.metodos(),builder);
+			
+			jsool.get("codigo").set("value",builder.toString());
+		}
+		
+		//Procura primitivas e  classes
+		function parseTextElements(string){
+			return string
+				.replace(chaves,"<strong><font face=\"monospace\" size=\"3\" color=\"#7F0055\">$1</font></strong>")
+				.replace(/\w+(\.\w+)+/g,function(a,b){
+					return resolveLink(a);
+				});
+		}
+		
+		function buildMethods(metodos, builder){
+			Array.iterate(metodos,function(index, el){
+				builder.append("\n----\n<h3>");
+				
+				var tip = el.tipo.match(chaves)
+				? el.tipo.replace(chaves,"<strong><font face=\"monospace\" size=\"4\" color=\"#7F0055\">$1</font></strong>")
+				: resolveLink(el.tipo);
+				
+				builder.append(tip)
+				.append(" ")
+				.append(el.nome)
+				.append("</h3>");
+				
+			});
+		}
+		
+		//Monta codigo dos atributos
+		function buildAttributes(api, builder){
 			atrs = api.atributos();
 			
 			if(atrs && atrs.length > 0){
@@ -177,7 +233,7 @@ jsool.onReady(function(){
 					builder.append("\n----\n<h3>");
 					
 					var tip = el.tipo.match(chaves)
-							? el.tipo.replace(chaves,"<strong><font color=\"#7F0055\">$1</font></strong>")
+							? el.tipo.replace(chaves,"<strong><font face=\"monospace\" size=\"4\" color=\"#7F0055\">$1</font></strong>")
 							: resolveLink(el.tipo);
 					
 					builder.append(tip)
@@ -189,23 +245,15 @@ jsool.onReady(function(){
 				
 				builder.append("\n----\n");
 			}
-			
-			jsool.get("codigo").set("value",builder.toString());
 		}
 		
-		//Procura primitivas e  
-		function parseTextElements(string){
-			return string.replace(chaves,"<strong><font color=\"#7F0055\">$1</font></strong>").replace(/\w+(\.\w+)+/g,function(a,b){
-				return resolveLink(a);
-			});
-		}
-		
+		//Monta codigo do cabecalho
 		function buildHeader(api, sb){
 			sb.append("<h1>Classe <font color=\"#1E4E8F\">")
 				.append(api.classe())
-				.append("</font></h1><p><strong>pacote: </strong>")
+				.append("</font></h1>\n<p><strong>pacote: </strong>")
 				.append(api.pacote())
-				.append("</p><p><strong>arquivo: </strong>");
+				.append("</p>\n<p><strong>arquivo: </strong>");
 			
 			var arq = api.arquivo();
 			arq = arq.substring(arq.lastIndexOf("/")+1);
@@ -216,7 +264,7 @@ jsool.onReady(function(){
 				.append(arq)
 				.append("</font></a></p>");
 			
-			sb.append("<p><strong>extende: </strong><font color=\"#1E4E8F\">")
+			sb.append("\n<p><strong>extende: </strong><font color=\"#1E4E8F\">")
 				.append(resolveLink(api.pai()))
 				.append("</font></p>\n----\n");
 			
