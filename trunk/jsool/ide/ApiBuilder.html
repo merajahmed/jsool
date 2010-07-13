@@ -6,7 +6,9 @@
 		
 		<script src="../raze2.js" type="text/javascript"></script>
 		<script src="../jsool-core.js" type="text/javascript"></script>
+		<script src="../js/dom/Helper.js" type="text/javascript"></script>
 		<script src="ApiBuilder.js" type="text/javascript"></script>
+		
 	</head>
 	<body>
 		<fieldset>
@@ -71,13 +73,56 @@
 					<tr>
 						<th>Tipo</th>
 						<th>Nome</th>
-						<th>Argumentos</th>
 						<th>Descrição</th>
-						<th>Exemplo</th>
+						<th>&#160;</th>
 					</tr>
 				</thead>
 				<tbody id="atributosEstaticos"></tbody>
 			</table>
+		</fieldset>
+		
+		<fieldset>
+			<legend>Métodos Estáticos</legend>
+			<button id="adicionaMetodoEstatico">Adiciona</button>
+			
+			<table>
+				<thead>
+					<tr>
+						<th>Tipo</th>
+						<th>Nome</th>
+						<th>Argumentos</th>
+						<th>Descrição</th>
+						<th>Exemplo</th>
+						<th>&#160;</th>
+					</tr>
+				</thead>
+				<tbody id="metodosEstaticos"></tbody>
+			</table>
+		</fieldset>
+		
+		<fieldset>
+			<legend>Métodos</legend>
+			<button id="adicionaMetodo">Adiciona</button>
+			
+			<table>
+				<thead>
+					<tr>
+						<th>Tipo</th>
+						<th>Nome</th>
+						<th>Argumentos</th>
+						<th>Descrição</th>
+						<th>Exemplo</th>
+						<th>&#160;</th>
+					</tr>
+				</thead>
+				<tbody id="metodos"></tbody>
+			</table>
+		</fieldset>
+		
+		<fieldset>
+			<legend>API</legend>
+			<button id="build">Build</button>
+			<textarea rows="10" cols="60" id="codigo"></textarea>
 		</fieldset>
 	</body>
 </html>
