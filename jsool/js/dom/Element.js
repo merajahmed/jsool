@@ -311,14 +311,16 @@ js.dom.Element = $extends(js.core.Object,{
 		
 		//kill dom attributes
 		for(var a in this.dom){
-			this.dom[a] = null;
+			try{
+				this.dom[a] = null;
+			}catch(e){}
 		}
 		js.dom.Element.unCache(this);
 		//Delete DOM
 		delete this.dom;
 	},
 	query: function(selector,dom){
-		return dom ? Raze.query(selector, this.dom) : js.dom.Element.select(selector);
+		return dom ? Raze.query(selector, this.getDom()) : js.dom.Element.select(selector);
 	},
 	setOpacity: function(op){
 		var s = this.dom.style;

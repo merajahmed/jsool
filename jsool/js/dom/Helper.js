@@ -1,26 +1,24 @@
 jsool.namespace("js.dom");
 
 js.dom.Helper = (function create_helper(){
-	var DOC = window.document;
-	var BODY;
-	var getTagRe = /^[<]([\w]+)/;
-	
-	var proxy;
+	var DOC = window.document,
+		BODY,
+		proxy;
 	
 	function init(){
 		proxy = document.getElementById("jsool-proxy");
 		if(!proxy){
-			proxy = DOC.createElement("span");
+			proxy = DOC.createElement("div");
 			proxy.style.display = "none";
 			proxy.innerHTML = "";
 			proxy.id="jsool-proxy";
 			BODY = DOC.getElementsByTagName("body")[0];
-			BODY.appendChild(proxy);
 		}
 	}
 	
 	function userProxy(string){
 		if(!proxy) init();
+		BODY.appendChild(proxy);
 		proxy.innerHTML = string;
 		
 		var f = DOC.createDocumentFragment();
@@ -32,6 +30,7 @@ js.dom.Helper = (function create_helper(){
 		});
 		
 		proxy.innerHTML = "";
+		BODY.removeChild(proxy);
 		return f;
 	}
 	
@@ -66,7 +65,7 @@ js.dom.Helper = (function create_helper(){
 			}
 			
 			if(parent){
-				parent.appendChild(el);
+				parent.append ? parent.append(el):parent.appendChild(el);
 			}
 			
 			return el;
