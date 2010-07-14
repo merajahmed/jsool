@@ -1,61 +1,90 @@
 #summary js.dom.Element
 #labels API
 
-=js.dom.Element=
-*pacote:* js.dom<br/>
-*arquivo:* [http://code.google.com/p/jsool/source/browse/trunk/jsool/js/dom/Element.js Element.js]<br/>
-*extende:* js.core.Object<br/>
+<h1>Classe <font color="#1E4E8F">Element</font></h1>
+<p><strong>pacote: </strong>js.dom</p>
+<p><strong>arquivo: </strong><a href="http://code.google.com/p/jsool/source/browse/trunk/jsool/js/dom/Element.js"><font color="#1E4E8F">Element.js</font></a></p>
+<p><strong>extende: </strong><font color="#1E4E8F">[JsCoreObject js.core.Object]</font></p>
 ----
-Representa um elemento HTML e encapsula metodos e funções utilitarias para facilitar a manipulação do elemento
-----
-
-===Atributos estáticos===
-
-|| *Atributo* || *Descrição* ||
-||[JsDomElement js.dom.Element] BODY||[JsDomElement js.dom.Element] que contem o `body` do documento.||
-
+Representa um elemento HTML e encapsula metodos e funções utilitarias para facilitar a manipulação do elemento.
 ----
 
-===Métodos estáticos===
-
-|| *Função* || *Descrição* ||
-||[JsDomElement js.dom.Element] get(String id)||Procura no documento atual por um elemento de ID = _id_ e retorna um [JsDomElement js.dom.Element] que o representa||
-||[JsDomElement js.dom.Element] get(HTMLElement element)||Encapsulao elemento [JsDomElement js.dom.Element] em um objeto [JsDomElement js.dom.Element]||
-||boolean cache([JsDomElement js.dom.Element] element)||Adiciona um [JsDomElement js.dom.Element] ao cache. Retorna `true` se o elemento foi adicionado com sucesso||
-||boolean unCache([JsDomElement js.dom.Element] element)||Retira o elemento do cache||
-||Array`<HTMLElement>` query(String selector)||Executa a query CSS e retorna um array dos elementos resultantes||
-||HTMLElement queryNode(String selector)||Executa a query CSS e retorna um elemento resultante||
-
+<h2>Atributos:</h2>
+----
+<p><font color="#1E4E8F">[JsDomElement js.dom.Element] BODY</font></p>
+<p>[JsDomElement js.dom.Element]  que contem o body do documento.</p>
 ----
 
-===Métodos===
+<h2>Métodos Estáticos</h2>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">boolean</font></strong> cache([JsDomElement js.dom.Element] element)</font></p><p>Adiciona um elemento ao cache. Retorna <strong><font face="monospace" size="3" color="#7F0055">true</font></strong> se o elemento foi adicionado com sucesso.</p>
+----
+<p><font color="#1E4E8F">[JsDomElement js.dom.Element] get([JsCoreString js.core.String] id)</font></p><p>Procura no documento atual por um elemento de ID = id e retorna um [JsDomElement js.dom.Element]  que o representa.</p>
+----
+<p><font color="#1E4E8F">[JsDomElement js.dom.Element] get(HTMLElement element)</font></p><p>Encapsula o elemento  em um objeto [JsDomElement js.dom.Element].</p>
+----
+<p><font color="#1E4E8F">[JsCoreArray js.core.Array] query([JsCoreString js.core.String] selector)</font></p><p>Executa a query CSS e retorna um array dos elementos resultantes</p>
+----
+<p><font color="#1E4E8F">HTMLElement queryNode([JsCoreString js.core.String] selector)</font></p><p>Executa a query CSS e retorna um elemento resultante</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">boolean</font></strong> unCache([JsDomElement js.dom.Element] element)</font></p><p>Retira o elemento do cache</p>
+----
 
-|| *Função* || *Descrição* ||
-||HTMLElement getDom()||Retorna o elemento HTML encapsulado pelo objeto||
-||_void_ set(String attribute, Object value)||Altera o valor do atributo _attribute_ para _value_||
-||Object get(String attribute)||Retorna o valor do atributo _attribute_||
-||String getId()||Retorna o Id do elemento||
-||_void_ append(String html)||Adiciona o codigo html ao existente dentro do elemento||
-||_void_ append(HTMLElement element)||Adiciona o elemento HTML ao elemento atual||
-||_void_ append([JsDomElement js.dom.Element] element)||Adiciona o Element ao elemento atual||
-||_void_ setText(String)||Define o texto dentro do elemento||
-||String getText()||Retorna o texto dentro do element||
-||_void_ setHtml(String HTML)||Define o codigo HTML dentro do elemento||
-||String getHtml()||Retorna o conteudo html do elemento||
-||String tag()||Retorna o nome da tag HTML||
-||_void_ remove([JsDomElement js.dom.Element] element)||Remove o filho [JsDomElement js.dom.Element] do elemento atual||
-||_void_ on(String event, Function handler, Object scope(Optional))||Adiciona a função _handler_ como event listener para o evento _event_.||
-||_void_ un(String event, Function handler(Optional))||Remove a função _handler_ como event listener para o evento _event_.||
-||_void_ destroyListeners()||Destroi todos os event listeners do elemento||
-||_void_ setClass(String className)||Altera a classe do elemento para _className_||
-||_void_ addClass(String className)||Adiciona a classe _className_ a lista de classes do elemento atual||
-||_void_ removeClass(String className)||Remove a classe _className_ do elemento||
-||_void_ applyStyle(Object cssDefinition)||Aplica as propiedades CSS do objeto _cssDefinition_ ao objeto||
-||Array`<HTMLElement>` children()||Retona todos os elementos dentro do elemento atual||
-||Object getPosition()||Retorna um objeto que possui os attributos *x* e *y* como posição do elemento atual na tela||
-||Object getBox()||Retorna um objeto que contem *x* e *y* como posição do elemento e *w* e *h* como largura e altura do elemento||
-||Number getWidth()||Retorna a largura do objeto||
-||Number getHeight()||Retorna a altura do objeto||
-||[JsDomElement js.dom.Element] getParent()||Retorna o elemento pai do objeto||
-||_void_ destroy()||Executa uma seria de ações para "matar" o elemento da memoria||
-||_void_ setOpacity(Number opacity)||Define _opacity_ como a opacidade do elemento. O valor de _opacity_ deve ser entre 0 e 1.||
+<h2>Métodos</h2>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> addClass([JsCoreString js.core.String] className)</font></p><p>Adiciona a classe _className_ a lista de classes do elemento atual</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> append([JsCoreString js.core.String] html)</font></p><p>Adiciona o codigo html ao existente dentro do elemento.</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> append(HTMLElement element)</font></p><p>Adiciona o elemento HTML ao elemento atual.</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> append([JsDomElement js.dom.Element] element)</font></p><p>Adiciona o Element ao elemento atual.</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> applyStyle([JsCoreObject js.core.Object] cssDefinition)</font></p><p>Aplica as propiedades CSS do objeto _cssDefinition_ ao objeto</p>
+----
+<p><font color="#1E4E8F">[JsCoreArray js.core.Array] children()</font></p><p>Retona todos os elementos dentro do elemento atual</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> destroy()</font></p><p>Executa uma serie de ações para "matar" o elemento da memoria.</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> destroyListeners()</font></p><p>Destroi todos os event listeners do elemento</p>
+----
+<p><font color="#1E4E8F">[JsCoreObject js.core.Object] get([JsCoreString js.core.String] atributo)</font></p><p>Retorna o valor do _atributo_.</p>
+----
+<p><font color="#1E4E8F">[JsCoreObject js.core.Object] getBox()</font></p><p>Retorna um objeto que contem *x* e *y* como posição do elemento e *w* e *h* como largura e altura do elemento.</p>
+----
+<p><font color="#1E4E8F">HTMLElement getDom()</font></p><p>Retorna o elemento HTML encapsulado pelo objeto</p>
+----
+<p><font color="#1E4E8F">[JsCoreNumber js.core.Number] getHeight()</font></p><p>Retorna a altura do objeto.</p>
+----
+<p><font color="#1E4E8F">[JsCoreString js.core.String] getHtml()</font></p><p>Retorna o conteudo html do elemento.</p>
+----
+<p><font color="#1E4E8F">[JsCoreString js.core.String] getId()</font></p><p>Retorna o Id do elemento.</p>
+----
+<p><font color="#1E4E8F">[JsDomElement js.dom.Element] getParent()</font></p><p>Retorna o elemento pai do objeto.</p>
+----
+<p><font color="#1E4E8F">[JsCoreObject js.core.Object] getPosition()</font></p><p>Retorna um objeto que possui os attributos *x* e *y*  como posição do elemento atual na tela.</p>
+----
+<p><font color="#1E4E8F">[JsCoreString js.core.String] getText()</font></p><p>Retorna o texto dentro do element.</p>
+----
+<p><font color="#1E4E8F">[JsCoreNumber js.core.Number] getWidth()</font></p><p>Retorna a largura do objeto.</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> on([JsCoreString js.core.String] event, <strong><font face="monospace" size="3" color="#7F0055">function</font></strong> handler, Object scope(Optional))</font></p><p>Adiciona a função handler como event listener para o evento event.</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> remove([JsDomElement js.dom.Element] element)</font></p><p>Remove o filho [JsDomElement js.dom.Element]  do elemento atual.</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> removeClass([JsCoreString js.core.String] className)</font></p><p>Remove a classe _className_ do elemento</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> set([JsCoreString js.core.String] atributo, [JsCoreObject js.core.Object] valor)</font></p><p>Altera o valor do atributo _atributo_ como _valor_.</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> setClass([JsCoreString js.core.String] className)</font></p><p>Altera a classe do elemento para _className_.</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> setHtml([JsCoreString js.core.String] code)</font></p><p>Define o codigo HTML dentro do elemento.</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> setOpacity([JsCoreNumber js.core.Number] undefined)</font></p><p>Define a opacidade do elemento. O valor de opacity  deve ser entre 0 e 1.</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> setText([JsCoreString js.core.String] string)</font></p><p>Define o texto dentro do elemento.</p>
+----
+<p><font color="#1E4E8F">[JsCoreString js.core.String] tag()</font></p><p>Retorna o nome da tag HTML.</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> un([JsCoreString js.core.String] event, <strong><font face="monospace" size="3" color="#7F0055">function</font></strong> handler(Optional))</font></p><p>Remove a função handler como event listener para o evento event.</p>
+----
