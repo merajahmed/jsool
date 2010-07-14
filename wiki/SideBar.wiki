@@ -6,6 +6,7 @@
       * [JsCoreArray Array]
       * [JsCoreBrowser Browser]
       * [JsCoreException Exception]
+      * [JsCoreNumber Number]
       * [JsCoreObject Object]
       * [JsCoreString String]
   * js.dom
