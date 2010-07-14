@@ -1,24 +1,42 @@
 #summary Extended default JavaScript Array object API
 #labels API
 
-=Class Array=
-*Package:*<br/>
-*File:* [http://code.google.com/p/jsool/source/browse/trunk/jsool/js/core/Array.js Array.js]<br/>
-*Extends:* Object<br/>
+<h1>Classe <font color="#1E4E8F">Array</font></h1>
+<p><strong>pacote: </strong>js.core</p>
+<p><strong>arquivo: </strong><a href="http://code.google.com/p/jsool/source/browse/trunk/jsool/js/core/Array.js"><font color="#1E4E8F">Array.js</font></a></p>
+<p><strong>extende: </strong><font color="#1E4E8F">[JsCoreObject js.core.Object]</font></p>
 ----
-The Array object is used to store multiple values in a single variable.
-===Static Methods===
-|| *Name* || *Parameters* || * Description * ||
-||isArray||Object object||Checks if _object_ is an Array||
+Um Array é utilizado para guardar de maneira indexada varios valores em apenas uma variavel.
+----
 
-===Public Methods===
-|| *Name* || *Parameters* || *Description* ||
-||shuffle||_void_||Shuffles the current array elements||
-||forEach||Function action||Runs _action_ for each element on the array||
-||every||Function action||Returns `true` if _action_ returns true for every element on array||
-||filter||Function action||Returns a new array with the elements that returns `true` for _action_||
-||map||Function action||Returns a new array with the result of _action_ for each element on the array||
-||indexOf||Object element||Retuns the index of the _element_ on the array||
-||concat||Array... arrays||Retuns the result of the concatenation of the arrays||
-||sum||_void_||Retuns the result of the sum of all elements on the arrays||
-||accumulates||Function action||Returns the sum of the results of _action_ for each element on the array||
+<h2>Atributos:</h2>
+----
+<p><font color="#1E4E8F">[JsCoreNumber js.core.Number] MAX_LENGTH</font></p>
+<p>Maior comprimento possivel para um array.</p>
+----
+
+<h2>Métodos Estáticos</h2>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">boolean</font></strong> isArray([JsCoreObject js.core.Object] objeto)</font></p><p>Verifica se o objeto passado como parametro é um Array</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> iterate([JsCoreArray js.core.Array] array, <strong><font face="monospace" size="3" color="#7F0055">function</font></strong> func)</font></p><p>Executa a função _func(index, el)_ para cada elemento do array onde _index_ é o indice do elemento no array e _el_ é o elemento no atual indice do array.</p>
+----
+
+<h2>Métodos</h2>
+----
+<p><font color="#1E4E8F">[JsCoreArray js.core.Array] clone()</font></p><p>Cria uma cópia do array</p>
+----
+<p><font color="#1E4E8F">[JsCoreArray js.core.Array] concat([JsCoreArray js.core.Array] array)</font></p><p>Retorna um novo array com a concatenação do array atual mais o _array_.</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">boolean</font></strong> contains([JsCoreObject js.core.Object] objeto)</font></p><p>Retorna <strong><font face="monospace" size="3" color="#7F0055">true</font></strong> se o _objeto_ esta presente no array.</p>
+----
+<p><font color="#1E4E8F">[JsCoreArray js.core.Array] filter(<strong><font face="monospace" size="3" color="#7F0055">function</font></strong> action)</font></p><p>Retorna um array apenas com os elementos que retornam <strong><font face="monospace" size="3" color="#7F0055">true</font></strong> ao executar a função _action_.</p>
+----
+<p><font color="#1E4E8F">[JsCoreNumber js.core.Number] indexOf([JsCoreObject js.core.Object] objeto)</font></p><p>Retorna o indice do objeto no array.</p>
+----
+<p><font color="#1E4E8F">[JsCoreArray js.core.Array] map(<strong><font face="monospace" size="3" color="#7F0055">function</font></strong> action)</font></p><p>Retorna um novo array com o resultado da execução da função _action_ em cada elemento do array.</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> remove([JsCoreObject js.core.Object] objeto)</font></p><p>Remove o _objeto_ do array.</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> shuffle()</font></p><p>Embaralha os elementos do array;</p>
+----
