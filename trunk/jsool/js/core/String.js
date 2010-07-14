@@ -134,5 +134,5 @@ String.encodeHTML = function(string){
 	}
 	return charBuffer.join('');
 };
-
+jsool.namespace("js.core");
 js.core.String = String;
