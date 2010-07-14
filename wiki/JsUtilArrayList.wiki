@@ -1,0 +1,36 @@
+<h1>Classe <font color="#1E4E8F">ArrayList</font></h1>
+<p><strong>pacote: </strong>js.util</p>
+<p><strong>arquivo: </strong><a href="http://code.google.com/p/jsool/source/browse/trunk/jsool/js/util/ArrayList.js"><font color="#1E4E8F">ArrayList.js</font></a></p>
+<p><strong>extende: </strong><font color="#1E4E8F">[JsUtilList js.util.List]</font></p>
+----
+Implementação da interface js.util.List que funciona por meio de um array.
+----
+
+<h2>Métodos</h2>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> add([JsCoreObject js.core.Object] elemento)</font></p><p>Adiciona o _elemento_ a lista.</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> addAll([JsUtilCollection js.util.Collection] colecao)</font></p><p>Adiciona todos os elementos da colecao na lista.</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> addAll([JsCoreArray js.core.Array] array)</font></p><p>Adiciona todos os elementos do array na lista.</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> clear()</font></p><p>Limpa a lista.</p>
+----
+<p><font color="#1E4E8F">[JsUtilArrayList js.util.ArrayList] clone()</font></p><p>Retorna uma copia da lista atual</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">boolean</font></strong> contains([JsCoreObject js.core.Object] objeto)</font></p><p>Verifica se o _objeto_ esta presente na lista.</p>
+----
+<p><font color="#1E4E8F">[JsCoreObject js.core.Object] get([JsCoreNumber js.core.Number] indice)</font></p><p>Retorna o elemento que esta presente no _indice_ da lista.</p>
+----
+<p><font color="#1E4E8F">[JsCoreNumber js.core.Number] indexOf([JsCoreObject js.core.Object] objeto)</font></p><p>Retrona o indice do elemento na lista.</p>
+----
+<p><font color="#1E4E8F">[JsUtilIterator js.util.Iterator] iterator()</font></p><p>Retorna um [JsUtilIterator js.util.Iterator] para facilitar na iteração com os elementos da lista.</p>
+----
+<p><font color="#1E4E8F">[JsCoreNumber js.core.Number] lastIndexOf([JsCoreObject js.core.Object] objeto)</font></p><p>Retorna o indice da ultima ocorrencia do elemento na lista.</p>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">void</font></strong> remove([JsCoreNumber js.core.Number] indice)</font></p><p>Remove o elemento na posição _indice_ da lista.</p>
+----
+<p><font color="#1E4E8F">[JsCoreNumber js.core.Number] size()</font></p><p>Retorna a quantidade de elementos na lista.</p>
+----
+<p><font color="#1E4E8F">[JsCoreArray js.core.Array] toArray()</font></p><p>Retona um array com os elementos atualmente alocado na lista.</p>
+----
