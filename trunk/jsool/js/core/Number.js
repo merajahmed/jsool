@@ -40,3 +40,5 @@ Number.prototype.supercls = Object;
 Number.isNumber = function(obj){
 	return typeof obj == 'number';
 };
+
+js.core.Number = Number;

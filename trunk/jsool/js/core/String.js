@@ -134,3 +134,5 @@ String.encodeHTML = function(string){
 	}
 	return charBuffer.join('');
 };
+
+js.core.String = String;

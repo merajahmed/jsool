@@ -28,15 +28,9 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-var global_objects_count = 0, global_object_handler = [];
-
 jsool.namespace("js.core");
 
-js.core.Object = function(){
-	global_objects_count++;
-	global_object_handler.push(this);
-};
+js.core.Object = function(){};
 
 js.core.Object.prototype = {
 	hash: 0,
