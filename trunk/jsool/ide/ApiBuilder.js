@@ -144,7 +144,7 @@ jsool.onReady(function(){
 			var m = [],
 				ins;
 			
-			Array.iterate(staMet.query("tr",true),function(index, el){
+			Array.iterate(met.query("tr",true),function(index, el){
 				ins = Raze.query("td input",el);
 				m.push({
 					tipo: ins[0].value.trim(),
@@ -179,19 +179,28 @@ jsool.onReady(function(){
 		
 		function build(api){
 			var builder = new sb(),
-				atrs;
+				atrs,
+				mets;
 			
 			buildHeader(api,builder);
 			
 			buildAttributes(api,builder);
 			
-			build.append("\n<h2>Métodos Estáticos</h2>");
+			mets = api.metodosEstaticos();
 			
-			buildMethods(api.metodosEstaticos(),builder);
+			if(mets && mets.length > 0){
+				builder.append("\n<h2>Métodos Estáticos</h2>");			
+				buildMethods(mets,builder);
+				builder.append("\n----\n");
+			}
 			
-			build.append("\n<h2>Métodos</h2>");
+			mets = api.metodos();
 			
-			buildMethods(api.metodos(),builder);
+			if(mets && mets.length > 0){
+				builder.append("\n<h2>Métodos</h2>");			
+				buildMethods(api.metodos(),builder);
+				builder.append("\n----\n");
+			}
 			
 			jsool.get("codigo").set("value",builder.toString());
 		}
@@ -207,16 +216,22 @@ jsool.onReady(function(){
 		
 		function buildMethods(metodos, builder){
 			Array.iterate(metodos,function(index, el){
-				builder.append("\n----\n<h3>");
-				
-				var tip = el.tipo.match(chaves)
-				? el.tipo.replace(chaves,"<strong><font face=\"monospace\" size=\"4\" color=\"#7F0055\">$1</font></strong>")
-				: resolveLink(el.tipo);
-				
-				builder.append(tip)
+				builder.append("\n----\n<p><font color=\"#1E4E8F\">")
+				.append(parseTextElements(el.tipo))
 				.append(" ")
 				.append(el.nome)
-				.append("</h3>");
+				.append("(");
+				
+				Array.iterate(el.args,function(i,arg){
+					if(i>1)builder.append(", ");
+					builder.append(parseTextElements(arg.tipo))
+					.append(" ")
+					.append(arg.nome);
+				});
+				
+				builder.append(")</font></p><p>")
+					.append(parseTextElements(el.desc))
+					.append("</p>");
 				
 			});
 		}
@@ -230,16 +245,16 @@ jsool.onReady(function(){
 				builder.append("\n<h2>Atributos:</h2>");
 				
 				Array.iterate(atrs,function(index, el){
-					builder.append("\n----\n<h3>");
+					builder.append("\n----\n<p><font color=\"#1E4E8F\">");
 					
 					var tip = el.tipo.match(chaves)
 							? el.tipo.replace(chaves,"<strong><font face=\"monospace\" size=\"4\" color=\"#7F0055\">$1</font></strong>")
 							: resolveLink(el.tipo);
 					
 					builder.append(tip)
-						.append(" <font color=\"#007000\">")
+						.append(" ")
 						.append(el.nome)
-						.append("</font></h3>")
+						.append("</font></p>")
 						.append("\n<p>").append(parseTextElements(el.desc)).append("</p>");
 				});
 				
