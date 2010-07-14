@@ -158,3 +158,4 @@ jsool.applyIf(Array.prototype,{
 });
 
 Array.MAX_LENGTH = 4294967295;//At least on firefox
+js.core.Array = Array;
