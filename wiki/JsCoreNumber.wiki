@@ -1,0 +1,40 @@
+#labels API
+<h1>Classe <font color="#1E4E8F">Number</font></h1>
+<p><strong>pacote: </strong>js.core</p>
+<p><strong>arquivo: </strong><a href="http://code.google.com/p/jsool/source/browse/trunk/jsool/js/core/Number.js"><font color="#1E4E8F">Number.js</font></a></p>
+<p><strong>extende: </strong><font color="#1E4E8F">[JsCoreObject js.core.Object]</font></p>
+----
+Representa um numero inteiro ou decimal.
+----
+
+<h2>Atributos:</h2>
+----
+<p><font color="#1E4E8F">[JsCoreNumber js.core.Number] MAX_VALUE</font></p>
+<p>Valor maximo de um numero.</p>
+----
+<p><font color="#1E4E8F">[JsCoreNumber js.core.Number] MIN_VALUE</font></p>
+<p>Valor minimo de um numero.</p>
+----
+<p><font color="#1E4E8F">[JsCoreNumber js.core.Number] NEGATIVE_INFINITY</font></p>
+<p>Infinito negativo.</p>
+----
+<p><font color="#1E4E8F">[JsCoreNumber js.core.Number] NaN</font></p>
+<p>Not A Number</p>
+----
+<p><font color="#1E4E8F">[JsCoreNumber js.core.Number] POSITIVE_INFINITY</font></p>
+<p>Infinito positivo.</p>
+----
+
+<h2>Métodos Estáticos</h2>
+----
+<p><font color="#1E4E8F"><strong><font face="monospace" size="3" color="#7F0055">boolean</font></strong> isNumber([JsCoreObject js.core.Object] objeto)</font></p><p>Retorna <strong><font face="monospace" size="3" color="#7F0055">true</font></strong> caso o _objeto_ seja um numero.</p>
+----
+
+<h2>Métodos</h2>
+----
+<p><font color="#1E4E8F">[JsCoreString js.core.String] toExponential([JsCoreNumber js.core.Number] x)</font></p><p>Retorna uma string representando o numero em notação exponencial.</p>
+----
+<p><font color="#1E4E8F">[JsCoreString js.core.String] toFixed([JsCoreNumber js.core.Number] x)</font></p><p>Retorna uma string representando o numero com casas decimais fixas definidas por _x_.</p>
+----
+<p><font color="#1E4E8F">[JsCoreString js.core.String] toString([JsCoreNumber js.core.Number] base)</font></p><p>Retorna uma string representando o numero com a base numerica definida por _base_.</p>
+----
