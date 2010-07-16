@@ -45,6 +45,14 @@ js.core.EventManager = (function create_event_manager(){
 		
 		var handler = function(event){
 			event = event || window.event;
+			if(jsool.isIE){
+				event.target = event.srcElement;
+				event.x = event.clientX+document.body.scrollLeft;
+				event.y = event.clientY+document.body.scrollTop;
+			}else{
+				event.x = event.pageX;
+				event.y = event.pageY;
+			}
 			fn.call(scope, event);
 		};
 		
