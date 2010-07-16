@@ -49,7 +49,7 @@ js.core.EventManager = (function create_event_manager(){
 				original: event,
 				x: jsool.isIE ? (event.x || event.clientX+document.body.scrollLeft) : event.pageX,
 				y: jsool.isIE ? (event.y || event.clientY+document.body.scrollTop) : event.pageY,
-				source: event.taget || event.source || event.srcElement,
+				source: event.target || event.source || event.srcElement,
 				timestamp: jsool.time(),
 				type: event.type
 			};
