@@ -143,7 +143,8 @@ js.flux.UIManager = (function(){
 		}
 		
 		if(currentOver){
-			currentOver.fireEvent(jsool.apply({},{x:pos.x,y:pos.y,type:"mouseout"},event),currentOver);
+			event.type = "mouseout";
+			currentOver.fireEvent(event,currentOver);
 			currentOver = null;
 			return true;
 		}
