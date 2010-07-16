@@ -1,24 +1,57 @@
 jsool.namespace("js.flux.laf");
 
-js.flux.laf.Soft = {
-	FONT_COLOR: '#000000',
-	FONT_FACE: 'Tahoma',
-	FONT_SIZE: 12,
+js.flux.laf.Soft = (function(){
+	//COLORS
+	var WHITE = "#FFF",
+		BLUE_1 = "#75A3DC",
+		BLUE_2 = "#5082C8",
+		BLUE_3 = "#3267B8",
+		GREEN_1 = "#99CC00",
+		GRAY_1 = "#D0D0D0",
+	//FONTS	
+		TAHOMA = "Tahoma";
+
+	var button = {
+		body:{
+			color:BLUE_1,
+			pressed:BLUE_2
+		},
+		font:{
+			face: TAHOMA,
+			size: 12,
+			color: WHITE
+		},
+		border:{
+			color: BLUE_3,
+			over: BLUE_3,
+			focus: BLUE_3
+		}
+	},
 	
-	BUTTON_BODY_COLOR: '#BBCCFF',
-	BUTTON_BODY_PRESSED: '#EFF3FA',
-	BUTTON_BORDER_COLOR: '#6688EE',
-	BUTTON_BORDER_FOCUS: '#6688EE',
-	BUTTON_BORDER_OVER: '#6688EE',
-	BUTTON_BORDER_RADIUS: 2,
-	BUTTON_BORDER_WIDTH: 1,
+	checkbox = {
+		body:{
+			color: WHITE,
+			checked: GREEN_1
+		},
+		border:{
+			color: BLUE_3
+		}
+	},
 	
-	CONTAINER_BODY_COLOR: '#FFFFFF',
-	CONTAINER_BORDER_COLOR: '#898C95',
-	CONTAINER_BORDER_RADIUS: 2,
-	CONTAINER_BORDER_WIDTH: 1,
+	container = {
+		body:{
+			color: WHITE
+		},
+		border:{
+			color: GRAY_1
+		}
+	};
 	
-	CHECKBOX_CHECK: "#D3DBEA",
 	
-	SELECTION: "#C8E9FB"
-};
+	
+	return {
+		button: button,
+		checkbox: checkbox,
+		container: container
+	};
+})();

@@ -232,7 +232,8 @@ js.flux.UIManager = (function(){
 		try{
 			root.updateUI(context);
 		}catch(e){
-			throw new js.core.Exception(e.toString());
+			var b = {};
+			throw new js.core.Exception("An error occurred while updating the UI",{type:"js.flux.UIManager",cls:{prototype:{updateUI:b}}},{callee:b},e);
 		}
 	}
 	

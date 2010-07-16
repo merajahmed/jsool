@@ -33,11 +33,11 @@ jsool.namespace("js.flux");
 
 js.flux.CheckBox = $extends(js.flux.ToggleButton,{
 	paint: function(ctx){
-		var laf = js.flux.UIManager.laf;
+		var laf = js.flux.UIManager.laf.checkbox;
 		
-		ctx.lineWidth = laf.BUTTON_BORDER_WIDTH;
-		ctx.lineStyle = laf.BUTTON_BORDER_COLOR;
-		ctx.fillStyle = "white";
+		ctx.lineWidth = 1;
+		ctx.lineStyle = laf.border.color;
+		ctx.fillStyle = laf.body.color;
 		
 		ctx.beginPath();
 		ctx.rect(this.x, this.y, 10,10);
@@ -46,7 +46,7 @@ js.flux.CheckBox = $extends(js.flux.ToggleButton,{
 		
 		if(this.pressed){
 			ctx.beginPath();
-			ctx.fillStyle = laf.CHECKBOX_CHECK;
+			ctx.fillStyle = laf.body.checked;
 			ctx.rect(this.x+1, this.y+1, 8,8);
 			ctx.fill();
 		}

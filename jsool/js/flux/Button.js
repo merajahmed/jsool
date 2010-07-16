@@ -52,9 +52,8 @@ js.flux.Button = $extends(js.flux.Component,{
 	},
 	paint: function(ctx){
 		var UIM = js.flux.UIManager,
-			laf = UIM.laf,
-			font = laf.FONT_SIZE,
-			radius = laf.BUTTON_BORDER_RADIUS,
+			laf = UIM.laf.button,
+			font = laf.font,
 			x = this.x,
 			y = this.y,
 			w = this.width,
@@ -62,38 +61,34 @@ js.flux.Button = $extends(js.flux.Component,{
 			text = this.text;
 		
 		if(this.pressed){
-			ctx.fillStyle = laf.BUTTON_BODY_PRESSED;
+			ctx.fillStyle = laf.body.pressed;
 		}else{
-			ctx.fillStyle = laf.BUTTON_BODY_COLOR;
+			ctx.fillStyle = laf.body.color;
 		}
-		ctx.strokeStyle = laf.BUTTON_BORDER_COLOR;
-		ctx.lineWidth = laf.BUTTON_BORDER_WIDTH;
-		
-		//Button body
-		//ctx.drawRoundRect(x+1,y+1,w-2,h-2,radius);
-		ctx.drawRect(x+1,y+1,w-2,h-2,radius);
+		ctx.strokeStyle = laf.border.color;
+		ctx.lineWidth = 1;
+
+		ctx.drawRect(x+1,y+1,w-2,h-2);
 		
 		var textW = ctx.measureText(text).width;
 		
 		var xCenter = Math.max(0, (w-textW)/2);
-		var yCenter = Math.max(0, (h-font)/2);
+		var yCenter = Math.max(0, (h-font.size)/2);
 		
 		ctx.textBaseline = js.canvas.TextBaseline.TOP;
-		ctx.font = font+'px '+laf.FONT_FACE;
-		ctx.fillStyle = laf.FONT_COLOR;
+		ctx.font = font.size + "px " + font.face;
+		ctx.fillStyle = font.color;
 		ctx.fillText(text,x+xCenter+1,y+yCenter+1,w-2);
 		
 		if(!this.pressed){
 			if(this.mouseover||this.paintOver){
-				ctx.lineCap = js.canvas.Canvas.SQUARE;
-				ctx.strokeStyle = laf.BUTTON_BORDER_OVER;
+				ctx.strokeStyle = laf.border.over;
 				ctx.beginPath();
 				ctx.rect(x+2,y+2,w-4,h-4);
 				ctx.stroke();
 				this.paintOver = false;
 			}else if(this.focused || this.paintFocus){
-				ctx.lineCap = js.canvas.Canvas.SQUARE;
-				ctx.strokeStyle = laf.BUTTON_BORDER_FOCUS;
+				ctx.strokeStyle = laf.border.focus;
 				ctx.beginPath();
 				ctx.rect(x+2,y+2,w-4,h-4);
 				ctx.stroke();
