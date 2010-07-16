@@ -45,15 +45,15 @@ js.core.EventManager = (function create_event_manager(){
 		
 		var handler = function(event){
 			event = event || window.event;
-			if(jsool.isIE){
-				event.target = event.srcElement;
-				event.x = event.clientX+document.body.scrollLeft;
-				event.y = event.clientY+document.body.scrollTop;
-			}else{
-				event.x = event.pageX;
-				event.y = event.pageY;
-			}
-			fn.call(scope, event);
+			var ev = {
+				original: event,
+				x: jsool.isIE ? (event.x || event.clientX+document.body.scrollLeft) : event.pageX,
+				y: jsool.isIE ? (event.y || event.clientY+document.body.scrollTop) : event.pageY,
+				source: event.taget || event.source || event.srcElement,
+				timestamp: jsool.time(),
+				type: event.type
+			};
+			fn.call(scope, ev);
 		};
 		
 		hs.push({
