@@ -90,14 +90,8 @@ js.flux.UIManager = (function(){
 		
 		//ajust the position
 		var pos,comp,ev,c;
-		if(jsool.isIE){
-			pos = {x:event.clientX+document.body.scrollLeft,
-					y:event.clientY+document.body.scrollTop};
-		}else{
-			pos = {x:event.pageX,y:event.pageY};
-		}
 			
-		if((c = root.getComponentAt(pos.x,pos.y)) && c != root){
+		if((c = root.getComponentAt(event.x,event.y)) && c != root){
 			
 			//Deals with mousemove, mouseover and mouseout events
 			if(event.type === "mousemove"){
@@ -111,8 +105,6 @@ js.flux.UIManager = (function(){
 				
 				if(currentOver != c){
 					var ev = {
-						x: pos.x,
-						y: pos.y,
 						type: "mouseout",
 						source: c,
 						timestamp: event.timestamp
@@ -126,7 +118,7 @@ js.flux.UIManager = (function(){
 				currentOver = c;
 			}else{
 				//Deals with most events events
-				ev = jsool.apply({},pos,event);
+				ev = jsool.apply({},event);
 				c.fireEvent(ev,c);
 				
 				//Deals with focus and lostfocus events
