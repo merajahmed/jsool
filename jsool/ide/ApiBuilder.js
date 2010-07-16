@@ -36,7 +36,7 @@ jsool.onReady(function(){
 	remove = "<span class=\"remove\">[-]</span>";
 	
 	function lineRemover(ev){
-		var t = ev.target,
+		var t = ev.source,
 			p = t.parentNode;
 		if(p.tagName == "TR" && t.tagName == "SPAN"){
 			this.remove(p);
