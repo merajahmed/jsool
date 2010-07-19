@@ -307,3 +307,11 @@ jsool.$extends = function(superclass, prototype, type){
 };
 
 var $extends = jsool.$extends;
+
+Boolean.prototype.instanceOf = function(clazz){
+	return clazz === Boolean;
+};
+
+Function.prototype.instanceOf = function(clazz){
+	return clazz === Function;
+};

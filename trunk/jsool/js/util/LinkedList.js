@@ -34,7 +34,8 @@ jsool.namespace("js.util");
 js.util.LinkedList = $extends(js.util.List, {
 	cons: function(){
 		this.header = {element: null, next: null, previous: null};
-		this.header.next = this.header.previous = this.header;
+		this.header.next = this.header;
+		this.header.previous = this.header;
 	},
 	header: null,
 	last: null,
@@ -93,14 +94,17 @@ js.util.LinkedList = $extends(js.util.List, {
 		e.element = obj;
 	},
 	remove: function(obj){
-		if(typeof obj == 'number')
+		if(typeof obj == 'number'){
 			this._remove(this._entry(obj));
-		else if(typeof obj == 'object')
-			for (var e = this.header.next; e != this.header; e = e.next) {
-                if (obj == e.element) {
+		}else{
+			var e = this.header.next;
+			for (;e != this.header; e = e.next) {
+                if (e.element === obj) {
                     this._remove(e);
+                    return;
                 }
             }
+		}
 	},
 	clear: function(){
 		var e = this.header.next;

@@ -3,59 +3,72 @@ jsool.namespace("js.util");
 js.util.JSON = (function(){
 	var useNative = window.JSON && window.JSON.parse && window.JSON.stringify;
 	
-	
-	var decodeString,
-		encodeObject;
-	//FORCE MY CODE
-	if(false && useNative){
+	if(useNative){
 		var nat = window.JSON;
-		decodeString = function(string){
-			return nat.parse(string);
-		};
-		
-		encodeObject = function(object){
-			return nat.stringify(object);
-		};
+		return {
+			encode: function(object){
+				return nat.stringify(object);
+			},
+			decode: function(string){
+				return nat.parse(string);
+			}
+		}; 
 	}else{
-		decodeString = function(string){
-			return window.eval("("+string+")");
-		};
+		function encodeArray(a,b){
+			b.append("[");
+			for(var i=0,e;e=a[i++];){
+				if(i>1){
+					b.append(",");
+				}
+				encodeObject(e,b);
+			}
+			b.append("]");
+		}
 		
-		encodeObject = function(o,b){
-			b = b || new js.util.StringBuilder();
-			var type = typeof o,
-				t;
+		var quote = "\"";
+		
+		function encodeString(s,b){
+			b.append(quote + String(s) + quote);
+		}
+		
+		function encodeObject(o,b){
+			var type = typeof o,t, first = true,v;
 			if(type === "undefined" || o === null){
-				return null;
+				b.append(null);
 			}else if(type === "number"){
-				return String(o);
+				b.append(String(o));
 			}else if(type === "boolean"){
-				return String(o);
+				b.append(o ? "true" : "false");
 			}else if(Array.isArray(o)){
-				return encodeArray(o,b);
+				encodeArray(o,b);
+			}else if(type === "string"){
+				encodeString(o,b);
 			}else if(type === "object"){
 				b.append("{");
 				for(var p in o){
-					b.append(p)
-					.append(":")
-					.append(encodeObject(o[p],b));
+					v = o[p];
+					if(v != null && v !== 0 && typeof v !== "function"){
+						if(!first){
+							b.append(",");
+						}
+						b.append("\"").append(p).append("\":");
+						encodeObject(v,b);
+						first = false;
+					}
 				}
 				b.append("}");
 			}
-			return b.toString();
+		}
+		
+		return {
+			decode: function(string){
+				return window.eval("("+string+")");
+			},
+			encode: function(object){
+				var b = new js.util.StringBuilder();
+				encodeObject(object, b);
+				return b.toString();
+			}
 		};
 	}
-	
-	function encodeArray(a,b){
-		b.append("[");
-		for(var i=0,e;e=a[i++];){
-			b.append(encodeObject(e));
-		}
-		b.append("]");
-	}
-	
-	return{
-		encode: encodeObject,
-		decode: decodeString
-	};
 })();
