@@ -2,6 +2,7 @@ jsool.namespace("js.dom");
 
 js.dom.Helper = (function create_helper(){
 	var DOC = window.document,
+		EventManager = js.core.EventManager,
 		BODY,
 		proxy;
 	
@@ -48,7 +49,7 @@ js.dom.Helper = (function create_helper(){
 				el = DOC.createElement(html.tag || "div");
 				
 				jsool.iterate(html,function(attr, val){
-					if(!(/tag|style|html|children/).test(attr)){
+					if(!(/(tag|style|html|children)/).test(attr)){
 						el[attr] = val;
 					}
 				});

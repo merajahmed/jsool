@@ -33,26 +33,48 @@ jsool.namespace("js.core");
 
 js.core.EventManager = (function create_event_manager(){
 		
-	var elsMap = {};
+	var elsMap = {},
+	
+	safari = {
+		3 : 13, // enter
+        63234 : 37, // left
+        63235 : 39, // right
+        63232 : 38, // up
+        63233 : 40, // down
+        63276 : 33, // page up
+        63277 : 34, // page down
+        63272 : 46, // delete
+        63273 : 36, // home
+        63275 : 35  // end
+	},
+	
+	buttons = jsool.isIE ? {1:0,4:1,2:2} : //IE
+			(jsool.isWebKit ? {1:0,2:1,3:2} : // WebKit
+			{0:0,1:1,2:2}); //Mozilla
 	
 	// Adds an event listener to a DOM element
 	function addListener(el, ev, fn, scope){
-		var id = jsool.id(el),//The id of the element
-			elEvs = elsMap[id] = elsMap[id] || {},//All the registered events of the element
-			hs = elEvs[ev] = elEvs[ev] || [];//All handlers registered for the event
+		var id = jsool.id(el), //The id of the element
+			elEvs = elsMap[id] = elsMap[id] || {}, //All the registered events of the element
+			hs = elEvs[ev] = elEvs[ev] || []; //All handlers registered for the event
 		
 		scope = scope || el;
 		
 		var handler = function(event){
 			event = event || window.event;
+			
+			//Hardcore event normalization
 			var ev = {
 				original: event,
 				x: jsool.isIE ? (event.x || event.clientX+document.body.scrollLeft) : event.pageX,
 				y: jsool.isIE ? (event.y || event.clientY+document.body.scrollTop) : event.pageY,
 				source: event.target || event.source || event.srcElement,
-				timestamp: jsool.time(),
-				type: event.type
+				type: event.type,
+				key: jsool.isSafari ? safari[event.charCode || event.keyCode] : event.charCode || event.keyCode,
+				button: event.button || buttons[event.which]
 			};
+			//Call handler
+			
 			fn.call(scope, ev);
 		};
 		
@@ -117,9 +139,6 @@ js.core.EventManager = (function create_event_manager(){
 		un: removeListener,
 		removeListener: removeListener,
 		destroy: detroyListeners,
-		detroyListeners: detroyListeners,
-		isDomEvent: function(name){
-			return name.match(domEventsRe) != null;
-		}
+		detroyListeners: detroyListeners
 	};
 })();
