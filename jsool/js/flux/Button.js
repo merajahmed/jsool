@@ -88,7 +88,7 @@ js.flux.Button = $extends(js.flux.Component,{
 				ctx.stroke();
 				this.paintOver = false;
 			}else if(this.focused || this.paintFocus){
-				ctx.strokeStyle = laf.border.focus;
+				ctx.strokeStyle = laf.border.focus;				
 				ctx.beginPath();
 				ctx.rect(x+2,y+2,w-4,h-4);
 				ctx.stroke();
