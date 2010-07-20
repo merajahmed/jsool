@@ -113,19 +113,19 @@ js.flux.UIManager = (function(){
 						currentOver.fireEvent(ev,currentOver);
 					}
 					ev.type = "mouseover";
-					c.fireEvent(ev,c);
+					c.fireEvent(ev);
 				}
 				currentOver = c;
 			}else{
 				//Deals with most events events
-				ev = jsool.apply({},event);
-				c.fireEvent(ev,c);
+				ev = jsool.applyIf({source:c},event);
+				c.fireEvent(ev);
 				
 				//Deals with focus and lostfocus events
 				if(c.canFocus && (event.type === "click" || event.type === "dblclick")){
 					if(focused){
 						ev.type = "lostfocus";
-						focused.fireEvent(ev,c);
+						focused.fireEvent(ev);
 					}
 					
 					ev.type = "focus";
@@ -144,7 +144,7 @@ js.flux.UIManager = (function(){
 		
 		if(currentOver){
 			event.type = "mouseout";
-			currentOver.fireEvent(event,currentOver);
+			currentOver.fireEvent(event);
 			currentOver = null;
 			return true;
 		}

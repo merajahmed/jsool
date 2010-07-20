@@ -1,58 +1,94 @@
 jsool.namespace("js.net");
 
+/*
+ * Para consulta
+ * 
+ * http://code.google.com/p/jqueryjs/source/browse/trunk/jquery/src/ajax.js
+ * 
+ * */
+
 (function creates_RequestDispatcher(){
 	js.net.RequestDispatcher = new js.util.Observable();
 	
 	var RD = js.net.RequestDispatcher,
-		dispatcher = null,
-		requestQueue = [],
 		running = false;
 	
+	RD.addEvent("start","send","abort","failure","success");
+	
+	var defaultConfig = {
+		Accept: "*/*",
+		method: "GET",
+		contentType: "application/x-www-form-urlencoded",
+		async: true,
+		cache:true,
+		timeout: 0,
+		url: window.location.href
+	};
+	
 	//Prepares the XMLHttpRequest object
-	function prepareDispatcher(){
-		if(dispatcher) return;
-		if(window.XMLHttpRequest){
-			try{
-				dispatcher = new XMLHttpRequest();
-			}catch(e){
-				throw new js.core.Exception(e.toString());
-			}
-		}else{
-			try{
-				dispatcher = new ActiveXObject("Msxml2.XMLHTTP");
-            }catch(e){
-                try{
-                	dispatcher = new ActiveXObject("Microsoft.XMLHTTP");
-                }catch(E){
-                    throw new js.core.Exception("Could not create XMLHTTP ActiveXObject object");
-                }
-            }
-
-		}
+	function createDispatcher(){
+		return window.ActiveXObject ?
+			new ActiveXObject("Microsoft.XMLHTTP") :
+			new XMLHttpRequest();
 	}
 	
-	function doDispatch(request){
-		if(!dispatcher) prepareDispatcher();
+	function readyStateChange(){
 		
-		dispatcher.open(request.method||RD.method, request.url, jsool.isDefined(request.async)?request.async:RD.async);
-		//dispatcher.send();
+	}
+	
+	function dispatch(c){
+		if(!c)return;
+		running = true;
+		
+		// Announce we are preparing a request
+		RD.fireEvent("start");
+		
+		// Create a dispatcher
+		var d = c.request = createDispatcher();
+		
+		// Apply user configuration
+		jsool.applyIf(c,defaultConfig);
+		
+		// Prepare error handler
+		
+		this.onfailure = function(err,req){
+			if(c.callback)c.callback("failure",err,req);
+			if(c.failure)c.failure("failure",err,req);
+		};
+		try{
+			
+			// Opening Socket
+			if(c.username){
+				d.open(c.method,c.url,c.async,c.username,c.password);
+			}else{
+				d.open(c.method,c.url,c.async);
+			}
+			
+			d.setRequestHeader("Content-Type", c.contentType);
+			d.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+			d.setRequestHeader("Accept", c.accept);
+			
+		}catch(e){
+			c.error = e;
+			RD.fireEvent("failure",c);
+		}
+		
+		RD.fireEvent("send");
+
+		try{
+			d.send(c.method === "POST" || c.method === "PUT" ? c.load : null);
+			
+			if(!c.async){
+				if(c.callback)c.callback("success",c);
+			}
+		}catch(e){
+			c.error = e;
+			RD.fireEvent("failure",c);
+		}
 	}
 	
 	jsool.apply(RD,{
-		queueRequests: false,
 		type: "js.net.RequestDispatcher",
-		method: "GET",
-		async: true,
-		dispatch: function(request){
-			if(!this.dispatcher)this.prepareDispatcher();
-			
-			if(this.queueRequests){
-				this.queue.push(request);
-				dispatchQueue();
-			}else{
-				doDispatch(request);
-			}
-		}
+		dispatch: dispatch
 	});
-	
 })();

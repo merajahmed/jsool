@@ -40,17 +40,17 @@ js.util.Observable = $extends(js.core.Object, {
 		if(Array.isArray(args[0])){
 			var ev = args[0];
 			for(var i=0,h; h = ev[i++];){
-				this.events[h] = true;
+				this.events[h] = [];
 			}
 		}else if(args.length > 1){
 			var that = this;
 			Array.iterate(args,function(i,o){
 				if(!(o in that.events)){
-					that.events[o] = true;
+					that.events[o] = [];
 				}
 			});
 		}else if(args.length == 1 && !this.events[args[0]]){
-			this.events[args[0]] = true;
+			this.events[args[0]] = [];
 		}
 	},
 	on: function(listener,fn,scope){

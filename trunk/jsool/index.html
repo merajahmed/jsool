@@ -39,15 +39,13 @@
 	<script type="text/javascript" src="js/dom/CompositeElement.js"></script>
 	
 	<script type="text/javascript" src="js/canvas/Canvas.js"></script>
-
-	<script type="text/javascript" src="js/net/HttpRequest.js"></script>
-	<script type="text/javascript" src="js/net/HttpRequestDispatcher.js"></script>
+	
 	<script type="text/javascript" src="js/net/RequestDispatcher.js"></script>
 	
-	<script type="text/javascript" src="js/data/Field.js"></script>
+	<!-- <script type="text/javascript" src="js/data/Field.js"></script>
 	<script type="text/javascript" src="js/data/Record.js"></script>
 	<script type="text/javascript" src="js/data/Type.js"></script>
-	<script type="text/javascript" src="js/data/Store.js"></script>
+	<script type="text/javascript" src="js/data/Store.js"></script> -->
 	
 	<script type="text/javascript" src="js/flux/laf/Soft.js"></script>
 	
@@ -71,7 +69,7 @@
 	<script type="text/javascript">
 	
 	jsool.onReady(function(){
-		var raiz,b,c,d,e,f,b1;
+		var raiz;
 
 		/*
 		* Para a atualizacao da tela e do lancamento de eventos
@@ -82,72 +80,35 @@
 		raiz = new js.flux.Container();
 		raiz.setX(10);
 		raiz.setY(10);
-		raiz.setWidth(650);
+		raiz.setWidth(150);
 		raiz.setHeight(300);
 
 		//Adiciona container a raiz da interface
 		js.flux.UIManager.add(raiz);
 
-		//Define layout
-		raiz.setLayout(new js.flux.BorderLayout());		
+		// Define layout do container principal
+		raiz.setLayout(new js.flux.ColLayout());
+
+		var teste1 = new js.flux.Button("RequestDispatcher");
+
+		raiz.add(teste1);
+
+		teste1.setHeight(40);
+
+		teste1.on("click",function(a,b,c){
+			js.net.RequestDispatcher.dispatch({
+				async: false,
+				callback: function(result,req){
+					if(result == "success"){
+						console.info(req.request.responseXML);
+					}
+				}
+			});
+		});
 		
-		//Adiciona o botao ao container principal
-		b = new js.flux.Button("Largo");
-		raiz.add(b,"TOP");
-
-
-		//CONTAINER DA BASE
-		c = new js.flux.Container();
-		raiz.add(c,"BOTTOM");
-		
-		c.add(new js.flux.Button("Btm 1"));
-		c.add(new js.flux.Button("Btm 2"));
-		c.add(new js.flux.Button("Btm 3"));
-		c.add(new js.flux.Button("Btm 4"));
-		
-		b = new js.flux.Button("Botao Grande 5");
-		b.setWidth(200);				
-		c.add(b);
-				
-		c.add(new js.flux.Button("Btm 6"));
-		c.setHeight(40);
-		
-		//Define um layout diferente para este container
-		c.setLayout(new js.flux.RowLayout());
-
-		//CONTAINER DA ESQUERDA
-		d = new js.flux.Container();
-		raiz.add(d,"LEFT");
-		
-		d.add(new js.flux.Button("BT 4"));
-		d.add(new js.flux.ToggleButton("BT 5"));
-		d.add(new js.flux.CheckBox("lolly"));
-
-		//Mais um layout
-		d.setLayout(new js.flux.ColLayout());
-		d.setWidth(120);
-
-		//Adiciona botao a direita do container principal
-		e = new js.flux.Button("Alto");
-		raiz.add(e,"RIGHT");
-
-		//CONTAINER DO CENTRO
-		f = new js.flux.Container();
-		raiz.add(f,"CENTER");		
-
-		b1 = new js.flux.Button("b1");
-
-		f.add(b1);
-
 		//Destrava interface para atualizar a tela e lancar eventos
 		js.flux.UIManager.unlock();
 	});
-
-	function testRaze(){
-		var t = jsool.time();
-		for(var i = 500;i--;Raze.compile("#cool table:empty td tr:first-child.daslol"));
-		return jsool.time()-t;
-	}
 	
 	</script>
 
