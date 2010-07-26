@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 C:\\Documents and Settings\\n068815\\Desktop\\ANTLR\\examples-v3\\JavaScript\\Java\\Java.g 2010-06-30 14:48:48
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 C:\\Documents and Settings\\n068815\\Desktop\\ANTLR\\examples-v3\\JavaScript\\Java\\Java.g 2010-07-21 11:11:20
 
 var JavaLexer = function(input, state) {
 // alternate constructor @todo
