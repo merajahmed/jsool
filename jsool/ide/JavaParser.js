@@ -1,3 +1,84 @@
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 C:\\Documents and Settings\\n068815\\Desktop\\ANTLR\\examples-v3\\JavaScript\\Java\\Java.g 2010-07-21 11:11:20
+
+/** A Java 1.5 grammar for ANTLR v3 derived from the spec
+ *
+ *  This is a very close representation of the spec; the changes
+ *  are comestic (remove left recursion) and also fixes (the spec
+ *  isn't exactly perfect).  I have run this on the 1.4.2 source
+ *  and some nasty looking enums from 1.5, but have not really
+ *  tested for 1.5 compatibility.
+ *
+ *  I built this with: java -Xmx100M org.antlr.Tool java.g 
+ *  and got two errors that are ok (for now):
+ *  java.g:691:9: Decision can match input such as
+ *    "'0'..'9'{'E', 'e'}{'+', '-'}'0'..'9'{'D', 'F', 'd', 'f'}"
+ *    using multiple alternatives: 3, 4
+ *  As a result, alternative(s) 4 were disabled for that input
+ *  java.g:734:35: Decision can match input such as "{'$', 'A'..'Z',
+ *    '_', 'a'..'z', '\u00C0'..'\u00D6', '\u00D8'..'\u00F6',
+ *    '\u00F8'..'\u1FFF', '\u3040'..'\u318F', '\u3300'..'\u337F',
+ *    '\u3400'..'\u3D2D', '\u4E00'..'\u9FFF', '\uF900'..'\uFAFF'}"
+ *    using multiple alternatives: 1, 2
+ *  As a result, alternative(s) 2 were disabled for that input
+ *
+ *  You can turn enum on/off as a keyword :)
+ *
+ *  Version 1.0 -- initial release July 5, 2006 (requires 3.0b2 or higher)
+ *
+ *  Primary author: Terence Parr, July 2006
+ *
+ *  Version 1.0.1 -- corrections by Koen Vanderkimpen & Marko van Dooren,
+ *      October 25, 2006;
+ *      fixed normalInterfaceDeclaration: now uses typeParameters instead
+ *          of typeParameter (according to JLS, 3rd edition)
+ *      fixed castExpression: no longer allows expression next to type
+ *          (according to semantics in JLS, in contrast with syntax in JLS)
+ *
+ *  Version 1.0.2 -- Terence Parr, Nov 27, 2006
+ *      java spec I built this from had some bizarre for-loop control.
+ *          Looked weird and so I looked elsewhere...Yep, it's messed up.
+ *          simplified.
+ *
+ *  Version 1.0.3 -- Chris Hogue, Feb 26, 2007
+ *      Factored out an annotationName rule and used it in the annotation rule.
+ *          Not sure why, but typeName wasn't recognizing references to inner
+ *          annotations (e.g. @InterfaceName.InnerAnnotation())
+ *      Factored out the elementValue section of an annotation reference.  Created 
+ *          elementValuePair and elementValuePairs rules, then used them in the 
+ *          annotation rule.  Allows it to recognize annotation references with 
+ *          multiple, comma separated attributes.
+ *      Updated elementValueArrayInitializer so that it allows multiple elements.
+ *          (It was only allowing 0 or 1 element).
+ *      Updated localVariableDeclaration to allow annotations.  Interestingly the JLS
+ *          doesn't appear to indicate this is legal, but it does work as of at least
+ *          JDK 1.5.0_06.
+ *      Moved the Identifier portion of annotationTypeElementRest to annotationMethodRest.
+ *          Because annotationConstantRest already references variableDeclarator which 
+ *          has the Identifier portion in it, the parser would fail on constants in 
+ *          annotation definitions because it expected two identifiers.  
+ *      Added optional trailing ';' to the alternatives in annotationTypeElementRest.
+ *          Wouldn't handle an inner interface that has a trailing ';'.
+ *      Swapped the expression and type rule reference order in castExpression to 
+ *          make it check for genericized casts first.  It was failing to recognize a
+ *          statement like  "Class<Byte> TYPE = (Class<Byte>)...;" because it was seeing
+ *          'Class<Byte' in the cast expression as a less than expression, then failing 
+ *          on the '>'.
+ *      Changed createdName to use typeArguments instead of nonWildcardTypeArguments.
+ *          Again, JLS doesn't seem to allow this, but java.lang.Class has an example of
+ *          of this construct.
+ *      Changed the 'this' alternative in primary to allow 'identifierSuffix' rather than
+ *          just 'arguments'.  The case it couldn't handle was a call to an explicit
+ *          generic method invocation (e.g. this.<E>doSomething()).  Using identifierSuffix
+ *          may be overly aggressive--perhaps should create a more constrained thisSuffix rule?
+ * 		
+ *  Version 1.0.4 -- Hiroaki Nakamura, May 3, 2007
+ *
+ *	Fixed formalParameterDecls, localVariableDeclaration, forInit,
+ *	and forVarControl to use variableModifier* not 'final'? (annotation)?
+ *
+ *  Version 1.0.5 -- Terence, June 21, 2007
+ *	--a[i].foo didn't work. Fixed unaryExpression
+ */
 var JavaParser = function(input, state) {
     if (!state) {
         state = new org.antlr.runtime.RecognizerSharedState();
@@ -98,6 +179,9 @@ var JavaParser = function(input, state) {
 
         this.state.ruleMemo = {};
          
+         
+
+    /* @todo only create adaptor if output=AST */
     this.adaptor = new org.antlr.runtime.tree.CommonTreeAdaptor();
 
 };
@@ -355,6 +439,9 @@ org.antlr.lang.augmentObject(JavaParser.prototype, {
         });
         return;
     })(),
+
+    // C:\\Documents and Settings\\n068815\\Desktop\\ANTLR\\examples-v3\\JavaScript\\Java\\Java.g:98:1: compilationUnit : ( annotations )? ( packageDeclaration )? ( importDeclaration )* ( typeDeclaration )* ;
+    // $ANTLR start "compilationUnit"
     compilationUnit: function() {
         var retval = new JavaParser.compilationUnit_return();
         retval.start = this.input.LT(1);
@@ -369,12 +456,16 @@ org.antlr.lang.augmentObject(JavaParser.prototype, {
 
         try {
             if ( this.state.backtracking>0 && this.alreadyParsedRule(this.input, 1) ) { return retval; }
-          root_0 = this.adaptor.nil();
+            // C:\\Documents and Settings\\n068815\\Desktop\\ANTLR\\examples-v3\\JavaScript\\Java\\Java.g:99:2: ( ( annotations )? ( packageDeclaration )? ( importDeclaration )* ( typeDeclaration )* )
+            // C:\\Documents and Settings\\n068815\\Desktop\\ANTLR\\examples-v3\\JavaScript\\Java\\Java.g:99:4: ( annotations )? ( packageDeclaration )? ( importDeclaration )* ( typeDeclaration )*
+            root_0 = this.adaptor.nil();
 
+            // C:\\Documents and Settings\\n068815\\Desktop\\ANTLR\\examples-v3\\JavaScript\\Java\\Java.g:99:4: ( annotations )?
             var alt1=2;
             alt1 = this.dfa1.predict(this.input);
             switch (alt1) {
                 case 1 :
+                    // C:\\Documents and Settings\\n068815\\Desktop\\ANTLR\\examples-v3\\JavaScript\\Java\\Java.g:0:0: annotations
                     this.pushFollow(JavaParser.FOLLOW_annotations_in_compilationUnit66);
                     annotations1=this.annotations();
 
@@ -9439,7 +9530,7 @@ org.antlr.lang.augmentObject(JavaParser.prototype, {
                     var LA108_0 = this.input.LA(1);
 
                     if ( (LA108_0==76) ) {
-                        var LA108_1 = this.input.LA(2);
+                        var LA108_2 = this.input.LA(2);
 
                         if ( (this.synpred150_Java()) ) {
                             alt108=1;
