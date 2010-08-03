@@ -87,14 +87,22 @@ var jsool = (function create_jsool(){
 	
 	if(window.addEventListener){
 		window.addEventListener("load",function startup(){
-			jsool.start();
-			delete jsool.start;
+			
+			documentReady = true;
+			base.prepareSystem();
+			systemReady = true;
+			base.doReady();
+			
 			window.removeEventListener("load",arguments.callee,false);
 		},false);
 	}else{
 		window.onload = function startup(){
-			jsool.start();
-			delete jsool.start;
+
+			documentReady = true;
+			base.prepareSystem();
+			systemReady = true;
+			base.doReady();
+			
 			window.onload = null;
 		};
 	}
@@ -122,15 +130,6 @@ var jsool = (function create_jsool(){
 		 * returns tha system time in milli-seconds
 		 */
 		time: function(){return+new Date;},
-		/**
-		 * Starts the framework
-		 */
-		start: function(){
-			documentReady = true;
-			base.prepareSystem();
-			systemReady = true;
-			base.doReady();
-		},
 		/**
 		 * Checks if the page and framework is ready
 		 */

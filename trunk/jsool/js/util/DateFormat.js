@@ -53,8 +53,7 @@ jsool.namespace("js.util");
  * It provides format methods (Date -> text) and parse methods (text -> date)
  */
 js.util.DateFormat = $extends(js.core.Object,{
-	cons: function(pattern,locale){
-		this.setLocale(locale ? locale : js.util.Locale.DEFAULT);
+	cons: function(pattern){
 		this.pattern = pattern ? pattern : this.pattern;
 		
 		this.patternKeyMap = new js.util.HashMap();
@@ -67,10 +66,6 @@ js.util.DateFormat = $extends(js.core.Object,{
 	 * Default data pattern
 	 */
 	pattern: 'yyyy/mm/dd',
-	/**
-	 * The current locale
-	 */
-	locale: null,
 	/**
 	 * The compiled pattern
 	 */
@@ -99,19 +94,6 @@ js.util.DateFormat = $extends(js.core.Object,{
 			}
 		}
 		return formated;
-	},
-	/**
-	 * Set the DateFormat Locale
-	 */
-	setLocale: function(locale){
-		if(!locale.instanceOf(js.util.Locale)){
-			throw new js.core.Exception('Invalid argument: '+ locale, this, arguments);
-		}
-		this.locale = locale;
-		this.months = locale.months;
-		this.weekdays = locale.weekdays;
-		this.pattern = locale.datePattern;
-		this.compiled = null; 
 	},
 	/**
 	 * Compiles the current patten
@@ -171,15 +153,15 @@ js.util.DateFormat = $extends(js.core.Object,{
 	           
 	//FORMATING FUNCTIONS
 	getLongYear: function(date){return new String(date.getFullYear());},
-	getShortYear: function(date){var year = new String(date.getFullYear());return year.substring(2);},
+	getShortYear: function(date){return new String(date.getFullYear()).substring(2);},
 	getLongMonth: function(date){return this.months[date.getMonth()];},
-	getShortMonth: function(date){var month = this.months[date.getMonth()];return month.substring(0,3);},
+	getShortMonth: function(date){return this.months[date.getMonth()].substring(0,3);},
 	getLongNumericMonth: function(date){var month = new String(date.getMonth()+1);return (month.length < 2 ? '0'+month : month);},
 	getShortNumericMonth: function(date){return new String(date.getMonth()+1);},
 	getLongDay: function(date){var day = new String(date.getDate());return (day.length < 2 ? '0'+day : day);},
-	getShortDay: function(date){var day = new String(date.getDate());return day;},
+	getShortDay: function(date){return new String(date.getDate());},
 	getLongWeekday: function(date){return this.weekdays[date.getDay()];},
-	getShortWeekday: function(date){var day = this.weekdays[date.getDay()];return day.substring(0,3);},
+	getShortWeekday: function(date){return this.weekdays[date.getDay()].substring(0,3);},
 	
 	//PARSING FUNCTIONS
 	parseLongYear: function(string, date){
