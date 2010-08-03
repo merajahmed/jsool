@@ -5,7 +5,7 @@
 <title>Antlr-Javascript:Examples/Java</title>
 
 <!-- ANTLR includes -->
-<script type="text/javascript" src="../../lib/antlr3-all.js"></script>
+<script type="text/javascript" src="antlr3-all.js"></script>
 <script type="text/javascript" src="JavaLexer.js"></script>
 <script type="text/javascript" src="JavaParser.js"></script>
 <script type="text/javascript" src="JavaTreeProcesser.js"></script>
@@ -30,9 +30,9 @@
 			var parser = new JavaParser(tokens);
 			var result = parser.compilationUnit();
 			
-			JavaTreeProcesser.processTree(result.getTree());
+			//JavaTreeProcesser.processTree(result.getTree());
 			
-			console.info(tick()-start);
+			alert(tick()-start);
 		},0);
 	}
 	

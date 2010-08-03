@@ -1,4 +1,5 @@
 (function build_raze_2(raze){
+	"use strict";
 	if(!raze){
 		window.Raze = {};
 		raze = window.Raze; 

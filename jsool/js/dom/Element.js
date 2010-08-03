@@ -313,6 +313,7 @@ js.dom.Element = $extends(js.core.Object,{
 		for(var a in this.dom){
 			try{
 				this.dom[a] = null;
+				delete this.dom[a];
 			}catch(e){}
 		}
 		js.dom.Element.unCache(this);
@@ -337,12 +338,13 @@ js.dom.Element.attributes={
 };
 
 jsool.onSystemReady(function init_element(){
-	var cache = new js.util.HashMap();
+	"use strict";
+	var cache = {};
 	var El = js.dom.Element;
 	
 	El.get = function(el){
 		if(typeof el == 'string'){//Is an id
-			var cached = cache.get(el);
+			var cached = cache[el];
 			if(cached) return cached;
 			var dom = document.getElementById(el);
 			if(dom) return new js.dom.Element(dom);
@@ -360,15 +362,15 @@ jsool.onSystemReady(function init_element(){
 	
 	El.cache = function(el){
 		if(el.instanceOf(El)){
-			cache.put(el.getId(),el);
+			cache[el.getId()] = el;
 			return true;
 		}
 		return false;
 	};
 	
 	El.unCache = function(el){
-		if(el.instanceOf(EL)){
-			cache.remove(el);
+		if(el.instanceOf(El)){
+			delete cache[el.getId()];
 			return true;
 		}
 		return false;
