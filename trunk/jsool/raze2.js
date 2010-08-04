@@ -1,5 +1,4 @@
 (function build_raze_2(raze){
-	"use strict";
 	if(!raze){
 		window.Raze = {};
 		raze = window.Raze; 
@@ -49,10 +48,16 @@
 		return false;
 	}
 	
+	function filterElements(node){
+		return Array.prototype.filter.call(node.parentNode.childNodes,function(node){
+			return node.nodeType == 1;
+		});
+	}
+	
 	var pseudos = {
 		"root" : "!el.tagName.toUpperCase()===\"HTML\"",
-		"nth-child": "el.parentNode.childNodes[$arg]===el",
-		"first-child": "el.parentNode.childNodes[0]===el",
+		"nth-child": "filterElements(el)[$arg]===el",
+		"first-child": "filterElements(el)[0]===el",
 		"empty": "el.childNodes.length===0",
 		"enabled": "el.enabled",
 		"disabled": "!el.enabled",
@@ -70,7 +75,7 @@
 		o,
 		m,
 		fn,
-		s=["var q=function raze2Query$",++counter,"(ctx){var cs,ns,f,i,n,j,ch,r,at;"];
+		s=["var q=function raze2Query$",++counter,"(ctx){var cs,ns,f,i,n,j,ch,r,at,s;"];
 		
 		for(var i=0,f;f=filters[i++];){			
 			if(cache.filter[f]){
@@ -88,7 +93,7 @@
 					}else{
 						fn.push(fnGetNodes.replace(t,m[2]));
 					}
-					f = f.replace(m[0],e);
+					f=f.substring(m[0].length);
 				}else{
 					fn.push(fnGetNodes.replace(t,"*"));
 				}
@@ -102,18 +107,18 @@
 					
 					while(f.length>0){
 						before = f;
-						if((m=f.match(byIdRe))){
+						if((m=f.match(byIdRe))){//#id
 							fn.push("el.id=== \""+m[1]+"\"");
-							f=f.replace(m[0],e);
-						}else if((m=f.match(byClassRe))){
+							f=f.substring(m[0].length);
+						}else if((m=f.match(byClassRe))){//.class
 							fn.push("el.className.match(/\\b"+m[1]+"\\b/)");
-							f=f.replace(m[0],e);
+							f=f.substring(m[0].length);
 						}else
 						//if((m=f.match(plainTagRe))){
 						//	fn.push("el.tagName===\""+m[1].toUpperCase()+"\"");
 						//	f=f.replace(m[0],e);
 						//}else
-						if((m=f.match(byAttributeRe))){
+						if((m=f.match(byAttributeRe))){//[attr] || [attr==value]
 							var attr = m[1] == "class" ? "className" : m[1];
 							fn.push("(at=(el[\""+attr+"\"]||el.getAttribute(\""+attr+"\")))");
 							if(m[2]&&m[3]){
@@ -135,10 +140,10 @@
 									break;
 								}
 							}
-							f=f.replace(m[0],e);
-						}else if((m=f.match(pseudoRe))){
+							f=f.substring(m[0].length);
+						}else if((m=f.match(pseudoRe))){// :first-child, :nth-child ...
 							fn.push(pseudos[m[1]].replace("$arg",m[4]));
-							f=f.replace(m[0],e);
+							f=f.substring(m[0].length);
 						}
 						fn.push(" && ");
 						if(before == f){
