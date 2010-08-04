@@ -388,15 +388,15 @@ jsool.onSystemReady(function init_element(){
 	
 	jsool.queryNode = El.queryNode;
 	
-	El.BODY = new js.dom.Element(Raze.queryNode("body"));
+	js.dom.BODY = new js.dom.Element(Raze.queryNode("body"));
 	
 	var brw = js.core.Browser;
 	
 	if(jsool.isIE){
-		El.BODY.addClass('ie');
+		js.dom.BODY.addClass('ie');
 	}else if(jsool.isFF){
-		El.BODY.addClass('ff');
+		js.dom.BODY.addClass('ff');
 	}else if(jsool.isOpera){
-		El.BODY.addClass('opera');
+		js.dom.BODY.addClass('opera');
 	}
 });

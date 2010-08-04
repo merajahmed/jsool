@@ -75,7 +75,7 @@
 		o,
 		m,
 		fn,
-		s=["var q=function raze2Query$",++counter,"(ctx){var cs,ns,f,i,n,j,ch,r,at,s;"];
+		s=["var q=function raze2Query$",++counter,"(ctx){var cs,ns,f,i,n,j,ch,r,at;"];
 		
 		for(var i=0,f;f=filters[i++];){			
 			if(cache.filter[f]){
@@ -142,12 +142,16 @@
 							}
 							f=f.substring(m[0].length);
 						}else if((m=f.match(pseudoRe))){// :first-child, :nth-child ...
-							fn.push(pseudos[m[1]].replace("$arg",m[4]));
-							f=f.substring(m[0].length);
+							try{
+								fn.push(pseudos[m[1]].replace("$arg",m[4]));
+								f=f.substring(m[0].length);
+							}catch(e){
+								throw new (SyntaxError || Error)("unknown pseudo selector: "+sel+":"+m[1]);
+							}
 						}
 						fn.push(" && ");
 						if(before == f){
-							throw new Error("Syntax error: "+f);
+							throw new (SyntaxError ||  Error) ("syntax while compiling selector:\nselector: "+sel+"\ntolken: "+f+"\n");
 						}
 					}
 					fn.push("true){f.push(el);}}ctx=f};");
