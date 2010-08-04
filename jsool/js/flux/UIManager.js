@@ -63,7 +63,7 @@ js.flux.UIManager = (function(){
 		proxy = new js.canvas.Canvas();
 		context = proxy.getContext();
 		proxy.setClass('flux-proxy');
-		js.dom.Element.BODY.append(proxy);
+		js.dom.BODY.append(proxy);
 		
 		if(window.addEventListener){
 			window.addEventListener('resize',resize,false);
