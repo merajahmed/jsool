@@ -71,6 +71,7 @@
 		sel = sel.replace(/\[id=([\w\d-_]*)]/g,'#$1');
 		
 		var t = /[$]/g,
+		e = "", // IE bug fix
 		filters = sel.split(/\s+/),
 		o,
 		m,

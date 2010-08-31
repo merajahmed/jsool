@@ -22,17 +22,17 @@ js.dom.Helper = (function create_helper(){
 		BODY.appendChild(proxy);
 		proxy.innerHTML = string;
 		
-		var f = DOC.createDocumentFragment();
+		var f = [];
 		
 		Array.iterate(proxy.childNodes,function(i,el){
 			if(el.nodeType == 1){
-				f.appendChild(el);
+				f.push(el);
 			}
 		});
 		
 		proxy.innerHTML = "";
 		BODY.removeChild(proxy);
-		return f;
+		return f.length == 1 ? f[0] : f;
 	}
 	
 	return{
