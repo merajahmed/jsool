@@ -61,6 +61,7 @@ js.core.EventManager = (function create_event_manager(){
 		scope = scope || el;
 		
 		var handler = function(event){
+			var ret;
 			event = event || window.event;
 			
 			//Hardcore event normalization
@@ -75,7 +76,10 @@ js.core.EventManager = (function create_event_manager(){
 			};
 			//Call handler
 			
-			fn.call(scope, ev);
+			ret = fn.call(scope, ev);
+			if(typeof ret == "boolean" && !ret){
+				event.preventDefault();
+			}
 		};
 		
 		hs.push({
