@@ -74,11 +74,17 @@ js.core.EventManager = (function create_event_manager(){
 				key: jsool.isSafari ? safari[event.charCode || event.keyCode] : event.charCode || event.keyCode,
 				button: event.button || buttons[event.which]
 			};
-			//Call handler
 			
+			//Call handler			
 			ret = fn.call(scope, ev);
+			
 			if(typeof ret == "boolean" && !ret){
-				event.preventDefault();
+				if(event.preventDefault){
+					event.preventDefault();
+				}else{
+					event.returnValue = ret;
+					return ret;
+				}
 			}
 		};
 		
