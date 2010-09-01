@@ -7,7 +7,7 @@ js.dom.Helper = (function create_helper(){
 		proxy;
 	
 	function init(){
-		proxy = document.getElementById("jsool-proxy");
+		proxy = DOC.getElementById("jsool-proxy");
 		if(!proxy){
 			proxy = DOC.createElement("div");
 			proxy.style.display = "none";
@@ -27,6 +27,7 @@ js.dom.Helper = (function create_helper(){
 		Array.iterate(proxy.childNodes,function(i,el){
 			if(el.nodeType == 1){
 				f.push(el);
+				if(jsool.isIE) proxy.removeChild(el);
 			}
 		});
 		
