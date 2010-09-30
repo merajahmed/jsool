@@ -113,13 +113,19 @@ jsool.applyIf(Array.prototype,{
 	/**
 	 * Returns the index of a element
 	 */
-	indexOf: function(elt /*, from*/){
-		var len = this.length >>> 0;
-		var from = Number(arguments[1]) || 0;
-		from = (from < 0) ? Math.ceil(from) : Math.floor(from);
-		if (from < 0) from += len;
-		for (; from < len; from++){
-			if (from in this && this[from] === elt) return from;
+	indexOf: function(el){
+		if(el.equals){
+			for(var i=0,e;e=this[i];i++){
+				if(el.equals(e)){
+					return i;
+				}
+			}			
+		}else{
+			for(var i=0,e;e=this[i];i++){
+				if(el == e){
+					return i;
+				}
+			}
 		}
 		return -1;
 	},
