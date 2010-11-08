@@ -32,13 +32,11 @@ jsool.namespace("js.net");
 			new XMLHttpRequest();
 	}
 	
-	function readyStateChange(){
-		
-	}
-	
 	function dispatch(c){
 		if(!c)return;
 		running = true;
+		var state = -1,
+		requestWatcher;
 		
 		// Announce we are preparing a request
 		RD.fireEvent("start");
@@ -52,10 +50,32 @@ jsool.namespace("js.net");
 		// Prepare error handler
 		
 		this.onfailure = function(err,req){
+			window.clearInterval(requestWatcher);
 			if(c.callback)c.callback("failure",err,req);
-			if(c.failure)c.failure("failure",err,req);
+			if(c.failure)c.failure(err,req);
 		};
+		
+		var runningCheck = false;
+		
+		function checkState(){
+			if(runningCheck)return;
+			runningCheck = true;
+			if(d.readyState != state){
+				state = d.readyState;
+				if(state == 4){
+					
+					if(d.status == 200 ){//OK
+						
+					}
+					
+				}
+			}
+			runningCheck = false;
+		}
+		
 		try{
+			
+			
 			
 			// Opening Socket
 			if(c.username){
