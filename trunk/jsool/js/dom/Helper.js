@@ -65,7 +65,7 @@ js.dom.Helper = (function create_helper(){
 					el.innerHTML = html.html;
 				}
 			}
-			
+			parent = parent | html.parent;
 			if(parent){
 				parent.append ? parent.append(el):parent.appendChild(el);
 			}
