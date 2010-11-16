@@ -32,11 +32,40 @@ jsool.namespace("js.net");
 			new XMLHttpRequest();
 	}
 	
+	function normalizeParams(objParams){
+		if(objParams && Object.isObject(objParams) && !Array.isArray(objParams)){
+			var p = [];
+			
+			function add(param, value){
+				p.push(encodeURIComponent(param) + "=" + encodeURIComponent(value));
+			}
+			
+			jsool.iterate(objParams,function(attr,val){
+				if(!Object.isObject(val)){
+					add(attr,val);
+				}else if(Array.isArray(val)){
+					Array.iterate(val,function(i,v){
+						add(attr,v);
+					});
+				}
+			});
+			
+			return p.join('&');
+		}
+		
+		return void(0);
+	}
+	
 	function dispatch(c){
 		if(!c)return;
 		running = true;
 		var state = -1,
-		requestWatcher;
+		requestWatcher,
+		start;
+		start = jsool.time();
+		
+		
+		if(c.data) c.data = normalizeParams(c.data);
 		
 		// Announce we are preparing a request
 		RD.fireEvent("start");
@@ -65,11 +94,25 @@ jsool.namespace("js.net");
 				if(state == 4){
 					
 					if(d.status == 200 ){//OK
-						
+						if(c.callback)c.callback("success",req);
+						if(c.success)c.callback(req);
+						RD.fireEvent("success");
+					}else{
+						if(c.callback)c.callback("failure",req);
+						if(c.success)c.failure(req);
+						RD.fireEvent("failure");
 					}
 					
 				}
 			}
+			
+			var time = jsool.time();
+			
+			if(c.timeout > 0 && ((start - time) > c.timeout)){
+				d.abort();
+				RD.fireEvent("abort");
+			}
+			
 			runningCheck = false;
 		}
 		
@@ -95,8 +138,10 @@ jsool.namespace("js.net");
 		
 		RD.fireEvent("send");
 
+		requestWatcher = setInterval(checkState,500);
+		
 		try{
-			d.send(c.method === "POST" || c.method === "PUT" ? c.load : null);
+			d.send(c.method === "POST" || c.method === "PUT" ? c.data : null);
 			
 			if(!c.async){
 				if(c.callback)c.callback("success",c);

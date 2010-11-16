@@ -67,21 +67,33 @@
 	
 	<script type="text/javascript">
 	
-	jsool.onReady(function(){
+	jsool.onReady(function(){		
+		var i = 200;
 		
-		var h = js.dom.Helper.createDom("<ul><li>dasd</li><li>lol</li></ul>");
-		console.info(h);
-		console.info(h.innerHTML);
+		var start = jsool.time();
+		while(i--){
+			
+			js.dom.Helper.createDom({
+				tag: 'ul',
+				children:[{
+					tag: 'li',
+					children:[{
+						tag: 'ol',
+						html: "<li>List item</li><li>List item</li>"
+					}]
+				}]
+			},js.dom.BODY);
 
-		jsool.get("ake").append(h);
+			Raze.query("ul li ol li");
+			jsool.select("li").applyStyle("background","#99cc00");
+		}
+		alert(jsool.time() - start);
 	});
 	
 	</script>
 
 </head>
 <body>
-	<div id="ake">das</div>
-	<div id="aki">dasd</div>
-	<div id="la">das</div>
+	
 </body>
 </html>
