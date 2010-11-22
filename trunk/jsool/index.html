@@ -68,19 +68,28 @@
 	<script type="text/javascript">
 	
 	jsool.onReady(function(){		
-		var i = 200;
+		var i = 50;
 		
 		var start = jsool.time();
 		while(i--){
 			
-			js.dom.Helper.createDom({
-				tag: 'ul',
+			js.dom.Helper.createHTML({
+				tag: 'table',
 				children:[{
-					tag: 'li',
+					tag: 'tr',
 					children:[{
-						tag: 'ol',
-						html: "<li>List item</li><li>List item</li>"
+						tag: 'td',
+						html: "TD1"
+					},{
+						tag: 'td',
+						html: "TD2"
 					}]
+				},{
+					tag: "tr",
+					children:[{
+						tag: 'td',
+						html: "TD3"
+					},"<td>TD4</td>"]
 				}]
 			},js.dom.BODY);
 
