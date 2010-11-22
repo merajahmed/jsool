@@ -84,20 +84,31 @@ var jsool = (function create_jsool(){
 		}
 	};
 	
-	function startup(){
-		documentReady = true;
-		base.prepareSystem();
-		systemReady = true;
-		base.doReady();
-		
-		js.core.EventManager.un(window,'load',startup);
+	if(window.addEventListener){
+		window.addEventListener("load",function startup(){
+			
+			documentReady = true;
+			base.prepareSystem();
+			systemReady = true;
+			base.doReady();
+			
+			window.removeEventListener("load",arguments.callee,false);
+		},false);
+	}else{
+		window.onload = function startup(){
+
+			documentReady = true;
+			base.prepareSystem();
+			systemReady = true;
+			base.doReady();
+			
+			window.onload = null;
+		};
 	}
-	
-	js.core.EventManager.on(window,'load',startup);
 	
 	return {
 		/**
-		 * Adds a function that wil be fired just after the framework
+		 * Adds a function that will be fired just after the framework
 		 */
 		onReady: function(fn){
 			onReadyActions.push(fn);
