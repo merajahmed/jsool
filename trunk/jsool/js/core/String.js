@@ -95,6 +95,19 @@ jsool.applyIf(String.prototype,{
 	}  
 });
 
+String.format = function(){
+	var args = arguments;
+	if(args.length == 1 && typeof args[0] === 'string'){
+		return String(args[0]);
+	}else if(args.length > 1){
+		var str = Array.prototype.shift.call(args);
+		
+		return str.replace(/{([0-9]+)}/g,function(match,number,index){
+			return args[Number(number)];
+		});
+	}
+};
+
 String.isString = function(obj){
 	return typeof obj == 'string';
 };
