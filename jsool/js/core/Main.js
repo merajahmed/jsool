@@ -10,7 +10,6 @@
  *        this list of conditions and the following disclaimer.
  *
  *      * Redistributions in binary form must reproduce the above copyright notice,
- *        this list of conditions and the following disclaimer in the documentation
  *        and/or other materials provided with the distribution.
  *
  *      * Neither the name of Mikhail Domanoski nor the names of its
@@ -85,27 +84,16 @@ var jsool = (function create_jsool(){
 		}
 	};
 	
-	if(window.addEventListener){
-		window.addEventListener("load",function startup(){
-			
-			documentReady = true;
-			base.prepareSystem();
-			systemReady = true;
-			base.doReady();
-			
-			window.removeEventListener("load",arguments.callee,false);
-		},false);
-	}else{
-		window.onload = function startup(){
-
-			documentReady = true;
-			base.prepareSystem();
-			systemReady = true;
-			base.doReady();
-			
-			window.onload = null;
-		};
+	function startup(){
+		documentReady = true;
+		base.prepareSystem();
+		systemReady = true;
+		base.doReady();
+		
+		js.core.EventManager.un(window,'load',startup);
 	}
+	
+	js.core.EventManager.on(window,'load',startup);
 	
 	return {
 		/**
@@ -190,6 +178,9 @@ var jsool = (function create_jsool(){
 				typeof it[at] !== 'function' && fn(at,it[at]);
 			}
 		},
+		/**
+		 * Gets or generate an id to an element
+		 */
 		id: function(el){
 			el.id = el.id || ("jsool-" + (idCount++));
 			return el.id;
@@ -218,7 +209,26 @@ var jsool = (function create_jsool(){
 		isFunction: function(o){
 			return typeof o === "function";
 		},
-		namespace:base.namespace
+		namespace:base.namespace,
+		windowSize: function(){
+			var height,width,D = document,DE,DB;
+			
+			if( typeof( window.innerWidth ) == 'number' ) {
+				width = window.innerWidth;
+				height = window.innerHeight;
+			} else if( (DE = D.documentElement) && ( DE.clientWidth || DE.clientHeight ) ) {
+				width = DE.clientWidth;
+				height = DE.clientHeight;
+			} else if( (DB =D.body) && ( DB.clientWidth || DB.clientHeight ) ) {
+				width = DB.clientWidth;
+				height = DB.clientHeight;
+			}
+			
+			return {
+				"height":height,
+				"width":width
+			};
+		}
 	};
 })();
 
@@ -278,6 +288,10 @@ jsool.$extends = function(superclass, prototype, type){
 	
 	for(var p in prototype){
 		cls.prototype[p] = prototype[p];
+	}
+	
+	if(jsool.isIE && prototype['toString']){
+		cls.prototype['toString'] = prototype['toString'];
 	}
 	
 	var SUPER = (function super_class(){

@@ -241,10 +241,19 @@ js.dom.Element = $extends(js.core.Object,{
 	applyStyle: function(arg1, arg2){		
 		var style = this.dom.style;
 		if(typeof arg1 == 'string'){
-			style[arg1] = arg2;
+			if(arg1 == 'opacity' || arg1 == 'alpha'){
+				this.setOpacity(Number(arg2));
+			}else{
+				style[arg1] = arg2;
+			}
 		}else if(typeof arg1 == 'object'){
-			for(var prop in arg1)
-				style[prop] = arg1[prop];
+			for(var prop in arg1){
+				if(prop == 'opacity' || prop == 'alpha'){
+					this.setOpacity(Number(arg1[prop]));
+				}else{
+					style[prop] = arg1[prop];
+				}
+			}
 		}
 	},
 	/**
