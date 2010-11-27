@@ -136,6 +136,8 @@ js.dom.Helper = (function create_helper(){
 				}else if(html.html){
 					el.innerHTML = html.html;
 				}
+				
+				return el;
 			}
 		},
 		applyStyle: function(el, style){
