@@ -94,12 +94,14 @@ jsool.namespace("js.net");
 				if(state == 4){
 					
 					if(d.status == 200 ){//OK
-						if(c.callback)c.callback("success",req);
-						if(c.success)c.callback(req);
+						window.clearInterval(requestWatcher);
+						if(c.callback)c.callback("success",c);
+						if(c.success)c.success(c);
 						RD.fireEvent("success");
 					}else{
-						if(c.callback)c.callback("failure",req);
-						if(c.success)c.failure(req);
+						window.clearInterval(requestWatcher);
+						if(c.callback)c.callback("failure",c);
+						if(c.success)c.failure(c);
 						RD.fireEvent("failure");
 					}
 					
