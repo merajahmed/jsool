@@ -121,7 +121,7 @@ js.dom.Helper = (function create_helper(){
 				
 				jsool.iterate(html,function(attr, val){
 					if(!(/(tag|style|html|children)/).test(attr)){
-						el[attr] = val;
+						el[{"cls":"className","class":"className"}[attr] || attr] = val;
 					}
 				});
 				

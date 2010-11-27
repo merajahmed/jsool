@@ -4,13 +4,12 @@ js.util.JSON = (function(){
 	var useNative = window.JSON && window.JSON.parse && window.JSON.stringify;
 	
 	if(useNative){
-		var nat = window.JSON;
 		return {
 			encode: function(object){
-				return nat.stringify(object);
+				return window.JSON.stringify(object);
 			},
 			decode: function(string){
-				return nat.parse(string);
+				return window.JSON.parse(string);
 			}
 		}; 
 	}else{
