@@ -35,7 +35,7 @@
  * @return <code>true</code> if the object is an array;
  */
 Array.isArray = function(obj){
-	return obj.constructor == Array;
+	return obj.constructor===Array;
 };
 
 /**
@@ -54,8 +54,9 @@ jsool.applyIf(Array.prototype,{
 	 * @return a shuffled version of the array
 	 */
 	shuffle: function(){
+		var r = Math.random;
 		this.sort(function(a,b){
-			return (Math.random() > 0.5 ? 1 : -1);
+			return r() - 0.5;
 		});
 	},
 	/**
@@ -64,25 +65,24 @@ jsool.applyIf(Array.prototype,{
 	 * @return <code>true</code> if the object if of the providen type
 	 */
 	instanceOf: function(clazz){
-		return clazz == Array;
+		return clazz===Array;
 	},
 	/**
 	 * Runs a function for every item on the array
 	 */
 	forEach: function(action){
-		var length = this.length;
-		for(var i = 0; i < length; i++){
-			action(this[i]);
+		var i=0,e;
+		while(e=this[i++]){
+			action(e);
 		}
 	},
 	/**
 	 * Returns true if the provided function returns true for every item on the array
 	 */
 	every: function(action){
-		for(var i = this.length; i--;){
-			if(!action(this[i])){
-				return false;
-			}
+		var i=0,e;
+		while(e=this[i++]){
+			if(!action(e))return false;
 		}
 		return true;
 	},
@@ -90,41 +90,39 @@ jsool.applyIf(Array.prototype,{
 	 * Returns an array only with the items that returns true for the provided function
 	 */
 	filter: function(action){
-		var length = this.length;
-		var newArray = [];
-		for(var i = 0; i < length; i++){
-			if(action(this[i])){
-				newArray.push(this[i]);
-			}
+		var i=0,e,a=[];
+		while(e=this[i++]){
+			if(action(e))
+				a.push(e);
 		}
-		return newArray;
+		return a;
 	},
 	/**
 	 * Retuns a new array with the results of action
 	 */
 	map: function(action){
-		var length = this.length;
-		var newArray = [];		
-		for(var i = 0; i < length; i++){			
-			newArray.push(action(this[i]));
+		var i=0,e,a=[];
+		while(e=this[i++]){
+			a.push(action(e));
 		}
-		return newArray;
+		return a;
 	},
 	/**
 	 * Returns the index of a element
 	 */
 	indexOf: function(el){
-		if(el.equals){
-			for(var i=0,e;e=this[i];i++){
-				if(el.equals(e)){
-					return i;
-				}
+		var i=0,e;
+		if(el == null){
+			while(e=this[i++]){
+				if(e==null)return i-1;
+			}
+		}else if(el.equals){
+			while(e=this[i++]){
+				if(el.equals(e))return i-1;
 			}			
 		}else{
-			for(var i=0,e;e=this[i];i++){
-				if(el == e){
-					return i;
-				}
+			while(e=this[i++]){
+				if(el==e)return i-1;
 			}
 		}
 		return -1;
@@ -152,15 +150,24 @@ jsool.applyIf(Array.prototype,{
 	 * Removes an item from the array
 	 */
 	remove: function(s){
-		for (var i=0; i < this.length; i++){
-			if (s == this[i]) this.slice(i, 1);
-		}
+		var i = this.indexOf(s);
+		if(i >= 0)this.slice(i,1);
 	},
 	
 	contains: function(obj){
 		return this.indexOf(obj) >= 0;
-	}
+	},
 	
+	equals: function(arr){
+		if(!arr)return false;
+		if(arr==this)return true;
+		if(arr.length != this.length)return false;
+		var l = arr.length;
+		for(var i=0;i<l;i++){
+			if(this[i]!=arr[i])return false;
+		}
+		return true;
+	}
 });
 
 Array.MAX_LENGTH = 4294967295;//At least on firefox

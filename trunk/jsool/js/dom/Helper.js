@@ -2,42 +2,9 @@ jsool.namespace("js.dom");
 
 js.dom.Helper = (function create_helper(){
 	var DOC = window.document,
-		EventManager = js.core.EventManager,
-		BODY,
-		proxy,
+
 		specialAttributes = /^html|tag|children|text$/,
 		noCloseTags = /^input|br|hr|img$/;
-	
-	function init(){
-		proxy = DOC.getElementById("jsool-proxy");
-		if(!proxy){
-			proxy = DOC.createElement("div");
-			proxy.style.display = "none";
-			proxy.innerHTML = "";
-			proxy.id="jsool-proxy";
-			BODY = DOC.getElementsByTagName("body")[0];
-		}
-	}
-	
-	function userProxy(string){
-		if(!proxy) init();
-		BODY.appendChild(proxy);
-		proxy.innerHTML = string;
-		
-		var f = [];
-		
-		Array.iterate(proxy.childNodes,function(i,el){
-			if(el.nodeType == 1){
-				f.push(el);
-				if(jsool.isIE) proxy.removeChild(el);
-			}
-		});
-		
-		proxy.innerHTML = "";
-		BODY.removeChild(proxy);
-		return f;
-	}
-	
 	
 	function createHTML(def, b){
 		var atr,key,val;
@@ -113,7 +80,7 @@ js.dom.Helper = (function create_helper(){
 			if(String.isString(html)){
 				parent.innerHTML += html;
 			}else if(jsool.isArray(html)){
-				Array.iterate(html,function(i,el){
+				html.forEach(function(el){
 					DH.append(parent,el);
 				});
 			}else if(jsool.isObject(html)){
@@ -126,13 +93,13 @@ js.dom.Helper = (function create_helper(){
 				});
 				
 				if(html.style){
-					js.dom.Helper.applyStyle(el, html.style);
+					DH.applyStyle(el, html.style);
 				}
 				
 				parent.appendChild(el);
 				
 				if(html.children){
-					js.dom.Helper.append(el, html.children);
+					DH.append(el, html.children);
 				}else if(html.html){
 					el.innerHTML = html.html;
 				}

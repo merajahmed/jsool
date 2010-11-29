@@ -33,13 +33,9 @@ jsool.applyIf(String.prototype,{
 	
 	
 	replaceAll: function(search, replacement){
-		var str = this;
-		var pos = str.indexOf(search);	
-		while (pos > -1){
-			str = str.replace(search, replacement);
-			pos = str.indexOf(search); 
-		}	
-		return (str);
+		return this.replace(RegExp(search,'g'),function(){
+			return replacement;
+		});
 	},
 	
 	
@@ -59,13 +55,11 @@ jsool.applyIf(String.prototype,{
 	hash: 0,
 	
 	hashCode: function(){
-		var h = this.hash;	
+		var h = this.hash,i=this.length;	
 		if(h == 0){
-			var offset = 0;
-			for(var i = 0; i < this.length; i++){
-				h = 31*h + this.charCodeAt(offset++);
+			while(i--){
+				h = 31*h + this.charCodeAt(i);
 			}
-			
 			this.hash = h;
 		}
 		return h;
@@ -87,7 +81,7 @@ jsool.applyIf(String.prototype,{
 	
 	
 	lastIndexOf: function(sub, i){
-		size = sub.length;
+		var size = sub.length;
 		i == null ? i = this.length - size + 1 : ++i;
 		if (sub.length == 0) return i-1;  
 		while ((i >= 0) && (substring(this, i--, size) != sub));  
