@@ -3,15 +3,29 @@
 */
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var {font-style:normal;font-weight:normal;}ol,ul{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym{border:0;}
 
-
 /*
 JSOOL
 */
 
-.jsool *{
-	font-family: Verdana;
-	font-size: 14px;
+.jsool * {
+	font-family: Verdana, Arial;
+	font-size: 12px;
+	line-height: 12px;
+	font-weight: 100;
 }
+
+.json .wrapper{
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+img,th, .no-select{
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+}
+
 
 .jsool canvas.flux-proxy{
 	margin: 0px;
@@ -19,7 +33,9 @@ JSOOL
 	top: 0px;
 	left: 0px;
 }
-
+/*
+BUTTONS
+*/
 .jsool input[type=button],
 .jsool input[type=submit],
 .jsool input[type=reset],
@@ -30,32 +46,46 @@ JSOOL
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	
-	background: #75A3DC;
+	background-color: #477AC3;
 	background: -moz-linear-gradient(center top , #75A3DC, #3267B8);
 	background: -webkit-gradient(linear, left top, left bottom, from(#75A3DC), to(#3267B8));
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#75A3DC', EndColorStr='#3267B8');     
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#75A3DC', EndColorStr='#3267B8') progid:DXImageTransform.Microsoft.Shadow(color='#333333',direction='120',strength='2');     
 	
 	border: 1px solid #3267B8;
 	cursor: pointer;
 	display: inline-block;
-	padding: 2px 5px;
+	padding: 3px 5px;
 	margin: 2px 5px;
 	-moz-box-shadow: 0 1px 3px black;
 	-webkit-box-shadow: 0 1px 3px black;
 	box-shadow: 0 1px 3px black;
 	
 	text-decoration: none;
-	color: #FFF;
+	color: #EEE;
 	text-align: center;
 	text-shadow: 0 -1px 1px #000;
-	font-weight: bold;
 	
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-khtml-user-select: none;
 }
-.ff.jsool a.jsool{
-	padding: 3px 8px 4px 8px;
+
+.ff.jsool input[type=button],
+.ff.jsool input[type=submit],
+.ff.jsool input[type=reset],
+.ff.jsool button{
+	padding: 3px 2px;
+}
+
+.webkit.jsool input[type=button],
+.webkit.jsool input[type=submit],
+.webkit.jsool input[type=reset],
+.webkit.jsool button{
+	padding: 1px 3px;
+}
+
+.webkit.jsool a.jsool,.ff.jsool a.jsool{
+	padding: 2px 6px;
 }
 
 .jsool input[type=button]:hover,
@@ -63,6 +93,86 @@ JSOOL
 .jsool input[type=reset]:hover,
 .jsool button:hover,
 .jsool a.jsool:hover{
-	color: #DDD;
-	text-shadow: 0 -1px 1px #222;
+	background-color: #5281C8;
+	background: -moz-linear-gradient(center top , #C1DCFF, #3267B8);
+	background: -webkit-gradient(linear, left top, left bottom, from(#C1DCFF), to(#3267B8));
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#C1DCFF', EndColorStr='#3267B8') progid:DXImageTransform.Microsoft.Shadow(color='#333333',direction='120',strength='2');
+}
+
+/*
+TEXT AND SELECT
+*/
+
+.jsool input[type=text],
+.jsool input[type=password],
+.jsool select{
+	min-width: 220px;
+	padding: 3px 5px;
+	margin: 2px 5px;
+	
+	border: 1px solid #888;
+	background-image: url('../images/input-bg.png');
+	background: -moz-linear-gradient(center top , #FFF, #EAEAEA);
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;        
+	
+	color: #222D49;
+	
+	background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#EAEAEA));
+	filter: filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#EAEAEA');
+	
+	text-shadow: 1px 2px 2px #AAA;
+}
+
+.opera.jsool input[type=text],
+.opera.jsool input[type=password]{
+	background-image: url('../images/input-bg.png');
+	background-repeat: repeat-x;
+}
+
+.jsool select{
+	padding: 0 5px;
+	min-width: 232px;
+	height: 23px;
+}
+
+.ff.jsool select{
+	padding: 0 3px;
+}
+
+.ie.jsool select{
+	padding: 0 3px;
+	min-width: 226px;
+	height: 23px;
+}
+
+
+.jsool div.dialog{
+	position:absolute;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	background-color: white;
+	border: 1px solid #888;
+}
+
+.jsool div.dialog h1{
+	background: -moz-linear-gradient(center top , #75A3DC, #3267B8);
+	background: -webkit-gradient(linear, left top, left bottom, from(#75A3DC), to(#3267B8));
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#75A3DC', EndColorStr='#3267B8');
+	
+	border-color: #3267B8;
+	background-color: #477AC3;
+	height: 16px;
+	line-height:16px;
+	
+	-moz-border-radius-topleft: 4px;
+	-webkit-border-top-left-radius: 4px;
+	-moz-border-radius-topright: 4px;
+	-webkit-border-top-right-radius: 4px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+    padding: 3px 5px 2px 5px;
+    color: #EEE;
 }

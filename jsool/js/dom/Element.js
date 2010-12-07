@@ -407,5 +407,23 @@ jsool.onSystemReady(function init_element(){
 		js.dom.BODY.addClass('ff');
 	}else if(jsool.isOpera){
 		js.dom.BODY.addClass('opera');
+	}else if(jsool.isWebKit){
+		js.dom.BODY.addClass('webkit');
 	}
+	
+	var proxy,proxyDom;
+	
+	El.doInProxy = function(fn){
+		if(!proxy){
+			proxy = jsool.get(document.createElement("div"));
+			proxyDom = proxy.dom;
+			proxy.addClass("proxy");
+		}
+		proxy.dom = proxyDom;
+		js.dom.BODY.append(proxy);
+		
+		fn.apply(proxy,proxy);
+		
+		js.dom.BODY.remove(proxy);
+	};
 });
