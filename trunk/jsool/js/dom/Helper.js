@@ -116,6 +116,46 @@ js.dom.Helper = (function create_helper(){
 					}
 				});
 			}
+		},
+		createDom: function(html,parent){
+			var DH = js.dom.Helper,el;
+            if(String.isString(html)){
+            	js.dom.Element.doInProxy(function(){
+            		this.append(html);
+            		el = this.children();
+            	});
+            	el = el.length == 1 ? el[0] : el;
+            }else if(Array.isArray(html)){
+	            el = DOC.createDocumentFragment();
+	            html.forEach(function(e){
+	                    DH.createDom(e, el);
+	            });
+            }else if(Object.isObject(html)){
+                el = DOC.createElement(html.tag || "div");
+                
+                jsool.iterate(html,function(attr, val){
+					if(!(/(tag|style|html|children)/).test(attr)){
+					        el[attr] = val;
+					}
+                });
+                
+                if(html.style){
+                	DH.applyStyle(el, html.style);
+                }
+                
+                if(html.children){
+                        js.dom.Helper.createDom(html.children, el);
+                }else if(html.html){
+                        el.innerHTML = html.html;
+                }
+            }
+            parent = parent || html.parent;
+            if(parent){
+            	parent.append ? parent.append(el):parent.appendChild(el);
+            }
+            
+            return el;
+
 		}
 	};
 })();

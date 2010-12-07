@@ -6,6 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="css/core.css">
 	
 	<script type="text/javascript" src="js/core/Main.js"></script>
+	<script type="text/javascript" src="js/core/Function.js"></script>
 	<script type="text/javascript" src="js/core/Number.js"></script>
 	<script type="text/javascript" src="js/core/String.js"></script>
 	<script type="text/javascript" src="js/core/Array.js"></script>
@@ -41,6 +42,8 @@
 	
 	<script type="text/javascript" src="js/net/RequestDispatcher.js"></script>
 	
+	<script type="text/javascript" src="js/ui/Dialog.js"></script>
+	
 	<!-- <script type="text/javascript" src="js/data/Field.js"></script>
 	<script type="text/javascript" src="js/data/Record.js"></script>
 	<script type="text/javascript" src="js/data/Type.js"></script>
@@ -65,10 +68,54 @@
 	<script type="text/javascript" src="js/flux/layout/SpringConstraint.js"></script>
 	<script type="text/javascript" src="js/flux/layout/SpringProxy.js"></script> -->
 
+	<script type="text/javascript">
+		jsool.onReady(function(){
+			var l1 = jsool.get("label1");
+			var l2 = jsool.get("label2");
+			var l3 = jsool.get("label3");
+			var inp = jsool.get("in");
+			var sel = jsool.get("sel");
+			var bt = jsool.get("bt");
+
+			var box = inp.getBox();
+			l1.setText(String.format("X:{0} Y:{1} W:{2} H:{3}",box.x,box.y,box.w,box.h));
+			
+			box = sel.getBox();
+			l2.setText(String.format("X:{0} Y:{1} W:{2} H:{3}",box.x,box.y,box.w,box.h));
+
+			bt = sel.getBox();
+			l3.setText(String.format("X:{0} Y:{1} W:{2} H:{3}",box.x,box.y,box.w,box.h));
+
+			var body = js.dom.Helper.createDom({
+				className:"dialog",
+				children:[{
+					tag:"h1",
+					html: "Testes"
+				},{
+					className:"body"
+				}],
+				style:{
+					width:"300px",
+					height:"150px",
+					top:"10px",
+					left:"280px"
+				},
+				parent: js.dom.BODY
+			});
+		});
+	</script>
+
 </head>
 <body class="jsool">
-	<button>Muito legal o botão</button><br />
-	<input type="button" value="Muito legal o botão"/><br />
-	<a class="jsool">Muito legal o botão</a>
+	<input id="in" type="text" /><br />
+	<select id="sel" >
+		<option>legal</option>
+	</select>
+	<br />
+	<button id="bt">Legal</button>
+	<br />
+	<label id="label1"></label><br />
+	<label id="label2"></label><br />
+	<label id="label3"></label><br />
 </body>
 </html>

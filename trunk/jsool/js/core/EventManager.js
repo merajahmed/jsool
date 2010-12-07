@@ -78,8 +78,8 @@ js.core.EventManager = (function create_event_manager(){
 			//Call handler			
 			ret = fn.call(scope, ev);
 			
-			if(typeof ret == "boolean" && !ret){
-				if(event.preventDefault){
+			if(typeof ret == "boolean"){
+				if(!ret && event.preventDefault){
 					event.preventDefault();
 				}else{
 					event.returnValue = ret;

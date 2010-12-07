@@ -29,24 +29,6 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * Verify if an object is an Array
- * @param obj is any object to be checked
- * @return <code>true</code> if the object is an array;
- */
-Array.isArray = function(obj){
-	return obj.constructor===Array;
-};
-
-/**
- * Iterates array-like objects
- */
-Array.iterate = function(a, fn){
-	for(var i=0,e;e=a[i++];){
-		fn(i,e);
-	}
-};
-
 //Adding new methods to array
 jsool.applyIf(Array.prototype,{
 	/**
@@ -170,6 +152,25 @@ jsool.applyIf(Array.prototype,{
 	}
 });
 
-Array.MAX_LENGTH = 4294967295;//At least on firefox
+jsool.applyIf(Array,{
+	/**
+	 * Verify if an object is an Array
+	 * @param obj is any object to be checked
+	 * @return <code>true</code> if the object is an array;
+	 */
+	isArray: function(obj){
+		return obj.constructor===Array;
+	},
+	/**
+	 * Iterates array-like objects
+	 */
+	iterate: function(a, fn){
+		for(var i=0,e;e=a[i++];){
+			fn(i,e);
+		}
+	},
+	MAX_LENGTH: 4294967295
+});
+
 jsool.namespace("js.core");
 js.core.Array = Array;
