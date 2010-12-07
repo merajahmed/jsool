@@ -41,6 +41,7 @@ BUTTONS
 .jsool input[type=reset],
 .jsool button,
 .jsool a.jsool{
+	min-width: 70px;
 	line-height: 16px;
 	border-radius: 4px;
 	-webkit-border-radius: 4px;
@@ -107,7 +108,7 @@ TEXT AND SELECT
 .jsool input[type=password],
 .jsool select{
 	min-width: 220px;
-	padding: 3px 5px;
+	padding: 4px 5px;
 	margin: 2px 5px;
 	
 	border: 1px solid #888;
@@ -137,16 +138,16 @@ TEXT AND SELECT
 	height: 23px;
 }
 
-.ff.jsool select{
-	padding: 0 3px;
-}
-
 .ie.jsool select{
 	padding: 0 3px;
 	min-width: 226px;
 	height: 23px;
 }
 
+.jsool option{
+	line-height: 16px;
+	height: 16px;
+}
 
 .jsool div.dialog{
 	position:absolute;
