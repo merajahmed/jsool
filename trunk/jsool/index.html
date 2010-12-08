@@ -70,24 +70,9 @@
 
 	<script type="text/javascript">
 		jsool.onReady(function(){
-			var l1 = jsool.get("label1");
-			var l2 = jsool.get("label2");
-			var l3 = jsool.get("label3");
-			var inp = jsool.get("in");
-			var sel = jsool.get("sel");
-			var bt = jsool.get("bt");
-
-			var box = inp.getBox();
-			l1.setText(String.format("X:{0} Y:{1} W:{2} H:{3}",box.x,box.y,box.w,box.h));
-			
-			box = sel.getBox();
-			l2.setText(String.format("X:{0} Y:{1} W:{2} H:{3}",box.x,box.y,box.w,box.h));
-
-			bt = sel.getBox();
-			l3.setText(String.format("X:{0} Y:{1} W:{2} H:{3}",box.x,box.y,box.w,box.h));
 
 			var body = js.dom.Helper.createDom({
-				className:"dialog",
+				className:"js-dialog",
 				children:[{
 					tag:"h1",
 					html: "Testes"
@@ -107,16 +92,15 @@
 
 </head>
 <body class="jsool">
-	<input id="in" type="text" /><br />
-	<select id="sel" >
-		<option>legal</option>
-		<option>WHAT</option>
-	</select>
+	<input class="js-inp" id="in" type="text" /><br />
+	
+	<span class="js-dd">
+		<input type="text" class="js-dd" /><input type="button" class="js-dd" value="V" />
+	</span>
+	
 	<br />
-	<button id="bt">Legal</button><a class="jsool">Legal</a><input type="button" value="Legal" />
-	<br />
-	<label id="label1"></label><br />
-	<label id="label2"></label><br />
-	<label id="label3"></label><br />
+	<button class="js-btn">Button</button><br />
+	<input value="Button" type="button" class="js-btn"/><br />
+	<a class="js-btn">Button</a><br />
 </body>
 </html>
