@@ -211,7 +211,7 @@ input[type=button].js-dd{
 }
 
 .webkit input[type=button].js-dd{
-	padding:2px 0;
+	padding:3px 0;
 }
 .ie input[type=button].js-dd{
 	padding-top:2px;
