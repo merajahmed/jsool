@@ -1,0 +1,148 @@
+/*
+* UNDO HTML DEFAULT STYLES
+*/
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var {font-style:normal;font-weight:normal;}ol,ul{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym{border:0;}
+
+/*
+JSOOL
+*/
+
+.jsool * {
+	font-family: Verdana, Arial;
+	font-size: 12px;
+	line-height: 12px;
+	font-weight: 100;
+}
+
+img,th, .no-select{
+	/*Search*/
+}
+
+
+canvas.js{
+	/*!!!*/
+}
+/*
+BUTTONS
+*/
+input[type=button].js-btn,
+input[type=submit].js-btn,
+input[type=reset].js-btn,
+button.js-btn,
+a.js-btn{
+	min-width: 58px;
+	line-height: 16px;
+	
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#75A3DC', EndColorStr='#3267B8');     
+	
+	border: 1px solid #3267B8;
+	cursor: pointer;
+	display: inline-block;
+	padding: 3px 5px;
+	margin: 2px 5px;
+	
+	text-decoration: none;
+	color: #EEE;
+	text-align: center;
+}
+
+input[type=button].js-btn:hover,
+input[type=submit].js-btn:hover,
+input[type=reset].js-btn:hover,
+button.js-btn:hover,
+a.js-btn:hover{
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#C1DCFF', EndColorStr='#3267B8');
+}
+
+/*
+TEXT INPUT
+*/
+
+input[type=text].js-inp,
+input[type=password].js-inp{
+	min-width: 220px;
+	padding: 4px 5px;
+	margin: 2px 5px;	
+	border: 1px solid #888;       	
+	color: #222D49;	
+	filter: filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#EAEAEA');
+}
+/*
+DROP DOWN
+*/
+div.js-dd{
+	width:232px;
+	display:inline-block;
+	margin: 2px 5px;
+}
+input[type=text].js-dd{
+	padding: 4px 5px;
+	margin: 0;
+	width:200px;
+	
+	border: 1px solid #888;	
+	color: #222D49;
+	filter: filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#EAEAEA');
+}
+
+input[type=button].js-dd{
+	width: 20px;
+	line-height: 16px;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#75A3DC', EndColorStr='#3267B8');     
+	
+	border: 1px solid #3267B8;
+	cursor: pointer;
+	display: inline-block;
+	padding: 2px 5px 4px 5px;
+	margin: 0;
+	
+	text-decoration: none;
+	color: #EEE;
+	text-align: center;
+	
+	border-left:none;
+}
+
+ul.js-dd{
+	background-color: white;
+	width: 226px;
+	padding:2px;
+	position:absolute;
+	height:120px;
+	border:1px solid #888888;
+	overflow:auto;
+}
+
+ul.js-dd li{
+	height:14px;
+	padding: 2px 3px;
+	background-color: white;
+	cursor: default;
+}
+
+ul.js-dd li:hover{
+	height:14px;
+	padding: 2px 3px;
+	background-color: #EAEAEA;
+}
+
+/*
+DIALOG
+*/
+div.js-dialog{
+	position:absolute;
+	background-color: white;
+	border: 1px solid #888;
+}
+
+div.js-dialog h1{
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#75A3DC', EndColorStr='#3267B8');
+	
+	border-color: #3267B8;
+	background-color: #477AC3;
+	height: 16px;
+	line-height:16px;
+
+    padding: 3px 5px 2px 5px;
+    color: #EEE;
+}
