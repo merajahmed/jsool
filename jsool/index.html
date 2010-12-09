@@ -3,8 +3,6 @@
 <head>
 	<title>Tester</title>
 	
-	<link rel="stylesheet" type="text/css" href="css/core.css">
-	
 	<script type="text/javascript" src="js/core/Main.js"></script>
 	<script type="text/javascript" src="js/core/Function.js"></script>
 	<script type="text/javascript" src="js/core/Number.js"></script>
@@ -67,11 +65,26 @@
 	<script type="text/javascript" src="js/flux/layout/Spring.js"></script>
 	<script type="text/javascript" src="js/flux/layout/SpringConstraint.js"></script>
 	<script type="text/javascript" src="js/flux/layout/SpringProxy.js"></script> -->
-
+	
 	<script type="text/javascript">
 		jsool.onReady(function(){
+			var H = js.dom.Helper,
+				B = js.dom.BODY,
+				s;
+			
+			if(jsool.isFF){
+				s="ff";
+			}else if(jsool.isOpera){
+				s="opera";
+			}else if(jsool.isIE){
+				s="ie";
+			}else if(jsool.isWebKit){
+				s="webkit";
+			}
 
-			var body = js.dom.Helper.createDom({
+			if(s)H.append(B,{tag:"link",rel:"stylesheet",type:"text/css",href:"css/core."+s+".css"});
+			
+			var body = H.createDom({
 				className:"js-dialog",
 				children:[{
 					tag:"h1",
@@ -85,7 +98,7 @@
 					top:"10px",
 					left:"280px"
 				},
-				parent: js.dom.BODY
+				parent: B
 			});
 		});
 	</script>
@@ -94,9 +107,15 @@
 <body class="jsool">
 	<input class="js-inp" id="in" type="text" /><br />
 	
-	<span class="js-dd">
+	<div class="js-dd">
 		<input type="text" class="js-dd" /><input type="button" class="js-dd" value="V" />
-	</span>
+		<ul class="js-dd">
+			<li>Item 1</li>
+			<li>Item 2</li>
+			<li>Item 3</li>
+			<li>Item 4</li>
+		</ul>
+	</div>
 	
 	<br />
 	<button class="js-btn">Button</button><br />
