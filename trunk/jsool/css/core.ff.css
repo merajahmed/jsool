@@ -133,6 +133,7 @@ ul.js-dd{
 	position:absolute;
 	height:120px;
 	border:1px solid #888888;
+	border-top:0;
 	overflow:auto;
 }
 
@@ -169,4 +170,9 @@ div.js-dialog h1{
 	-moz-border-radius-topright: 4px;;
     padding: 3px 5px 2px 5px;
     color: #EEE;
+    cursor: default;
+}
+
+div.js-dialog div.body{
+	padding: 5px;
 }

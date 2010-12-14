@@ -189,7 +189,7 @@ jsool.onReady(function(){
 			mets = api.metodosEstaticos();
 			
 			if(mets && mets.length > 0){
-				builder.append("\n<h2>Métodos Estáticos</h2>");			
+				builder.append("\n<h2>Static Methods</h2>");			
 				buildMethods(mets,builder);
 				builder.append("\n----\n");
 			}
@@ -197,7 +197,7 @@ jsool.onReady(function(){
 			mets = api.metodos();
 			
 			if(mets && mets.length > 0){
-				builder.append("\n<h2>Métodos</h2>");			
+				builder.append("\n<h2>Methods</h2>");			
 				buildMethods(api.metodos(),builder);
 				builder.append("\n----\n");
 			}
@@ -242,7 +242,7 @@ jsool.onReady(function(){
 			
 			if(atrs && atrs.length > 0){
 				
-				builder.append("\n<h2>Atributos:</h2>");
+				builder.append("\n<h2>Attributes:</h2>");
 				
 				Array.iterate(atrs,function(index, el){
 					builder.append("\n----\n<p><font color=\"#1E4E8F\">");
@@ -264,11 +264,11 @@ jsool.onReady(function(){
 		
 		//Monta codigo do cabecalho
 		function buildHeader(api, sb){
-			sb.append("<h1>Classe <font color=\"#1E4E8F\">")
+			sb.append("<h1>Class <font color=\"#1E4E8F\">")
 				.append(api.classe())
-				.append("</font></h1>\n<p><strong>pacote: </strong>")
+				.append("</font></h1>\n<p><strong>package: </strong>")
 				.append(api.pacote())
-				.append("</p>\n<p><strong>arquivo: </strong>");
+				.append("</p>\n<p><strong>file: </strong>");
 			
 			var arq = api.arquivo();
 			arq = arq.substring(arq.lastIndexOf("/")+1);
@@ -279,7 +279,7 @@ jsool.onReady(function(){
 				.append(arq)
 				.append("</font></a></p>");
 			
-			sb.append("\n<p><strong>extende: </strong><font color=\"#1E4E8F\">")
+			sb.append("\n<p><strong>extends: </strong><font color=\"#1E4E8F\">")
 				.append(resolveLink(api.pai()))
 				.append("</font></p>\n----\n");
 			
