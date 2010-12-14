@@ -67,6 +67,7 @@
 	<script type="text/javascript" src="js/flux/layout/SpringProxy.js"></script> -->
 	
 	<script type="text/javascript">
+		var d;
 		jsool.onReady(function(){
 			var H = js.dom.Helper,
 				B = js.dom.BODY,
@@ -84,22 +85,9 @@
 
 			if(s)H.append(B,{tag:"link",rel:"stylesheet",type:"text/css",href:"css/core."+s+".css"});
 			
-			var body = H.createDom({
-				className:"js-dialog",
-				children:[{
-					tag:"h1",
-					html: "Testes"
-				},{
-					className:"body"
-				}],
-				style:{
-					width:"300px",
-					height:"150px",
-					top:"10px",
-					left:"280px"
-				},
-				parent: B
-			});
+			d = new js.ui.Dialog();
+			
+			d.show();
 		});
 	</script>
 
@@ -109,7 +97,7 @@
 	
 	<div class="js-dd">
 		<input type="text" class="js-dd" /><input type="button" class="js-dd" value="V" />
-		<ul class="js-dd">
+		<ul class="js-dd no-select">
 			<li>Item 1</li>
 			<li>Item 2</li>
 			<li>Item 3</li>
