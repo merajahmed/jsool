@@ -8,24 +8,27 @@ jsool.namespace("js.ui");
 			x:0,y:0,down:false	
 		};
 	
-	EM.on(window,"mousemove",function(ev){
+	function moveHandler(ev){
 		m.x = ev.x;
 		m.y = ev.y;
 		if(dialog && offset && m.down){
 			dialog.setPosition(ev.x - offset.x, ev.y - offset.y);
 		}
-	});
+	}
 	
-	EM.on(window,'mouseup',function(ev){		
+	function upHandler(ev){
 		offset = null;
 		dialog = null;
 		m.down=false;
 		m.x = ev.x;
 		m.y = ev.y;
-	});
+		EM.un(window,"mousemove",moveHandler);
+		EM.un(window,"mouseup",upHandler);
+	}
 	
 	js.ui.Dialog = $extends(js.util.Observable,{
 		cons: function(config){
+			var dom;
 			//Default configuration
 			config = config || {} ;
 			
@@ -39,7 +42,7 @@ jsool.namespace("js.ui");
 				show: false
 			});
 			
-			this.body = DH.createDom({
+			dom = DH.createDom({
 				className:"js-dialog",
 				children:[{
 					tag:"h1",
@@ -59,20 +62,27 @@ jsool.namespace("js.ui");
 				parent: js.dom.BODY
 			});
 			
-			this.style = this.body.style;
-			EM.on(this.body,'mousedown',function(ev){
-				if(ev.source.tagName && ev.source.tagName=="H1"){
+			this.style = dom.style;
+			EM.on(dom,'mousedown',function(ev){
+				
+				if(ev.source.tagName && ev.source.tagName=="H1"){					
 					m.down=true;
 					m.x = ev.x;
 					m.y = ev.y;
 					dialog = this;
-					var b = jsool.get(this.body).getBox();
+					var b = this.body.getPosition();
 					offset = {
 						x: ev.x-b.x,
 						y: ev.y-b.y
 					};
+					
+					EM.on(window,"mousemove",moveHandler);
+					EM.on(window,"mouseup",upHandler);
 				}
+				
 			},this);
+			
+			this.body = jsool.get(dom);
 		},
 		show: function(){
 			this.style.display='block';
@@ -81,16 +91,15 @@ jsool.namespace("js.ui");
 			this.style.display='none';
 		},
 		setPosition: function(x, y){
-			if(jsool.isNumber(y))
 			this.style.top = y + 'px';
-			if(jsool.isNumber(x))
 			this.style.left = x + 'px';
 		},
 		setSize: function(w,h){
-			if(jsool.isNumber(w))
 			this.style.width = w + 'px';
-			if(jsool.isNumber(h))
 			this.style.height = h + 'px';
+		},
+		isVisible: function(){
+			return this.style.display != 'block';
 		}
 	},"js.ui.Dilaog");
 })();

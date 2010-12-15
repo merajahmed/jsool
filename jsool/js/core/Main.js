@@ -193,8 +193,12 @@ var jsool = (function create_jsool(){
 		 * Gets or generate an id to an element
 		 */
 		id: function(el){
-			el.id = el.id || ("jsool-" + (idCount++));
-			return el.id;
+			if(el){
+				el.id = el.id || ("jsool-" + (idCount++));
+				return el.id;
+			}else{
+				return("jsool-" + (idCount++));
+			}
 		},
 		/**
 		 * Checks if the object is undefined

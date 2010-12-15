@@ -26,7 +26,11 @@ js.dom.Helper = (function create_helper(){
 				
 				if(!specialAttributes.test(atr)){					
 					b.push(' ');
-					b.push(atr);
+					b.push({
+						"className":"class",
+						"cls":"class"
+					}[atr] || atr);
+					
 					b.push('="');
 					if(typeof val === 'object'){
 						for(key in val){
@@ -41,6 +45,8 @@ js.dom.Helper = (function create_helper(){
 					b.push('"');
 				}
 			}
+			
+			
 			
 			if(noCloseTags.test(def.tag)){
 				b.push('/>');
