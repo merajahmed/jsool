@@ -1,0 +1,35 @@
+http://closure-compiler.appspot.com/home
+
+// ==ClosureCompiler==
+// @compilation_level SIMPLE_OPTIMIZATIONS
+// @output_file_name jsool-all.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/core/Main.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/core/Number.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/core/String.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/core/Array.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/core/Object.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/core/Browser.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/core/Exception.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/core/EventManager.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/util/Collection.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/util/MixedCollection.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/util/List.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/util/ArrayList.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/util/LinkedList.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/util/HashSet.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/util/Map.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/util/HashMap.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/util/ReferenceMap.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/util/StringBuilder.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/util/Serializable.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/util/DateFormat.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/util/Observable.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/dom/Template.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/dom/Helper.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/dom/Element.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/dom/CompositeElement.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/net/RequestDispatcher.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/ui/Dialog.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/ui/TextField.js
+// @code_url http://jsool.googlecode.com/svn/trunk/jsool/js/ui/DropDown.js
+// ==/ClosureCompiler==

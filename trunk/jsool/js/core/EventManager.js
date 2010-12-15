@@ -50,7 +50,10 @@ js.core.EventManager = (function create_event_manager(){
 	
 	buttons = jsool.isIE ? {1:0,4:1,2:2} : //IE
 			(jsool.isWebKit ? {1:0,2:1,3:2} : // WebKit
-			{0:0,1:1,2:2}); //Mozilla
+			{0:0,1:1,2:2}), //Mozilla
+	ieBody;
+	
+	if(jsool.isIE)ieBody = document.body;
 	
 	// Adds an event listener to a DOM element
 	function addListener(el, ev, fn, scope){
@@ -67,8 +70,8 @@ js.core.EventManager = (function create_event_manager(){
 			//Hardcore event normalization
 			var ev = {
 				original: event,
-				x: jsool.isIE ? (event.x || event.clientX+document.body.scrollLeft) : event.pageX,
-				y: jsool.isIE ? (event.y || event.clientY+document.body.scrollTop) : event.pageY,
+				x: jsool.isIE ? (event.x || event.clientX+ieBody.scrollLeft) : event.pageX,
+				y: jsool.isIE ? (event.y || event.clientY+ieBody.scrollTop) : event.pageY,
 				source: event.target || event.source || event.srcElement,
 				type: event.type,
 				key: jsool.isSafari ? safari[event.charCode || event.keyCode] : event.charCode || event.keyCode,
