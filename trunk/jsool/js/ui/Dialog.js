@@ -2,6 +2,7 @@ jsool.namespace("js.ui");
 (function(){
 	var EM = js.core.EventManager,
 		DH = js.dom.Helper,
+		target = window.document,
 		offset,
 		dialog,
 		m = {
@@ -22,8 +23,8 @@ jsool.namespace("js.ui");
 		m.down=false;
 		m.x = ev.x;
 		m.y = ev.y;
-		EM.un(window,"mousemove",moveHandler);
-		EM.un(window,"mouseup",upHandler);
+		EM.un(target,"mousemove",moveHandler);
+		EM.un(target,"mouseup",upHandler);
 	}
 	
 	js.ui.Dialog = $extends(js.util.Observable,{
@@ -76,8 +77,8 @@ jsool.namespace("js.ui");
 						y: ev.y-b.y
 					};
 					
-					EM.on(window,"mousemove",moveHandler);
-					EM.on(window,"mouseup",upHandler);
+					EM.on(target,"mousemove",moveHandler);
+					EM.on(target,"mouseup",upHandler);
 				}
 				
 			},this);

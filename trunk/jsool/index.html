@@ -67,6 +67,8 @@
 	<script type="text/javascript" src="js/flux/layout/SpringConstraint.js"></script>
 	<script type="text/javascript" src="js/flux/layout/SpringProxy.js"></script> -->
 	
+	<link rel="stylesheet" type="text/css" href="css/core.css"></link>
+	
 	<script type="text/javascript">
 		var d;
 		jsool.onReady(function(){
@@ -82,12 +84,10 @@
 				s="ie";
 			}else if(jsool.isWebKit){
 				s="webkit";
-			}
-
-			if(s)H.append(B,{tag:"link",rel:"stylesheet",type:"text/css",href:"css/core."+s+".css"});
+			}			
 			
 			d = new js.ui.Dialog();
-			
+			d.setPosition(300,10);
 			d.show();
 		});
 	</script>
@@ -97,8 +97,8 @@
 	<input class="js-inp" id="in" type="text" /><br />
 	
 	<div class="js-dd">
-		<input type="text" class="js-dd" /><input type="button" class="js-dd" value="V" />
-		<ul class="js-dd no-select">
+		<input type="text" /><input type="button" value="V" />
+		<ul class="js-dd no-select " style="display:none;">
 			<li>Item 1</li>
 			<li>Item 2</li>
 			<li>Item 3</li>
