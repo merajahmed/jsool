@@ -218,6 +218,31 @@ div.js-dd input[type=button]:hover{
 	background-position: 0 22px;
 }
 
+ul.js-dd{
+	background-color: white;
+	width: 230px;
+	padding: 2px 0;
+	position:absolute;
+	height:120px;
+	border:1px solid #888888;
+	border-top:0;
+	overflow:auto;
+}
+
+ul.js-dd li{
+	color:#222D49;
+	height:12px;
+	padding: 4px 4px;
+	background-color: white;
+	cursor: default;
+	border-top: dotted #6997d2 1px;
+}
+
+ul.js-dd li:hover{
+	background-color: #D6E8FF;
+	color:black;
+}
+
 /*
 DIALOG
 */

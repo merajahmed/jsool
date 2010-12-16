@@ -165,8 +165,8 @@ jsool.applyIf(Array,{
 	 * Iterates array-like objects
 	 */
 	iterate: function(a, fn){
-		for(var i=0,e;e=a[i++];){
-			fn(i,e);
+		for(var i=0,e;e=a[i];){
+			fn(i++,e);
 		}
 	},
 	MAX_LENGTH: 4294967295

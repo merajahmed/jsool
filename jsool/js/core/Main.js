@@ -260,13 +260,13 @@ jsool.$extends = function(superclass, prototype, type){
 	if(prototype['cons'] && typeof prototype['cons'] == 'function'){
 		cls = (function implicity_constructor_class(constructor, parent){
 			
-			var constructor = prototype['cons'];
+			var construc = prototype['cons'];
 			var parent = superclass;
 			
 			//Parent constructor executes just before the class constructor
 			return function implicity_constructor(){
 				parent.apply(this, arguments);
-				constructor.apply(this, arguments);
+				construc.apply(this, arguments);
 			};
 		})();
 		
@@ -274,22 +274,22 @@ jsool.$extends = function(superclass, prototype, type){
 	//ClassConstructor	
 	}else if(prototype['ccons'] && typeof prototype['ccons'] == 'function'){
 		cls = (function self_constructor_class(){
-			var constructor = prototype['ccons'];
+			var construc = prototype['ccons'];
 			
 			//Executes only the class constructor
 			return function class_constructor(){
-				constructor.apply(this, arguments);
+				construc.apply(this, arguments);
 			};
 		})();
 		
 		delete prototype['ccons'];
 	}else{
 		cls = (function no_constructor_class(){
-			var constructor = superclass;
+			var construc = superclass;
 			
 			//Executes only the parent constructor
 			return function super_constructor(){
-				constructor.apply(this, arguments);
+				construc.apply(this, arguments);
 			};
 		})();
 	}
