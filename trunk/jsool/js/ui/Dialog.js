@@ -58,7 +58,7 @@ jsool.namespace("js.ui");
 					height:config.height,
 					top:config.y,
 					left:config.x,
-					display:config.show?'none':'block'
+					display:config.show?'block':'none'
 				},
 				parent: js.dom.BODY
 			});
@@ -102,5 +102,5 @@ jsool.namespace("js.ui");
 		isVisible: function(){
 			return this.style.display != 'block';
 		}
-	},"js.ui.Dilaog");
+	},"js.ui.Dialog");
 })();

@@ -41,6 +41,7 @@
 	<script type="text/javascript" src="js/net/RequestDispatcher.js"></script>
 	
 	<script type="text/javascript" src="js/ui/TextField.js"></script>
+	<script type="text/javascript" src="js/ui/DropDown.js"></script>
 	<script type="text/javascript" src="js/ui/Dialog.js"></script>
 	
 	<!-- <script type="text/javascript" src="js/data/Field.js"></script>
@@ -70,41 +71,34 @@
 	<link rel="stylesheet" type="text/css" href="css/core.css"></link>
 	
 	<script type="text/javascript">
-		var d;
+		var d,tf,dd;
 		jsool.onReady(function(){
-			var H = js.dom.Helper,
-				B = js.dom.BODY,
-				s;
 			
-			if(jsool.isFF){
-				s="ff";
-			}else if(jsool.isOpera){
-				s="opera";
-			}else if(jsool.isIE){
-				s="ie";
-			}else if(jsool.isWebKit){
-				s="webkit";
-			}			
-			
-			d = new js.ui.Dialog();
-			d.setPosition(300,10);
-			d.show();
+			d = new js.ui.Dialog({
+				title:"Titulo da minha janela",
+				x:'300px',
+				y:'10px',
+				show:true
+			});
+
+			tf = new js.ui.TextField({
+				render: "lol",
+				value:"",
+				enabled: true
+			});
+
+			dd = new js.ui.DropDown({
+				render:'drop',
+				items:['Mikhail','Rodrigo','Marcelo','Eduardo','Fernando','Romão']
+			});
 		});
 	</script>
 
 </head>
 <body class="jsool">
-	<input class="js-inp" id="in" type="text" /><br />
+	<span id="lol"></span><br />
+	<div id="drop"></div><br />
 	
-	<div class="js-dd">
-		<input type="text" /><input type="button" value="V" />
-		<ul class="js-dd no-select " style="display:none;">
-			<li>Item 1</li>
-			<li>Item 2</li>
-			<li>Item 3</li>
-			<li>Item 4</li>
-		</ul>
-	</div>
 	
 	<br />
 	<button class="js-btn">Button</button><br />

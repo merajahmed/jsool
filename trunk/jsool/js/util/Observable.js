@@ -32,6 +32,15 @@
 jsool.namespace("js.util");
 
 js.util.Observable = $extends(js.core.Object, {
+	cons:function(){
+		if(this.events && Array.isArray(this.events)){
+			var evs = {};
+			Array.iterate(this.events,function(i,el){
+				evs[el]=[];
+			});
+			this.events=evs;
+		}
+	},
 	events: null,
 	addEvent: function(){
 		var args = arguments;
