@@ -41,17 +41,14 @@ a.js-btn{
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	
-	background-color: #477AC3;
-	background: -moz-linear-gradient(center top , #75A3DC, #3267B8);
-	background: -webkit-gradient(linear, left top, left bottom, from(#75A3DC), to(#3267B8));
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#75A3DC', EndColorStr='#3267B8');     
+	background-image: url('../images/input-bg.png');	
+	background-position: 0 45px;
 	
 	border: 1px solid #3267B8;
-	cursor: pointer;
 	display: inline-block;
 	padding: 3px 5px;
 	margin: 2px 5px;
-	
+	cursor:default;
 	text-decoration: none;
 	color: #EEE;
 	text-align: center;
@@ -103,10 +100,7 @@ input[type=submit].js-btn:hover,
 input[type=reset].js-btn:hover,
 button.js-btn:hover,
 a.js-btn:hover{
-	background-color: #5281C8;
-	background: -moz-linear-gradient(center top , #C1DCFF, #3267B8);
-	background: -webkit-gradient(linear, left top, left bottom, from(#C1DCFF), to(#3267B8));
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#C1DCFF', EndColorStr='#3267B8');
+	background-position: 0 22px;
 }
 
 input[type=button].js-btn:active,
@@ -114,7 +108,7 @@ input[type=submit].js-btn:active,
 input[type=reset].js-btn:active,
 button.js-btn:active,
 a.js-btn:active{
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#75A3DC', EndColorStr='#3267B8') progid:DXImageTransform.Microsoft.Shadow(color='#333333',direction='120',strength='2');
+	filter: progid:DXImageTransform.Microsoft.Shadow(color='#333333',direction='120',strength='2');
 	-moz-box-shadow: 0 1px 3px black;
 	-webkit-box-shadow: 0 1px 3px black;
 	box-shadow: 0 1px 3px black;
@@ -131,15 +125,11 @@ input[type=password].js-inp{
 	
 	border: 1px solid #888;
 	background-image: url('../images/input-bg.png');
-	background: -moz-linear-gradient(center top , #FFF, #EAEAEA);
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
-	border-radius: 4px;        
+	border-radius: 4px;   
 	
 	color: #222D49;
-	
-	background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#EAEAEA));
-	filter: filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#EAEAEA');
 }
 
 .opera input[type=text].js-inp,
@@ -151,19 +141,18 @@ input[type=password].js-inp{
 /*
 DROP DOWN
 */
-span.js-dd{
+div.js-dd{
 	width:232px;
 	display:inline-block;
 	margin: 2px 5px;
 }
-input[type=text].js-dd{
+div.js-dd input[type=text]:first-child{
 	padding: 4px 5px;
 	margin: 0;
 	width:200px;
 	
 	border: 1px solid #888;
-	background-image: url('../images/input-bg.png');
-	background: -moz-linear-gradient(center top , #FFF, #EAEAEA);   
+	background-image: url('../images/input-bg.png');   
 	
 	-moz-border-radius-topleft: 4px;
 	-moz-border-radius-bottomleft: 4px;
@@ -173,12 +162,9 @@ input[type=text].js-dd{
 	border-bottom-left-radius: 4px;
 	
 	color: #222D49;
-	
-	background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#EAEAEA));
-	filter: filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#EAEAEA');
 }
 
-input[type=button].js-dd{
+div.js-dd input[type=button]{
 	width: 20px;
 	line-height: 16px;
 	
@@ -189,13 +175,11 @@ input[type=button].js-dd{
 	border-top-right-radius: 4px;
 	border-bottom-right-radius: 4px;
 	
-	background-color: #477AC3;
-	background: -moz-linear-gradient(center top , #75A3DC, #3267B8);
-	background: -webkit-gradient(linear, left top, left bottom, from(#75A3DC), to(#3267B8));
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#75A3DC', EndColorStr='#3267B8');     
+	background-image: url('../images/input-bg.png');	
+	background-position: 0 45px;     
 	
 	border: 1px solid #3267B8;
-	cursor: pointer;
+	cursor: default;
 	display: inline-block;
 	padding: 3px 5px;
 	margin: 0;
@@ -210,24 +194,28 @@ input[type=button].js-dd{
 	border-left:none;
 }
 
-.webkit input[type=button].js-dd{
-	padding:3px 0;
+.webkit div.js-dd input[type=button]{
+	padding:2px 0;
 }
-.ie input[type=button].js-dd{
+.ie div.js-dd input[type=button]{
 	padding-top:2px;
 	padding-bottom:4px;
 }
 
-.opera input[type=button].js-dd{
+.opera div.js-dd input[type=button]{
 	padding-top:3px;
 	padding-bottom:5px;
 }
 
-input[type=button].js-dd:active{
+div.js-dd input[type=button]:active{
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#75A3DC', EndColorStr='#3267B8') progid:DXImageTransform.Microsoft.Shadow(color='#333333',direction='120',strength='2');
 	-moz-box-shadow: 0 1px 3px black;
 	-webkit-box-shadow: 0 1px 3px black;
 	box-shadow: 0 1px 3px black;
+}
+
+div.js-dd input[type=button]:hover{
+	background-position: 0 22px;
 }
 
 /*
@@ -260,4 +248,8 @@ div.js-dialog h1{
 	border-top-right-radius: 4px;
     padding: 3px 5px 2px 5px;
     color: #EEE;
+    cursor: default;
+}
+div.js-dialog div.body{
+	margin: 5px;
 }

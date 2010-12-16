@@ -24,7 +24,7 @@ jsool.namespace("js.ui");
 				s = {
 				width: (c.width-10) + "px"
 			};
-			console.info(DH);
+
 			//this.input = DH.createDom({
 				//"class":"js-inp",
 				//tag:"input",
