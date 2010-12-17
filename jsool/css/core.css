@@ -160,7 +160,7 @@ div.js-dd input[type=text]:first-child{
 	-webkit-border-bottom-left-radius: 4px;
 	border-top-left-radius: 4px;
 	border-bottom-left-radius: 4px;
-	
+	cursor:default;
 	color: #222D49;
 }
 
@@ -227,6 +227,7 @@ ul.js-dd{
 	border:1px solid #888888;
 	border-top:0;
 	overflow:auto;
+	display:none;
 }
 
 ul.js-dd li{
@@ -274,6 +275,7 @@ div.js-dialog h1{
     padding: 3px 5px 2px 5px;
     color: #EEE;
     cursor: default;
+    font-weight: bold;
 }
 div.js-dialog div.body{
 	margin: 5px;

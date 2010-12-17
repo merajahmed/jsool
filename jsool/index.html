@@ -72,7 +72,7 @@
 	
 	<script type="text/javascript">
 		var d,tf,dd;
-		jsool.onReady(function(){
+		jsool.onReady(function(){			
 			
 			d = new js.ui.Dialog({
 				title:"Titulo da minha janela",
@@ -89,7 +89,12 @@
 
 			dd = new js.ui.DropDown({
 				render:'drop',
-				items:['Mikhail','Rodrigo','Marcelo','Eduardo','Fernando','Romão']
+				items:['Mikhail','Rodrigo','Marcelo','Eduardo','Fernando','Romão','Tiago','Eduardo','Nathalia']
+			});
+
+			dd.on('select',function(sel){
+				console.info(sel);
+				console.info(this);
 			});
 		});
 	</script>
