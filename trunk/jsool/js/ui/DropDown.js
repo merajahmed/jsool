@@ -13,7 +13,7 @@ jsool.namespace("js.ui");
 			
 			if(config.render)this.render(config.render);
 		},
-		events:['click'],
+		events:['click','select'],
 		render: function(el){
 			this.wrapper = el = jsool.get(el);
 			var items = [],c =this.config,html;
@@ -30,7 +30,8 @@ jsool.namespace("js.ui");
 				className:'js-dd',
 				children:[{
 					tag:'input',
-					type:'text'
+					type:'text',
+					disabled:'disabled'
 				},{
 					tag:'input',
 					type:'button',
@@ -46,14 +47,40 @@ jsool.namespace("js.ui");
 			
 			el.on('click',this.fireEvent,this);
 		},
+		dropVisible:false,
 		onclick: function(ev){
-			if(ev.button == 1){//right click
-				var t = ev.source.tagName;
+			
+			if(ev.button == 0){//left click
+				var src = ev.source,
+					t = ev.source.tagName,
+					w = this.wrapper,
+					d,
+					me = this;
+				
 				if(t == 'LI'){//selecting element
-					this.selected = this.items[ev.source.getAttribute('index')];
-				}else if(t == 'INPUT'){
-					console.info(ev.source.type);
+					
+					this.selected = this.items[src.getAttribute('index')];
+					w.query("input",true)[0].value=src.innerHTML;
+					this.fireEvent('select',this.selected);
+					
+				}else if(t == 'INPUT' && src.type=="button"){ //Drop
+					if(!this.dropVisible){
+						d = w.query("ul",true)[0].style;
+						
+						d.display = 'block';
+						this.dropVisible = true;
+						
+						function hideDrop(ev){
+							d.display='none';
+							me.dropVisible = false;
+							EM.un(document,'click',hideDrop);
+						}
+						
+						EM.on(document,'click',hideDrop);
+						ev.original.cancelBubble = true;
+					}
 				}
+				
 			}
 		}
 	},"js.ui.DropDown");

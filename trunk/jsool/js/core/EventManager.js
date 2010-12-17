@@ -48,9 +48,10 @@ js.core.EventManager = (function create_event_manager(){
         63275 : 35  // end
 	},
 	
-	buttons = jsool.isIE ? {1:0,4:1,2:2} : //IE
-			(jsool.isWebKit ? {1:0,2:1,3:2} : // WebKit
-			{0:0,1:1,2:2}), //Mozilla
+	buttons = jsool.isOpera ? {1:0,4:1,2:2} : //Opera
+				jsool.isFF ? {1:0,2:1,3:2} : //Firefox
+				jsool.isSafari? {1:0,2:1,3:2} : //Safari
+				{0:0,1:1,2:2},
 	ieBody;
 	
 	if(jsool.isIE)ieBody = document.body;
@@ -59,14 +60,14 @@ js.core.EventManager = (function create_event_manager(){
 	function addListener(el, ev, fn, scope){
 		var id = jsool.id(el), //The id of the element
 			elEvs = elsMap[id] = elsMap[id] || {}, //All the registered events of the element
-			hs = elEvs[ev] = elEvs[ev] || []; //All handlers registered for the event
+			hs = elEvs[ev] = elEvs[ev] || []; //All handlers registered for the event			
 		
 		scope = scope || el;
 		
 		var handler = function(event){
 			var ret;
 			event = event || window.event;
-			
+			//
 			//Hardcore event normalization
 			var ev = {
 				original: event,
@@ -75,7 +76,7 @@ js.core.EventManager = (function create_event_manager(){
 				source: event.target || event.source || event.srcElement,
 				type: event.type,
 				key: jsool.isSafari ? safari[event.charCode || event.keyCode] : event.charCode || event.keyCode,
-				button: event.button || buttons[event.which]
+				button: buttons[event.which || event.button]
 			};
 			
 			//Call handler			
