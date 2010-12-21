@@ -17,28 +17,28 @@
 	<script type="text/javascript" src="js/util/MixedCollection.js"></script>
 	<script type="text/javascript" src="js/util/List.js"></script>
 	<script type="text/javascript" src="js/util/ArrayList.js"></script>
-	<script type="text/javascript" src="js/util/LinkedList.js"></script>
+	<!-- <script type="text/javascript" src="js/util/LinkedList.js"></script> -->
 	<script type="text/javascript" src="js/util/HashSet.js"></script>
 	<script type="text/javascript" src="js/util/Map.js"></script>
 	<script type="text/javascript" src="js/util/HashMap.js"></script>
-	<script type="text/javascript" src="js/util/ReferenceMap.js"></script>
+	<!-- <script type="text/javascript" src="js/util/ReferenceMap.js"></script>
 	<script type="text/javascript" src="js/util/StringBuilder.js"></script>
-	<script type="text/javascript" src="js/util/Serializable.js"></script>
+	<script type="text/javascript" src="js/util/Serializable.js"></script> -->
 	<script type="text/javascript" src="js/util/Observable.js"></script>
-	<script type="text/javascript" src="js/util/DateFormat.js"></script>
+	<!-- <script type="text/javascript" src="js/util/DateFormat.js"></script>
 	<script type="text/javascript" src="js/util/JSON.js"></script>
-	<script type="text/javascript" src="js/util/Encoder.js"></script>
+	<script type="text/javascript" src="js/util/Encoder.js"></script> -->
 	
 	<script type="text/javascript" src="raze2.js"></script>
 	
-	<script type="text/javascript" src="js/dom/Template.js"></script>
+	<!-- <script type="text/javascript" src="js/dom/Template.js"></script> -->
 	<script type="text/javascript" src="js/dom/Helper.js"></script>	
 	<script type="text/javascript" src="js/dom/Element.js"></script>
 	<script type="text/javascript" src="js/dom/CompositeElement.js"></script>
 	
-	<script type="text/javascript" src="js/canvas/Canvas.js"></script>
+	<!-- <script type="text/javascript" src="js/canvas/Canvas.js"></script>
 	
-	<script type="text/javascript" src="js/net/RequestDispatcher.js"></script>
+	<script type="text/javascript" src="js/net/RequestDispatcher.js"></script> -->
 	
 	<script type="text/javascript" src="js/ui/TextField.js"></script>
 	<script type="text/javascript" src="js/ui/DropDown.js"></script>
@@ -71,7 +71,7 @@
 	<link rel="stylesheet" type="text/css" href="css/core.css"></link>
 	
 	<script type="text/javascript">
-		var d,tf,dd;
+		var d,tf,dd,dd2;
 		jsool.onReady(function(){			
 			
 			d = new js.ui.Dialog({
@@ -96,13 +96,19 @@
 				console.info(sel);
 				console.info(this);
 			});
+
+			dd2 = new js.ui.DropDown({
+				render:'drop2',
+				items:[1,2,3,4,5,6,7,8,9,4,5,6,1,2,3]
+			});
 		});
 	</script>
 
 </head>
 <body class="jsool">
 	<span id="lol"></span><br />
-	<div id="drop"></div><br />
+	<div id="drop"></div>
+	<div id="drop2"></div><br />
 	
 	
 	<br />
