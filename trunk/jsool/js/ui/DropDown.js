@@ -55,7 +55,8 @@ jsool.namespace("js.ui");
 					t = ev.source.tagName,
 					w = this.wrapper,
 					d,
-					me = this;
+					me = this,
+					or = ev.original;//Temporary scope to handle the document event listener
 				
 				if(t == 'LI'){//selecting element
 					
@@ -70,14 +71,15 @@ jsool.namespace("js.ui");
 						d.display = 'block';
 						this.dropVisible = true;
 						
-						function hideDrop(ev){
+						me.hideDrop = function(ev){
+							if(or==ev.original)return false;
 							d.display='none';
 							me.dropVisible = false;
-							EM.un(document,'click',hideDrop);
-						}
+							EM.un(document,'click',me.hideDrop);
+							EM.un(document,'click',arguments.callee);
+						};
 						
-						EM.on(document,'click',hideDrop);
-						ev.original.cancelBubble = true;
+						EM.on(document,'click',me.hideDrop);
 					}
 				}
 				

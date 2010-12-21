@@ -112,23 +112,24 @@ js.core.EventManager = (function create_event_manager(){
 	
 	// Find and request a event listener to be removed from a DOM element
 	function removeListener(el,ev, fn){
-		var id = jsool.id(el),
-			evs = elsMap[id][ev];
-		
+		var m = elsMap[jsool.id(el)],
+			evs = m[ev],i=0,e;
 		//REMOVE SPECIFC HANDLER
 		if(fn){
-			for(var i=0,e;e=evs[i++];){
-				if(e.FUNCTION == fn){
+			while(e=evs[i]){
+				if(e.FUNCTION===fn){
 					doRemoveListener(el, ev, e.HANDLER);
-					delete elsMap[id][ev][i];
+					delete m[ev][i];
 				}
+				i++;
 			}
 		}else{
-		//REMOVE ALL HANDLERS FOR THE EVENT
-			for(var i=0,e;e=evs[i++];){
+			//REMOVE ALL HANDLERS FOR THE EVENT
+			while(e=evs[i]){
 				doRemoveListener(el, ev, e.HANDLER);
+				delete m[ev][i++];
 			}
-			delete elsMap[id][ev];
+			delete m[ev];
 		}
 	}
 	
