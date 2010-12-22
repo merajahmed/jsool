@@ -130,10 +130,13 @@ jsool.applyIf(Array.prototype,{
 	},
 	/**
 	 * Removes an item from the array
+	 * 
+	 * Taken from J. Resig web site. Many thanks.
 	 */
-	remove: function(s){
-		var i = this.indexOf(s);
-		if(i >= 0)this.slice(i,1);
+	remove: function(from, to) {
+		var rest = this.slice((to || from) + 1 || this.length);
+		this.length = from < 0 ? this.length + from : from;
+		return this.push.apply(this, rest);
 	},
 	
 	contains: function(obj){

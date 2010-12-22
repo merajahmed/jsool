@@ -14,5 +14,13 @@ jsool.applyIf(Function.prototype,{
 		return function(){
 			return fn.apply(this,args);
 		};
+	},
+	pool: function(time){
+		var fn = this;
+		if(time > 0){
+			window.setTimeout(fn,time);
+		}else{
+			fn();
+		}
 	}
 });
