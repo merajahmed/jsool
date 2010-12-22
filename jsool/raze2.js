@@ -167,7 +167,7 @@
 	}
 	
 	function query(selector, context){
-		context = context || window.document;
+		context = context || window.document;		
 		
 		if(typeof selector == "string"){
 			var result, results = [],

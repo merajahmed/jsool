@@ -31,9 +31,9 @@
 
 jsool.namespace("js.core");
 
-js.core.EventManager = (function create_event_manager(){
-		
+js.core.EventManager = (function create_event_manager(){		
 	var elsMap = {},
+	
 	
 	safari = {
 		3 : 13, // enter
@@ -55,7 +55,7 @@ js.core.EventManager = (function create_event_manager(){
 	ieBody;
 	
 	if(jsool.isIE)ieBody = document.body;
-	
+	window.events = elsMap;
 	// Adds an event listener to a DOM element
 	function addListener(el, ev, fn, scope){
 		var id = jsool.id(el), //The id of the element
@@ -119,7 +119,7 @@ js.core.EventManager = (function create_event_manager(){
 			while(e=evs[i]){
 				if(e.FUNCTION===fn){
 					doRemoveListener(el, ev, e.HANDLER);
-					delete m[ev][i];
+					m[ev].remove(i);
 				}
 				i++;
 			}

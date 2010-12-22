@@ -2,32 +2,35 @@ jsool.namespace("js.ui");
 (function(){
 	var EM = js.core.EventManager,
 		DH = js.dom.Helper,
-		target = window.document,
+		DOC = window.document,
 		offset,
 		dialog,
 		m = {
-			x:0,y:0,down:false	
+			down:false	
 		};
 	
+	/**
+	 * Handles the mouse moviment
+	 */
 	function moveHandler(ev){
-		m.x = ev.x;
-		m.y = ev.y;
 		if(dialog && offset && m.down){
 			dialog.setPosition(ev.x - offset.x, ev.y - offset.y);
 		}
 	}
 	
+	/**
+	 * Detach the event listeners from the document after the window is released
+	 */
 	function upHandler(ev){
 		offset = null;
 		dialog = null;
 		m.down=false;
-		m.x = ev.x;
-		m.y = ev.y;
-		EM.un(target,"mousemove",moveHandler);
-		EM.un(target,"mouseup",upHandler);
+		EM.un(DOC,"mousemove",moveHandler);
+		EM.un(DOC,"mouseup",upHandler);
 	}
 	
-	js.ui.Dialog = $extends(js.util.Observable,{
+	js.ui.Window = $extends(js.util.Observable,{
+		
 		cons: function(config){
 			var dom;
 			//Default configuration
@@ -66,41 +69,67 @@ jsool.namespace("js.ui");
 			this.style = dom.style;
 			EM.on(dom,'mousedown',function(ev){
 				
-				if(ev.source.tagName && ev.source.tagName=="H1"){					
+				if(ev.source.tagName && ev.source.tagName=="H1"){
+
 					m.down=true;
-					m.x = ev.x;
-					m.y = ev.y;
 					dialog = this;
-					var b = this.body.getPosition();
+
+					var p = this.body.getPosition();
 					offset = {
-						x: ev.x-b.x,
-						y: ev.y-b.y
+						x: ev.x-p.x,
+						y: ev.y-p.y
 					};
 					
-					EM.on(target,"mousemove",moveHandler);
-					EM.on(target,"mouseup",upHandler);
+					EM.on(DOC,"mousemove",moveHandler);
+					EM.on(DOC,"mouseup",upHandler);
+					
 				}
 				
 			},this);
 			
 			this.body = jsool.get(dom);
 		},
+		/**
+		 * Shows the current window
+		 */
 		show: function(){
-			this.style.display='block';
+			this.style.display = 'block';
 		},
+		
+		/**
+		 * Hides the current window
+		 */
 		hide: function(){
-			this.style.display='none';
+			this.style.display = 'none';
 		},
+		
+		/**
+		 * Sets the position of the window on the screen
+		 * 
+		 * @param x The x coordinate of the window on the screen
+		 * @param y The y coordinate of the window on the screen
+		 */
 		setPosition: function(x, y){
 			this.style.top = y + 'px';
 			this.style.left = x + 'px';
 		},
+		
+		/**
+		 * Sets the size of the window
+		 * 
+		 * @param w The width
+		 * @param h The heigth
+		 */
 		setSize: function(w,h){
 			this.style.width = w + 'px';
 			this.style.height = h + 'px';
 		},
+		
+		/**
+		 * Checks it the window is visible
+		 */
 		isVisible: function(){
 			return this.style.display != 'block';
 		}
-	},"js.ui.Dialog");
+	},"js.ui.Window");
 })();

@@ -6,6 +6,8 @@ jsool.namespace("js.ui");
 	
 	
 	js.ui.DropDown = $extends(js.util.Observable,{
+		
+		
 		cons: function(config){
 			//Default configuration
 			this.config = config || {} ;
@@ -13,7 +15,13 @@ jsool.namespace("js.ui");
 			
 			if(config.render)this.render(config.render);
 		},
-		events:['click','select'],
+		
+		
+		
+		events:['click','select','mousedown'],
+		
+		
+		
 		render: function(el){
 			this.wrapper = el = jsool.get(el);
 			var items = [],c =this.config,html;
@@ -47,7 +55,13 @@ jsool.namespace("js.ui");
 			
 			el.on('click',this.fireEvent,this);
 		},
+		
+		
+		
 		dropVisible:false,
+		
+		
+		
 		onclick: function(ev){
 			
 			if(ev.button == 0){//left click
@@ -82,8 +96,10 @@ jsool.namespace("js.ui");
 						EM.on(document,'click',me.hideDrop);
 					}
 				}
-				
 			}
 		}
+		
+		
+		
 	},"js.ui.DropDown");
 })();
