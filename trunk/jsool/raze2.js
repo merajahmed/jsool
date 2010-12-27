@@ -6,7 +6,7 @@
 	var qTIR= /^(#|\.)?([\w-\*]+)/, //Query Type Identifier Regexp
 		byIdRe = /^#([\w-]+)/,//is an ID?
 		byClassRe = /^\.([\w-]+)/,//is a Class?
-		byAttributeRe = /^\[([\w-]+)(.*[=])?(.+)?]/,//is an Attribute?
+		byAttributeRe = /^\[([\w-]+)(.{0,1}[=><])?([\w\d\s-\.]+)?]/,//is an Attribute?
 		pseudoRe = /^:(\w+(-child)?)(\((.+)\))?/,//is it a Pseudo?
 		plainTagRe = /^([\w-]+)/,//is it a plain tag?
 		e="",
@@ -55,20 +55,32 @@
 	}
 	
 	var pseudos = {
+		// The element if the root of the document
 		"root" : "!el.tagName.toUpperCase()===\"HTML\"",
+		// The element if a numbered child 
 		"nth-child": "filterElements(el)[$arg]===el",
+		// The element if the first child of it's parent
 		"first-child": "filterElements(el)[0]===el",
+		// The element has no children
 		"empty": "el.childNodes.length===0",
+		// The element is enabled
 		"enabled": "el.enabled",
+		// The document is disabled
 		"disabled": "!el.enabled",
 		"checked": "el.checked",
 		"not": "!contains(query(\"$arg\"),el)",
 		"selected":"el.selected"
 	};
 	
+	/*
+	 * Compiles the css selector into a nice function.
+	 */
 	function compile(sel){
-		sel = sel.replace(/\[class=([\w\d-_]*)]/g,'.$1');
-		sel = sel.replace(/\[id=([\w\d-_]*)]/g,'#$1');
+		// Trim the selector 
+		sel = sel.replace(/^\s*([\S\s]*?)\s*$/, '$1');
+		// Replace attributes to optimized selectors 
+		sel = sel.replace(/\[class==?([\w\d-_]*)]/g,'.$1');
+		sel = sel.replace(/\[id==?([\w\d-_]*)]/g,'#$1');
 		
 		var t = /[$]/g,
 		e = "", // IE bug fix
@@ -76,7 +88,13 @@
 		o,
 		m,
 		fn,
-		s=["var q=function raze2Query$",++counter,"(ctx){var cs,ns,f,i,n,j,ch,r,at;"];
+		// Function header
+		/*
+		 * var q = function raze2Query$0(ctx){
+		 * 		ctx = ctx || window.document; // make sure theres a context
+		 * 		var cs,ns,f,i,n,j,ch,r,at; //Pre define used variables
+		 */
+		s=["var q=function raze2Query$",++counter,"(ctx){ctx = ctx || window.document;var cs,ns,f,i,n,j,ch,r,at;"];
 		
 		for(var i=0,f;f=filters[i++];){			
 			if(cache.filter[f]){
@@ -88,17 +106,21 @@
 				m = f.match(qTIR);
 				if(m){
 					if(m[1]=="#"){
+						// Get element by id
 						fn.push(fnGetId.replace(t,m[2]));
 					}else if(m[1]=="."){
+						// Gets elements by class name
 						fn.push(fnGetClass.replace(t,m[2]));
 					}else{
+						// Gets elements by tag name
 						fn.push(fnGetNodes.replace(t,m[2]));
 					}
+					
 					f=f.substring(m[0].length);
 				}else{
 					fn.push(fnGetNodes.replace(t,"*"));
 				}
-				
+
 				//CREATE FILTERS
 				if(f.length>0){
 					var before;
@@ -108,23 +130,24 @@
 					
 					while(f.length>0){
 						before = f;
-						if((m=f.match(byIdRe))){//#id
+						if((m=f.match(byIdRe))){
+							// filters elements by it's ids
 							fn.push("el.id=== \""+m[1]+"\"");
 							f=f.substring(m[0].length);
-						}else if((m=f.match(byClassRe))){//.class
+						}else if((m=f.match(byClassRe))){
+							// filters elements by it's class name
 							fn.push("el.className.match(/\\b"+m[1]+"\\b/)");
 							f=f.substring(m[0].length);
-						}else
-						//if((m=f.match(plainTagRe))){
-						//	fn.push("el.tagName===\""+m[1].toUpperCase()+"\"");
-						//	f=f.replace(m[0],e);
-						//}else
-						if((m=f.match(byAttributeRe))){//[attr] || [attr==value]
+						}else if((m=f.match(byAttributeRe))){							
+							// Filters elements by it's atributes
 							var attr = m[1] == "class" ? "className" : m[1];
 							fn.push("(at=(el[\""+attr+"\"]||el.getAttribute(\""+attr+"\")))");
+							
+							// If the attribute is being compared
 							if(m[2]&&m[3]){
 								switch(m[2]){
 								case"=":
+								case"==":
 									fn.push(" && String(at)===\""+m[3]+"\"");
 									break;
 								case"^=":
@@ -136,13 +159,28 @@
 								case"*=":
 									fn.push(" && String(at).indexOf(\""+m[3]+"\")!==-1");
 									break;
+								case ">=":
+								case ">":
+								case "<=":
+								case "<":
+								{
+									if(m[3].match(/^\d+\.?\d+$/)){
+										fn.push(" && at"+ m[2] +m[3]);
+									}else{
+										fn.push(" && String(at)"+ m[2] + "\"" +m[3]+"\"");
+									}
+									break;
+								}
 								default:
 									fn.push(" && String(at)"+m[2]+"\""+m[3]+"\"");
 									break;
 								}
 							}
 							f=f.substring(m[0].length);
+							
 						}else if((m=f.match(pseudoRe))){// :first-child, :nth-child ...
+							
+							// Filters elements by using pseudo classes
 							try{
 								fn.push(pseudos[m[1]].replace("$arg",m[4]));
 								f=f.substring(m[0].length);
@@ -162,30 +200,48 @@
 			}
 		}
 		s.push("return ctx;};");
+		// Compiles the function into q variable
 		eval(s.join(e));
 		return q;
 	}
 	
+	/*
+	 * Compiles the selector and execute the query
+	 */
 	function query(selector, context){
-		context = context || window.document;		
 		
+		// Make sure the selector is a String
 		if(typeof selector == "string"){
 			var result, results = [],
+			/*
+			 * Accepts multiple queries on a single String:
+			 * 
+			 * div.class, div#id
+			 * 
+			 * */
 			parts = selector.split(','),
 			compiled;
 			
 			for(var i=0, part;part=parts[i++];){
+				// Checks if part of the selector is already compiled
 				if(!(compiled = cache.selector[part])){
+					
+					// If not compiled, do it and cache
 					compiled = compile(part);
 					cache.selector[part] = compiled;
 				}
 				
+				// Executes the compiled query
 				result = compiled(context);
 				
+				// If its a single selector, return its results
 				if(parts.length == 1){
 					return result;
 				}else{
-					results = results.concat(result);
+				// If it's multiple selectors, stores it on a result array
+					for(var j=0,r;r=result[j++];){
+						results.push(r);
+					}
 				}
 			}
 			return results;
