@@ -46,30 +46,38 @@
 				return true;
 		}
 		return false;
-	}
+	}	
 	
-	function filterElements(node){
-		return Array.prototype.filter.call(node.parentNode.childNodes,function(node){
-			return node.nodeType == 1;
-		});
+	function isNth(el, n){
+		var ns = el.parentNode.childNodes,i=0,j=0,e;
+		while((e=ns[i++])){
+			if(e.nodeType === 1){
+				if(n==j && e == el)return true;
+				j++;
+			}
+		}
+		return false;
 	}
 	
 	var pseudos = {
 		// The element if the root of the document
-		"root" : "!el.tagName.toUpperCase()===\"HTML\"",
-		// The element if a numbered child 
-		"nth-child": "filterElements(el)[$arg]===el",
+		"root" : "!el.tagName===\"HTML\"",
+		// The element if a numbered child
+		"nth-child" : "isNth(el,$arg-1)",
 		// The element if the first child of it's parent
-		"first-child": "filterElements(el)[0]===el",
+		"first-child" : "isNth(el,0)",
 		// The element has no children
-		"empty": "el.childNodes.length===0",
+		"empty" : "el.childNodes.length===0",
 		// The element is enabled
-		"enabled": "el.enabled",
-		// The document is disabled
-		"disabled": "!el.enabled",
-		"checked": "el.checked",
-		"not": "!contains(query(\"$arg\"),el)",
-		"selected":"el.selected"
+		"enabled" : "el.enabled",
+		// The element is disabled
+		"disabled" : "!el.enabled",
+		// The element is checked
+		"checked" : "el.checked",
+		// The element does not match a query
+		"not" : "!contains(query(\"$arg\"),el)",
+		// The element is selected
+		"selected" : "el.selected"
 	};
 	
 	/*
