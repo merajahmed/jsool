@@ -260,7 +260,7 @@ js.dom.Element = $extends(js.core.Object,{
 	 * @function
 	 * Returns the child elements
 	 */
-	children: function(el){
+	children: function(){
 		return Raze.query("*",this.dom);
 	},
 	/**
@@ -279,12 +279,27 @@ js.dom.Element = $extends(js.core.Object,{
 		}
 		return {y:y,x:x};
 	},
+	/**
+	 * @function
+	 * Gets the position and size of the current element
+	 */
 	getBox: function(){
 		var pos = this.getPosition();
 		var dom = this.dom;
-		pos.w = dom.clientWidth;
-		pos.h = dom.clientHeight;
+		pos.width = dom.clientWidth;
+		pos.height = dom.clientHeight;
 		return pos;
+	},
+	
+	/**
+	 * @function
+	 * Gets the size of the element
+	 */
+	getSize: function(){
+		return {
+			width: this.dom.clientWidth,
+			height: this.dom.clientHeight
+		};
 	},
 	getWidth: function(){
 		return this.dom.clientWidth;

@@ -39,7 +39,7 @@ jsool.namespace("js.ui");
 				children:[{
 					tag:'input',
 					type:'text',
-					disabled:'disabled'
+					disabled: 'disabled'
 				},{
 					tag:'input',
 					type:'button',
@@ -78,7 +78,8 @@ jsool.namespace("js.ui");
 					w.query("input",true)[0].value=src.innerHTML;
 					this.fireEvent('select',this.selected);
 					
-				}else if(t == 'INPUT' && src.type=="button"){ //Drop
+				}else if(t == 'INPUT'){ //Drop
+					
 					if(!this.dropVisible){
 						d = w.query("ul",true)[0].style;
 						
@@ -95,11 +96,10 @@ jsool.namespace("js.ui");
 						
 						EM.on(document,'click',me.hideDrop);
 					}
+					
 				}
 			}
-		}
-		
-		
+		}		
 		
 	},"js.ui.DropDown");
 })();
