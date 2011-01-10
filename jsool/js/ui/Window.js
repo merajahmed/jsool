@@ -3,28 +3,61 @@ jsool.namespace("js.ui");
 	var EM = js.core.EventManager,
 		DH = js.dom.Helper,
 		DOC = window.document,
+		// Offset between the mouse pointer and the 0x0 of the window
 		offset,
+		// The current moving dialog
 		dialog,
-		m = {
-			down:false	
+		// Flags if the mouse is down
+		mouseDown = false,
+		// Stores the browser window size
+		WS = jsool.windowSize(),
+		// Keeps a value inside a range
+		range = function(min, val, max){
+			return Math.max(Math.min(val,min),max);
 		};
+
+
+	/*
+	 * Handles when the window is resized setting the window size variable 
+	 */
+	var resizeHandler = EM.on.wrap(window,'resize',function(){
+		WS = jsool.windowSize();
+	});
 	
-	/**
+	/*
+	 * When the document is ready, append the resize handler
+	 */
+	jsool.onReady(resizeHandler);
+	
+	/*
 	 * Handles the mouse moviment
 	 */
 	function moveHandler(ev){
-		if(dialog && offset && m.down){
-			dialog.setPosition(ev.x - offset.x, ev.y - offset.y);
+		if(dialog && offset && mouseDown){
+			
+			var x = ev.x - offset.x,//Calculated X position
+				//Calculated Y position
+				y = ev.y - offset.y,
+				// Max X position
+				mx = WS.width - dialog.size.width - 2,
+				// Max Y position
+				my = WS.height - dialog.size.height - 2;
+			
+			dialog.setPosition(
+						range(mx,x,0),
+						range(my,y,0)
+					);
 		}
 	}
 	
-	/**
+	/*
 	 * Detach the event listeners from the document after the window is released
 	 */
 	function upHandler(ev){
+		moveHandler(ev);
 		offset = null;
 		dialog = null;
-		m.down=false;
+		mouseDown=false;
 		EM.un(DOC,"mousemove",moveHandler);
 		EM.un(DOC,"mouseup",upHandler);
 	}
@@ -46,6 +79,7 @@ jsool.namespace("js.ui");
 				show: false
 			});
 			
+			// Created the window DOM
 			dom = DH.createDom({
 				className:"js-dialog",
 				children:[{
@@ -66,12 +100,15 @@ jsool.namespace("js.ui");
 				parent: js.dom.BODY
 			});
 			
+			// shortcut for the style
 			this.style = dom.style;
+			
+			// add event listener for the dragger
 			EM.on(dom,'mousedown',function(ev){
 				
 				if(ev.source.tagName && ev.source.tagName=="H1"){
 
-					m.down=true;
+					mouseDown=true;
 					dialog = this;
 
 					var p = this.body.getPosition();
@@ -87,7 +124,10 @@ jsool.namespace("js.ui");
 				
 			},this);
 			
+			// The wrapped window body
 			this.body = jsool.get(dom);
+			// The window box
+			this.size = this.body.getSize();
 		},
 		/**
 		 * Shows the current window
@@ -123,6 +163,7 @@ jsool.namespace("js.ui");
 		setSize: function(w,h){
 			this.style.width = w + 'px';
 			this.style.height = h + 'px';
+			this.size = this.body.getSize();
 		},
 		
 		/**
